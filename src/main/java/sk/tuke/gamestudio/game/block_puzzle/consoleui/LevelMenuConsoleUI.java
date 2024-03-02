@@ -111,6 +111,7 @@ public class LevelMenuConsoleUI {
     public Level getLevel() {
         return level;
     }
+
     public void parseInput() {
         System.out.print("Choose level: ");
         String command = console.nextLine().trim().toUpperCase();
