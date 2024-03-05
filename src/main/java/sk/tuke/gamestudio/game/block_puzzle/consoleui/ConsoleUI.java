@@ -93,14 +93,6 @@ public class ConsoleUI {
             }
         }
     }
-//    private void clearField() {
-//        shapeIsMarked = false;
-//        for (int i = 2; i < field.getFieldHeight()+2; i++) {
-//            for (int j = 8; j < field.getFieldWidth()*2+8; j++) {
-//                field.getMap()[j][i].setValue(" ");
-//            }
-//        }
-//    }
     private void processInput() {
         if (!isFirstCommand && !currentShape.isPlacedOnField())
             isFirstCommand = true;
