@@ -26,33 +26,15 @@ public class StartMenuConsoleUI {
         return isUserLogIn;
     }
     public void generateLogInPrompt() {
-        field.getMap()[15][2] = "(";
-        field.getMap()[16][2] = "1";
-        field.getMap()[17][2] = ")";
+        String[] login = "(1) Log In".split("");
+        for (int i = 15; i <= 24; i++) {
+            field.getMap()[i][2].setValue(login[i-15]);
+        }
 
-        field.getMap()[19][2] = "L";
-        field.getMap()[20][2] = "o";
-        field.getMap()[21][2] = "g";
-        field.getMap()[23][2] = "I";
-        field.getMap()[24][2] = "n";
-
-        field.getMap()[15][7] = "(";
-        field.getMap()[16][7] = "2";
-        field.getMap()[17][7] = ")";
-
-        field.getMap()[19][7] = "C";
-        field.getMap()[20][7] = "r";
-        field.getMap()[21][7] = "e";
-        field.getMap()[22][7] = "a";
-        field.getMap()[23][7] = "t";
-        field.getMap()[24][7] = "e";
-        field.getMap()[26][7] = "a";
-        field.getMap()[27][7] = "c";
-        field.getMap()[28][7] = "c";
-        field.getMap()[29][7] = "o";
-        field.getMap()[30][7] = "u";
-        field.getMap()[31][7] = "n";
-        field.getMap()[32][7] = "t";
+        String[] createAccount = "(2) Create account".split("");
+        for (int i = 15; i <= 32; i++) {
+            field.getMap()[i][7].setValue(createAccount[i-15]);
+        }
     }
     public void parseInput() {
         System.out.print("Choose 1 or 2: ");

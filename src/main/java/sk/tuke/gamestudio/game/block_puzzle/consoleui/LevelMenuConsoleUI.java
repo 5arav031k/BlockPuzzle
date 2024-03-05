@@ -11,11 +11,11 @@ import java.util.Scanner;
 
 public class LevelMenuConsoleUI {
     private final Field field;
-    private boolean isLevelSelected;
-    private final Scanner console;
-    private Level level;
-    private int selectedLevel;
     private User user;
+    private Level level;
+    private final Scanner console;
+    private int selectedLevel;
+    private boolean isLevelSelected;
     public LevelMenuConsoleUI(Field field) {
         this.field = field;
         isLevelSelected = false;
@@ -28,88 +28,63 @@ public class LevelMenuConsoleUI {
     public int getSelectedLevel() {
         return selectedLevel;
     }
-
-    public void generateLevelMenu() {
-        for (int i = 1; i < 4; i++) {
-            field.getMap()[3][i] = "|";
-            field.getMap()[14][i] = "|";
-            field.getMap()[19][i] = "|";
-            field.getMap()[30][i] = "|";
-            field.getMap()[35][i] = "|";
-            field.getMap()[46][i] = "|";
-
-            field.getMap()[3][i+5] = "|";
-            field.getMap()[14][i+5] = "|";
-            field.getMap()[19][i+5] = "|";
-            field.getMap()[30][i+5] = "|";
-            field.getMap()[35][i+5] = "|";
-            field.getMap()[46][i+5] = "|";
-        }
-
-        for (int i = 4; i < 14; i++) {
-            field.getMap()[i][1] = "‾";
-            field.getMap()[i][6] = "‾";
-            field.getMap()[i][3] = "_";
-            field.getMap()[i][8] = "_";
-
-            field.getMap()[i+16][1] = "‾";
-            field.getMap()[i+16][6] = "‾";
-            field.getMap()[i+16][3] = "_";
-            field.getMap()[i+16][8] = "_";
-
-            field.getMap()[i+32][1] = "‾";
-            field.getMap()[i+32][6] = "‾";
-            field.getMap()[i+32][3] = "_";
-            field.getMap()[i+32][8] = "_";
-        }
-
-        for (int i = 6, j = 1; i < 39; i+= 16, j++) {
-            field.getMap()[i][2] = "L";
-            field.getMap()[i+1][2] = "e";
-            field.getMap()[i+2][2] = "v";
-            field.getMap()[i+3][2] = "e";
-            field.getMap()[i+4][2] = "l";
-            field.getMap()[i+5][2] = String.valueOf(j);
-        }
-
-        for (int i = 6, j = 4; i < 39; i+= 16, j++) {
-            field.getMap()[i][7] = "L";
-            field.getMap()[i+1][7] = "e";
-            field.getMap()[i+2][7] = "v";
-            field.getMap()[i+3][7] = "e";
-            field.getMap()[i+4][7] = "l";
-            field.getMap()[i+5][7] = String.valueOf(j);
-        }
-        markLevels();
-    }
-    private void markLevels() {
-        for (int a = 3, b = 14, j = 0; a <= 36; a += 16, b += 16, j++) {
-            String color = user.getLevelsCompleted() > j ? Color.GREEN_BACKGROUND :
-                    user.getLevelsCompleted() == j ? Color.YELLOW_BACKGROUND : Color.BLACK_BACKGROUND;
-
-            field.getMap()[a][1] = color + field.getMap()[a][1];
-            field.getMap()[a][2] = color + field.getMap()[a][2];
-            field.getMap()[a][3] = color + field.getMap()[a][3];
-            field.getMap()[b][1] += Color.RESET;
-            field.getMap()[b][2] += Color.RESET;
-            field.getMap()[b][3] += Color.RESET;
-        }
-
-        for (int a = 3, b = 14, j = 3; a <= 36; a += 16, b += 16, j++) {
-            String color = user.getLevelsCompleted() >= j ? Color.GREEN_BACKGROUND : Color.BLACK_BACKGROUND;
-            field.getMap()[a][6] = color + field.getMap()[a][6];
-            field.getMap()[a][7] = color + field.getMap()[a][7];
-            field.getMap()[a][8] = color + field.getMap()[a][8];
-            field.getMap()[b][6] += Color.RESET;
-            field.getMap()[b][7] += Color.RESET;
-            field.getMap()[b][8] += Color.RESET;
-        }
-    }
     public boolean isLevelSelected() {
         return isLevelSelected;
     }
     public Level getLevel() {
         return level;
+    }
+
+    public void generateLevelMenu() {
+        for (int i = 1; i < 4; i++) {
+            for (int j : new int[]{3, 14, 19, 30, 35, 46}) {
+                field.getMap()[j][i].setValue("|");
+                field.getMap()[j][i+5].setValue("|");
+            }
+        }
+
+        for (int i = 4; i < 14; i++) {
+            for (int j : new int[]{1, 3, 6, 8}) {
+                field.getMap()[i][j].setValue(j == 3 || j == 8 ? "_" : "‾");
+                field.getMap()[i+16][j].setValue(j == 3 || j == 8 ? "_" : "‾");
+                field.getMap()[i+32][j].setValue(j == 3 || j == 8 ? "_" : "‾");
+            }
+        }
+
+        for (int i = 6, j = 1; i < 39; i += 16, j++) {
+            String[] values = {"L", "e", "v", "e", "l", String.valueOf(j)};
+            for (int s = 0; s < values.length; s++)
+                field.getMap()[i+s][2].setValue(values[s]);
+        }
+
+        for (int i = 6, j = 4; i < 39; i+= 16, j++) {
+            String[] values = {"L", "e", "v", "e", "l", String.valueOf(j)};
+            for (int s = 0; s < values.length; s++)
+                field.getMap()[i+s][7].setValue(values[s]);
+        }
+        markLevels();
+    }
+    private void markLevels() {
+        //levels 1 to 3
+        for (int a = 3, b = 14, j = 0; a <= 36; a += 16, b += 16, j++) {
+            String color = user.levelsCompleted() > j ? Color.GREEN_BACKGROUND :
+                    user.levelsCompleted() == j ? Color.YELLOW_BACKGROUND : Color.BLACK_BACKGROUND;
+
+            for (int i = 1; i <= 3; i++) {
+                field.getMap()[a][i].setValue(color + field.getMap()[a][i].getValue());
+                field.getMap()[b][i].setValue(field.getMap()[b][i].getValue() + Color.RESET);
+            }
+        }
+
+        //levels 4 to 6
+        for (int a = 3, b = 14, j = 3; a <= 36; a += 16, b += 16, j++) {
+            String color = user.levelsCompleted() > j ? Color.GREEN_BACKGROUND :
+                    user.levelsCompleted() == j ? Color.YELLOW_BACKGROUND : Color.BLACK_BACKGROUND;
+            for (int i = 6; i <= 8; i++) {
+                field.getMap()[a][i].setValue(color + field.getMap()[a][i].getValue());
+                field.getMap()[b][i].setValue(field.getMap()[b][i].getValue() + Color.RESET);
+            }
+        }
     }
     public void parseInput() {
         System.out.print("Choose level: ");
@@ -124,14 +99,14 @@ public class LevelMenuConsoleUI {
             return;
         }
 
-        if (command.matches("([1-" + (user.getLevelsCompleted()+1) + "])")) {
+        if (command.matches("([1-" + (user.levelsCompleted()+1) + "])")) {
             LevelService levelService = new LevelServiceJDBC();
             level = levelService.getLevelJDBC(selectedLevel, field);
             isLevelSelected = true;
         }
         else {
-            if (selectedLevel > user.getLevelsCompleted()+1 && selectedLevel <= 6)
-                System.out.println("          \u001B[31m" + "You should complete level " + (user.getLevelsCompleted()+1) + " first!" + "\u001B[0m");
+            if (selectedLevel > user.levelsCompleted()+1 && selectedLevel <= 6)
+                System.out.println("          \u001B[31m" + "You should complete level " + (user.levelsCompleted()+1) + " first!" + "\u001B[0m");
             else
                 System.out.println("          \u001B[31m" + "Bad input!" + "\u001B[0m");
         }

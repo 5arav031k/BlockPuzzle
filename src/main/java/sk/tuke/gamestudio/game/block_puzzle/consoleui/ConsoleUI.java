@@ -12,15 +12,15 @@ import java.util.Scanner;
 public class ConsoleUI {
     private Level level;
     private final Field field;
-    boolean isFirstCommand;
-    private final Scanner console;
+    private User user;
     private Shape currentShape;
-    private int currentShapeIdx = 0;
-    private boolean shapeIsMarked;
     private final LevelMenuConsoleUI levelMenu;
     private final StartMenuConsoleUI startMenu;
     private final UserService userService;
-    private User user;
+    private final Scanner console;
+    private int currentShapeIdx = 0;
+    private boolean shapeIsMarked;
+    boolean isFirstCommand;
 
     public ConsoleUI() {
         field = new Field(5, 4);
@@ -43,7 +43,8 @@ public class ConsoleUI {
             if (field.isSolved())
                 break;
             processInput();
-            clearField();
+            shapeIsMarked = false;
+            field.clearField();
         }
         userService.addCompletedLevel(user, levelMenu.getSelectedLevel());
     }
@@ -70,7 +71,7 @@ public class ConsoleUI {
     private void drawMap() {
         for (int i = 0; i < field.getMapHeight(); i++) {
             for (int j = 0; j < field.getMapWidth(); j++) {
-                System.out.print(field.getMap()[j][i]);
+                System.out.print(field.getMap()[j][i].getValue());
             }
             System.out.println();
         }
@@ -78,28 +79,28 @@ public class ConsoleUI {
     private void addShapesToMap() {
         List<Shape> shapes = level.getShapes();
         for (Shape shape : shapes) {
-            for (Tile tile : shape.getShape()) {
-                int tileX = tile.getX();
-                int tileY = tile.getY();
-                if (!field.getMap()[tileX][tileY].equals(" ") && tileX >= 8 && tileX <= (7+field.getFieldWidth()*2)
+            for (ShapeTile shapeTile : shape.getShape()) {
+                int tileX = shapeTile.getX();
+                int tileY = shapeTile.getY();
+                if (!field.getMap()[tileX][tileY].getValue().equals(" ") && tileX >= 8 && tileX <= (7+field.getFieldWidth()*2)
                         && tileY >= 2 && tileY <= (1+field.getFieldHeight()))
                 {
-                    field.getMap()[tileX][tileY] = Color.MARKED;
+                    field.getMap()[tileX][tileY].setValue(Color.MARKED);
                     shapeIsMarked = true;
                 }
                 else
-                    field.getMap()[tile.getX()][tile.getY()] = shape.getShapeColor();
+                    field.getMap()[shapeTile.getX()][shapeTile.getY()].setValue(shape.getShapeColor());
             }
         }
     }
-    private void clearField() {
-        shapeIsMarked = false;
-        for (int i = 2; i < field.getFieldHeight()+2; i++) {
-            for (int j = 8; j < field.getFieldWidth()*2+8; j++) {
-                field.getMap()[j][i] = " ";
-            }
-        }
-    }
+//    private void clearField() {
+//        shapeIsMarked = false;
+//        for (int i = 2; i < field.getFieldHeight()+2; i++) {
+//            for (int j = 8; j < field.getFieldWidth()*2+8; j++) {
+//                field.getMap()[j][i].setValue(" ");
+//            }
+//        }
+//    }
     private void processInput() {
         if (!isFirstCommand && !currentShape.isPlacedOnField())
             isFirstCommand = true;

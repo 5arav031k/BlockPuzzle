@@ -1,7 +1,7 @@
 package main.java.sk.tuke.gamestudio.game.block_puzzle.core;
 
 public class Field {
-    private static String[][] map;
+    private static FieldTile[][] map;
     private final int mapWidth = 50;
     private final int mapHeight = 10;
     private final int fieldWidth;
@@ -10,12 +10,12 @@ public class Field {
     public Field(int fieldWidth, int fieldHeight) {
         this.fieldWidth = fieldWidth;
         this.fieldHeight = fieldHeight;
-        map = new String[mapWidth][mapHeight];
+        map = new FieldTile[mapWidth][mapHeight];
         initialize();
     }
 
 
-    public String[][] getMap() {
+    public FieldTile[][] getMap() {
         return map;
     }
     public int getMapWidth() {
@@ -32,41 +32,51 @@ public class Field {
     }
 
     private void initialize() {
+        for (int i = 0; i < mapWidth; i++) {
+            for (int j = 0; j < mapHeight; j++)
+                map[i][j] = new FieldTile();
+        }
         generateMapEdges();
         clearMap();
     }
     public void clearMap() {
         for (int i = 1; i < mapWidth -1; i++) {
             for (int j = 1; j < mapHeight -1; j++)
-                map[i][j] = " ";
+                map[i][j].setValue(" ");
+        }
+    }
+    public void clearField() {
+        for (int i = 2; i < fieldHeight+2; i++) {
+            for (int j = 8; j < fieldWidth*2+8; j++)
+                map[j][i].setValue(" ");
         }
     }
     public void generateMapEdges() {
         for (int i = 0; i < mapWidth; i++) {
-            map[i][0] = "‾";
-            map[i][mapHeight-1] = "_";
+            map[i][0].setValue("‾");
+            map[i][mapHeight-1].setValue("_");
         }
 
         for (int i = 0; i < mapHeight; i++) {
-            map[0][i] = "|";
-            map[mapWidth-1][i] = "|";
+            map[0][i].setValue("|");
+            map[mapWidth-1][i].setValue("|");
         }
     }
     public void generateTileEdges() {
         for (int i = 2; i < fieldHeight +2; i++) {
-            map[7][i] = "|";
-            map[fieldWidth *2+8][i] = "|";
+            map[7][i].setValue("|");
+            map[fieldWidth *2+8][i].setValue("|");
         }
 
         for (int i = 8; i < fieldWidth *2+8; i++) {
-            map[i][1] = "_";
-            map[i][fieldHeight +2] = "‾";
+            map[i][1].setValue("_");
+            map[i][fieldHeight +2].setValue("‾");
         }
     }
     public boolean isSolved() {
         for (int i = 2; i < fieldHeight+2; i++) {
             for (int j = 8; j < fieldWidth*2+8; j++) {
-                if (map[j][i].equals(" "))
+                if (map[j][i].getValue().equals(" "))
                     return false;
             }
         }

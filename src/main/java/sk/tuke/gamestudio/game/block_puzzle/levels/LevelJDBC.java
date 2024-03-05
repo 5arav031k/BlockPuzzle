@@ -3,7 +3,7 @@ package main.java.sk.tuke.gamestudio.game.block_puzzle.levels;
 import main.java.sk.tuke.gamestudio.game.block_puzzle.core.Color;
 import main.java.sk.tuke.gamestudio.game.block_puzzle.core.Field;
 import main.java.sk.tuke.gamestudio.game.block_puzzle.core.Shape;
-import main.java.sk.tuke.gamestudio.game.block_puzzle.core.Tile;
+import main.java.sk.tuke.gamestudio.game.block_puzzle.core.ShapeTile;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -26,7 +26,7 @@ public class LevelJDBC implements Level{
         return shapeCount;
     }
     @Override
-    public void setShapeCount(int shapeCount) {
+    public void setShapesCount(int shapeCount) {
         this.shapeCount = shapeCount;
     }
     @Override
@@ -35,37 +35,46 @@ public class LevelJDBC implements Level{
     }
     @Override
     public void generateShapesJDBC(Connection connection, ResultSet shapes_rs) throws SQLException {
-        if (!shapes_rs.next()) return;
+        while (shapes_rs.next()) {
+            int current_shape_id = shapes_rs.getInt(1);
 
-        for (int i = 2; i <= shapeCount+1; i++) {
-            int posX = shapes_rs.getInt(i);
-            int posY = shapes_rs.getInt(i+7);
-            field.getMap()[posX][posY] = "(";
-            field.getMap()[posX+1][posY] = String.valueOf(i-1);
-            field.getMap()[posX+2][posY] = ")";
-        }
+            int posX = shapes_rs.getInt(2);
+            int posY = shapes_rs.getInt(3);
+            field.getMap()[posX][posY].setValue("(");
+            field.getMap()[posX + 1][posY].setValue(String.valueOf(current_shape_id));
+            field.getMap()[posX + 2][posY].setValue(")");
 
-        for (int i = 16; i < 16+shapeCount; i++) {
-            Shape shape = new Shape(Color.getColorByString(shapes_rs.getString(i)));
+            Shape shape = new Shape(Color.getColorByString(shapes_rs.getString(4)));
             shape.setField(field);
-            shape.setShapeWidth(shapes_rs.getInt(i+14));
-            shape.setShapeHeight(shapes_rs.getInt(i+21));
+            shape.setShapeWidth(shapes_rs.getInt(5));
+            shape.setShapeHeight(shapes_rs.getInt(6));
 
-            generateTiles(connection, shape, shapes_rs.getInt(i+7));
+            generateTiles(connection, shape, current_shape_id);
             shapes.add(shape);
         }
     }
-    private void generateTiles(Connection connection, Shape shape, int id) throws SQLException{
-        String SELECT_TILE = "SELECT * FROM tile_set WHERE tile_set_id = " + id;
-        var statement = connection.prepareStatement(SELECT_TILE);
-        ResultSet tile_rs = statement.executeQuery();
-        if (!tile_rs.next()) return;
+    private void generateTiles(Connection connection, Shape shape, int shape_id) throws SQLException{
+        String GET_TILE_ID = "SELECT tile_id FROM shapes_tiles WHERE shape_id = "+shape_id;
+        ResultSet shapes_tiles_rs = connection.prepareStatement(GET_TILE_ID).executeQuery();
 
-        for (int j = 3; j < tile_rs.getInt(2)+3; j++) {
-            shape.getShape().add(new Tile(tile_rs.getInt(j), tile_rs.getInt(j+10)));
+        int minX = Integer.MAX_VALUE;
+        int minY = Integer.MAX_VALUE;
+
+        while (shapes_tiles_rs.next()) {
+            int current_tile_id = shapes_tiles_rs.getInt(1);
+
+            String GET_TILE = "SELECT tile_pos_x, tile_pos_y FROM tiles WHERE tile_id = "+current_tile_id;
+            ResultSet tiles_rs = connection.prepareStatement(GET_TILE).executeQuery();
+            if (!tiles_rs.next()) return;
+
+            int posX = tiles_rs.getInt(1);
+            int posY = tiles_rs.getInt(2);
+            shape.getShape().add(new ShapeTile(posX, posY));
+
+            minX = Math.min(posX, minX);
+            minY = Math.min(posY, minY);
         }
-
-        shape.getCoordinates().setFirstMinX(tile_rs.getInt(23));
-        shape.getCoordinates().setFirstMinY(tile_rs.getInt(24));
+        shape.getCoordinates().setFirstMinX(minX);
+        shape.getCoordinates().setFirstMinY(minY);
     }
 }

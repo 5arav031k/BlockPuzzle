@@ -1,10 +1,10 @@
 package main.java.sk.tuke.gamestudio.game.block_puzzle.core;
 
-public class Tile {
+public class ShapeTile {
     private int x;
     private int y;
 
-    public Tile(int x, int y) {
+    public ShapeTile(int x, int y) {
         this.x = x;
         this.y = y;
     }
