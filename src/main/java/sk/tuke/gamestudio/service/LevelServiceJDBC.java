@@ -15,7 +15,7 @@ public class LevelServiceJDBC implements LevelService {
 
         Level level = new LevelJDBC(field);
         String GET_SHAPES_COUNT = "SELECT shapes_count FROM levels WHERE level_id = "+level_id;
-        String GET_SHAPES = "SELECT * FROM shapes WHERE level_id = "+level_id;
+        String GET_SHAPES = "SELECT * FROM shapes WHERE level_id = "+level_id+" ORDER BY shape_id";
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD))
         {
             ResultSet levels_rs = connection.prepareStatement(GET_SHAPES_COUNT).executeQuery();

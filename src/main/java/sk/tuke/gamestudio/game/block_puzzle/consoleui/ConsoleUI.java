@@ -36,7 +36,7 @@ public class ConsoleUI {
         logIn();
         field.clearMap();
         selectLevel();
-        field.generateTileEdges();
+        field.generateFieldEdges();
         while (true) {
             addShapesToMap();
             drawMap();
@@ -82,8 +82,9 @@ public class ConsoleUI {
             for (ShapeTile shapeTile : shape.getShape()) {
                 int tileX = shapeTile.getX();
                 int tileY = shapeTile.getY();
-                if (!field.getMap()[tileX][tileY].getValue().equals(" ") && tileX >= 8 && tileX <= (7+field.getFieldWidth()*2)
-                        && tileY >= 2 && tileY <= (1+field.getFieldHeight()))
+                if (!field.getMap()[tileX][tileY].getValue().equals(" ")
+                        && tileX >= 8 && tileX <= (7+field.getFieldWidth()*2)
+                        && tileY >= 3 && tileY <= (2+field.getFieldHeight()))
                 {
                     field.getMap()[tileX][tileY].setValue(Color.MARKED);
                     shapeIsMarked = true;

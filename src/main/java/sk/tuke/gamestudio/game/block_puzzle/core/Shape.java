@@ -43,14 +43,14 @@ public class Shape {
     }
 
     public void moveUp() {
-        if (coordinates.getMinY() == 2)
+        if (coordinates.getMinY() == 3)
             return;
         shape.forEach(shapeTile -> shapeTile.setY(shapeTile.getY()-1));
         coordinates.setMinY(coordinates.getMinY()-1);
         coordinates.setMaxY(coordinates.getMaxY()-1);
     }
     public void moveDown() {
-        if (coordinates.getMaxY() == 1+field.getFieldHeight())
+        if (coordinates.getMaxY() == 2+field.getFieldHeight())
             return;
         shape.forEach(shapeTile -> shapeTile.setY(shapeTile.getY()+1));
         coordinates.setMinY(coordinates.getMinY()+1);
@@ -81,14 +81,14 @@ public class Shape {
             return;
 
         for (ShapeTile shapeTile : shape) {
-            int y = shapeTile.getY()-coordinates.getMinY()+2;
-            shapeTile.setY(y);
-
             int x = shapeTile.getX()-coordinates.getMinX()+8;
             shapeTile.setX(x);
+
+            int y = shapeTile.getY()-coordinates.getMinY()+3;
+            shapeTile.setY(y);
         }
         coordinates.setMinX(8);
-        coordinates.setMinY(2);
+        coordinates.setMinY(3);
         coordinates.setMaxX(coordinates.getMaxX()+coordinates.getMinX());
         coordinates.setMaxY(coordinates.getMaxY()+coordinates.getMinY());
         isPlacedOnField = true;

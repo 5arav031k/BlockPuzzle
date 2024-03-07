@@ -27,14 +27,42 @@ public class StartMenuConsoleUI {
     }
     public void generateLogInPrompt() {
         String[] login = "(1) Log In".split("");
-        for (int i = 15; i <= 24; i++) {
-            field.getMap()[i][2].setValue(login[i-15]);
+        for (int i = 19; i <= 28; i++) {
+            field.getMap()[i][2].setValue(login[i-19]);
         }
+        field.getMap()[19][2].setValue("\u001B[36m(");
+        field.getMap()[28][2].setValue("n\u001B[0m");
 
         String[] createAccount = "(2) Create account".split("");
-        for (int i = 15; i <= 32; i++) {
-            field.getMap()[i][7].setValue(createAccount[i-15]);
+        for (int i = 16; i <= 33; i++) {
+            field.getMap()[i][8].setValue(createAccount[i-16]);
         }
+        field.getMap()[16][8].setValue("\u001B[36m(");
+        field.getMap()[33][8].setValue("t\u001B[0m");
+
+        generateGameName();
+    }
+    private void generateGameName() {
+        String[] title1 = "╔═══♪✩♫═══╗                    ╔═══♪✩♫═══╗".split("");
+        String[] title2 = "║ ●  ♚  ● ║    Block Puzzle    ║ ●  ♚  ● ║".split("");
+        String[] title3 = "╚═══►❃◄═══╝                    ╚═══►❃◄═══╝".split("");
+
+        for (int i = 0; i < title2.length; i++) {
+            field.getMap()[i+3][4].setValue(title1[i]);
+            field.getMap()[i+3][5].setValue(title2[i]);
+            field.getMap()[i+3][6].setValue(title3[i]);
+        }
+        field.getMap()[3][4].setValue("\u001B[32m╔");
+        field.getMap()[3][5].setValue("\u001B[32m║");
+        field.getMap()[3][6].setValue("\u001B[32m╚");
+
+        field.getMap()[18][5].setValue("\u001B[31mB");
+        field.getMap()[29][5].setValue("e\u001B[0m");
+        field.getMap()[34][5].setValue("\u001B[32m║");
+
+        field.getMap()[title2.length+4][4].setValue("\u001B[0m");
+        field.getMap()[title2.length+4][5].setValue("\u001B[0m");
+        field.getMap()[title2.length+4][6].setValue("\u001B[0m");
     }
     public void parseInput() {
         System.out.print("Choose 1 or 2: ");

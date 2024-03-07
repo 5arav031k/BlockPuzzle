@@ -3,7 +3,7 @@ package main.java.sk.tuke.gamestudio.game.block_puzzle.core;
 public class Field {
     private static FieldTile[][] map;
     private final int mapWidth = 50;
-    private final int mapHeight = 10;
+    private final int mapHeight = 11;
     private final int fieldWidth;
     private final int fieldHeight;
 
@@ -46,7 +46,7 @@ public class Field {
         }
     }
     public void clearField() {
-        for (int i = 2; i < fieldHeight+2; i++) {
+        for (int i = 3; i < fieldHeight+3; i++) {
             for (int j = 8; j < fieldWidth*2+8; j++)
                 map[j][i].setValue(" ");
         }
@@ -62,19 +62,19 @@ public class Field {
             map[mapWidth-1][i].setValue("|");
         }
     }
-    public void generateTileEdges() {
-        for (int i = 2; i < fieldHeight +2; i++) {
+    public void generateFieldEdges() {
+        for (int i = 3; i < fieldHeight+3; i++) {
             map[7][i].setValue("|");
-            map[fieldWidth *2+8][i].setValue("|");
+            map[fieldWidth*2+8][i].setValue("|");
         }
 
-        for (int i = 8; i < fieldWidth *2+8; i++) {
-            map[i][1].setValue("_");
-            map[i][fieldHeight +2].setValue("‾");
+        for (int i = 8; i < fieldWidth*2+8; i++) {
+            map[i][2].setValue("_");
+            map[i][fieldHeight+3].setValue("‾");
         }
     }
     public boolean isSolved() {
-        for (int i = 2; i < fieldHeight+2; i++) {
+        for (int i = 3; i < fieldHeight+3; i++) {
             for (int j = 8; j < fieldWidth*2+8; j++) {
                 if (map[j][i].getValue().equals(" "))
                     return false;

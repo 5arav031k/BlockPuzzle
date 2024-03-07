@@ -39,15 +39,15 @@ public class LevelMenuConsoleUI {
         for (int i = 1; i < 4; i++) {
             for (int j : new int[]{3, 14, 19, 30, 35, 46}) {
                 field.getMap()[j][i].setValue("|");
-                field.getMap()[j][i+5].setValue("|");
+                field.getMap()[j][i+6].setValue("|");
             }
         }
 
         for (int i = 4; i < 14; i++) {
-            for (int j : new int[]{1, 3, 6, 8}) {
-                field.getMap()[i][j].setValue(j == 3 || j == 8 ? "_" : "‾");
-                field.getMap()[i+16][j].setValue(j == 3 || j == 8 ? "_" : "‾");
-                field.getMap()[i+32][j].setValue(j == 3 || j == 8 ? "_" : "‾");
+            for (int j : new int[]{1, 3, 7, 9}) {
+                field.getMap()[i][j].setValue(j == 3 || j == 9 ? "_" : "‾");
+                field.getMap()[i+16][j].setValue(j == 3 || j == 9 ? "_" : "‾");
+                field.getMap()[i+32][j].setValue(j == 3 || j == 9 ? "_" : "‾");
             }
         }
 
@@ -60,9 +60,24 @@ public class LevelMenuConsoleUI {
         for (int i = 6, j = 4; i < 39; i+= 16, j++) {
             String[] values = {"L", "e", "v", "e", "l", String.valueOf(j)};
             for (int s = 0; s < values.length; s++)
-                field.getMap()[i+s][7].setValue(values[s]);
+                field.getMap()[i+s][8].setValue(values[s]);
         }
         markLevels();
+        generateGameName();
+    }
+    private void generateGameName() {
+        String[] name = "█▀▀▀█▄█▀██▀▀▀█▄ Block❀Puzzle ▄█▀▀▀█▄█▀██▀▀▀█".split("");
+        for (int i = 0; i < name.length; i++) {
+            field.getMap()[i+3][5].setValue(name[i]);
+        }
+        field.getMap()[3][5].setValue("\u001B[32m█");
+        field.getMap()[17][5].setValue("▄\u001B[0m");
+
+        field.getMap()[19][5].setValue("\u001B[31mB");
+        field.getMap()[30][5].setValue("e\u001B[0m");
+
+        field.getMap()[32][5].setValue("\u001B[32m▄");
+        field.getMap()[46][5].setValue("█\u001B[0m");
     }
     private void markLevels() {
         //levels 1 to 3
@@ -80,7 +95,7 @@ public class LevelMenuConsoleUI {
         for (int a = 3, b = 14, j = 3; a <= 36; a += 16, b += 16, j++) {
             String color = user.levelsCompleted() > j ? Color.GREEN_BACKGROUND :
                     user.levelsCompleted() == j ? Color.YELLOW_BACKGROUND : Color.BLACK_BACKGROUND;
-            for (int i = 6; i <= 8; i++) {
+            for (int i = 7; i <= 9; i++) {
                 field.getMap()[a][i].setValue(color + field.getMap()[a][i].getValue());
                 field.getMap()[b][i].setValue(field.getMap()[b][i].getValue() + Color.RESET);
             }
