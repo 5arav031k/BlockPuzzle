@@ -1,6 +1,6 @@
 package main.java.sk.tuke.gamestudio.game.block_puzzle.consoleui;
 
-import main.java.sk.tuke.gamestudio.entity.User;
+import main.java.sk.tuke.gamestudio.entity.Score;
 import main.java.sk.tuke.gamestudio.game.block_puzzle.core.Color;
 import main.java.sk.tuke.gamestudio.game.block_puzzle.core.Field;
 import main.java.sk.tuke.gamestudio.game.block_puzzle.levels.Level;
@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 public class LevelMenuConsoleUI {
     private final Field field;
-    private User user;
+    private Score score;
     private Level level;
     private final Scanner console;
     private int selectedLevel;
@@ -22,9 +22,10 @@ public class LevelMenuConsoleUI {
         console = new Scanner(System.in);
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setScore(Score score) {
+        this.score = score;
     }
+
     public int getSelectedLevel() {
         return selectedLevel;
     }
@@ -82,8 +83,8 @@ public class LevelMenuConsoleUI {
     private void markLevels() {
         //levels 1 to 3
         for (int a = 3, b = 14, j = 0; a <= 36; a += 16, b += 16, j++) {
-            String color = user.levelsCompleted() > j ? Color.GREEN_BACKGROUND :
-                    user.levelsCompleted() == j ? Color.YELLOW_BACKGROUND : Color.BLACK_BACKGROUND;
+            String color = score.levelsCompleted() > j ? Color.GREEN_BACKGROUND :
+                    score.levelsCompleted() == j ? Color.YELLOW_BACKGROUND : Color.BLACK_BACKGROUND;
 
             for (int i = 1; i <= 3; i++) {
                 field.getMap()[a][i].setValue(color + field.getMap()[a][i].getValue());
@@ -93,8 +94,8 @@ public class LevelMenuConsoleUI {
 
         //levels 4 to 6
         for (int a = 3, b = 14, j = 3; a <= 36; a += 16, b += 16, j++) {
-            String color = user.levelsCompleted() > j ? Color.GREEN_BACKGROUND :
-                    user.levelsCompleted() == j ? Color.YELLOW_BACKGROUND : Color.BLACK_BACKGROUND;
+            String color = score.levelsCompleted() > j ? Color.GREEN_BACKGROUND :
+                    score.levelsCompleted() == j ? Color.YELLOW_BACKGROUND : Color.BLACK_BACKGROUND;
             for (int i = 7; i <= 9; i++) {
                 field.getMap()[a][i].setValue(color + field.getMap()[a][i].getValue());
                 field.getMap()[b][i].setValue(field.getMap()[b][i].getValue() + Color.RESET);
@@ -114,14 +115,14 @@ public class LevelMenuConsoleUI {
             return;
         }
 
-        if (command.matches("([1-" + (user.levelsCompleted()+1) + "])")) {
+        if (command.matches("([1-" + (score.levelsCompleted()+1) + "])")) {
             LevelService levelService = new LevelServiceJDBC();
             level = levelService.getLevelJDBC(selectedLevel, field);
             isLevelSelected = true;
         }
         else {
-            if (selectedLevel > user.levelsCompleted()+1 && selectedLevel <= 6)
-                System.out.println("          \u001B[31m" + "You should complete level " + (user.levelsCompleted()+1) + " first!" + "\u001B[0m");
+            if (selectedLevel > score.levelsCompleted()+1 && selectedLevel <= 6)
+                System.out.println("          \u001B[31m" + "You should complete level " + (score.levelsCompleted()+1) + " first!" + "\u001B[0m");
             else
                 System.out.println("          \u001B[31m" + "Bad input!" + "\u001B[0m");
         }

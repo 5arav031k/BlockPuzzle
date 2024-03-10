@@ -1,10 +1,10 @@
 package main.java.sk.tuke.gamestudio.game.block_puzzle.consoleui;
 
-import main.java.sk.tuke.gamestudio.entity.User;
+import main.java.sk.tuke.gamestudio.entity.Score;
 import main.java.sk.tuke.gamestudio.game.block_puzzle.core.*;
 import main.java.sk.tuke.gamestudio.game.block_puzzle.levels.Level;
-import main.java.sk.tuke.gamestudio.service.UserService;
-import main.java.sk.tuke.gamestudio.service.UserServiceJDBC;
+import main.java.sk.tuke.gamestudio.service.ScoreService;
+import main.java.sk.tuke.gamestudio.service.ScoreServiceJDBC;
 
 import java.util.List;
 import java.util.Scanner;
@@ -12,11 +12,11 @@ import java.util.Scanner;
 public class ConsoleUI {
     private Level level;
     private final Field field;
-    private User user;
+    private Score score;
     private Shape currentShape;
     private final LevelMenuConsoleUI levelMenu;
     private final StartMenuConsoleUI startMenu;
-    private final UserService userService;
+    private final ScoreService scoreService;
     private final Scanner console;
     private int currentShapeIdx = 0;
     private boolean shapeIsMarked;
@@ -29,7 +29,7 @@ public class ConsoleUI {
         console = new Scanner(System.in);
         startMenu = new StartMenuConsoleUI(field);
         levelMenu = new LevelMenuConsoleUI(field);
-        userService = new UserServiceJDBC();
+        scoreService = new ScoreServiceJDBC();
     }
 
     public void play() {
@@ -46,7 +46,7 @@ public class ConsoleUI {
             shapeIsMarked = false;
             field.clearField();
         }
-        userService.addCompletedLevel(user, levelMenu.getSelectedLevel());
+        scoreService.addCompletedLevel(score, levelMenu.getSelectedLevel());
     }
     private void logIn() {
         startMenu.generateLogInPrompt();
@@ -55,10 +55,10 @@ public class ConsoleUI {
         while (!startMenu.isUserLogIn())
             startMenu.parseInput();
 
-        user = startMenu.getUser();
+        score = startMenu.getScore();
     }
     private void selectLevel() {
-        levelMenu.setUser(user);
+        levelMenu.setScore(score);
         levelMenu.generateLevelMenu();
         drawMap();
         field.clearMap();

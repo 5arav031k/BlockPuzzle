@@ -1,7 +1,10 @@
 package main.java.sk.tuke.gamestudio.game.block_puzzle.consoleui;
 
+import main.java.sk.tuke.gamestudio.entity.Score;
 import main.java.sk.tuke.gamestudio.entity.User;
 import main.java.sk.tuke.gamestudio.game.block_puzzle.core.Field;
+import main.java.sk.tuke.gamestudio.service.ScoreService;
+import main.java.sk.tuke.gamestudio.service.ScoreServiceJDBC;
 import main.java.sk.tuke.gamestudio.service.UserService;
 import main.java.sk.tuke.gamestudio.service.UserServiceJDBC;
 
@@ -11,7 +14,7 @@ public class StartMenuConsoleUI {
     private final Field field;
     private final Scanner console;
     private boolean isUserLogIn;
-    private User user;
+    private Score score;
 
     public StartMenuConsoleUI(Field field) {
         this.field = field;
@@ -19,9 +22,10 @@ public class StartMenuConsoleUI {
         isUserLogIn = false;
     }
 
-    public User getUser() {
-        return user;
+    public Score getScore() {
+        return score;
     }
+
     public boolean isUserLogIn() {
         return isUserLogIn;
     }
@@ -71,10 +75,20 @@ public class StartMenuConsoleUI {
             System.exit(0);
 
         UserService userService = new UserServiceJDBC();
+        ScoreService scoreService = new ScoreServiceJDBC();
+        User user;
+
         if (command.matches("([1-2])")) {
             String login = getLogin();
             String password = getPassword();
-            user = command.equals("1") ? userService.logIn(login, password) : userService.addUser(login, password);
+            if (command.equals("1")) {
+                user = userService.logIn(login, password);
+                score = scoreService.getScore(user);
+            }
+            else {
+                user = userService.addUser(login, password);
+                score = scoreService.addScore(user);
+            }
 
             isUserLogIn = user != null;
         }
