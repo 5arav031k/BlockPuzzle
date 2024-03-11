@@ -15,6 +15,7 @@ public class StartMenuConsoleUI {
     private final Scanner console;
     private boolean isUserLogIn;
     private Score score;
+    private User user;
 
     public StartMenuConsoleUI(Field field) {
         this.field = field;
@@ -24,6 +25,10 @@ public class StartMenuConsoleUI {
 
     public Score getScore() {
         return score;
+    }
+
+    public User getUser() {
+        return user;
     }
 
     public boolean isUserLogIn() {
@@ -76,7 +81,6 @@ public class StartMenuConsoleUI {
 
         UserService userService = new UserServiceJDBC();
         ScoreService scoreService = new ScoreServiceJDBC();
-        User user;
 
         if (command.matches("([1-2])")) {
             String login = getLogin();

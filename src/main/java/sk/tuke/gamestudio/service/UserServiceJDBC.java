@@ -4,10 +4,7 @@ import main.java.sk.tuke.gamestudio.entity.User;
 
 import java.sql.*;
 
-public class UserServiceJDBC implements UserService{
-    private final String URL = "jdbc:postgresql://localhost:5432/gamestudio";
-    private final String USER = "postgres";
-    private final String PASSWORD = "}bI1;8s=O,";
+public class UserServiceJDBC extends Service implements UserService{
     @Override
     public User addUser(String login, String password) {
         String ADD_USER = String.format("INSERT INTO users VALUES (DEFAULT, '%s', '%s')", login, password);

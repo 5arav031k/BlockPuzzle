@@ -1,8 +1,11 @@
 package main.java.sk.tuke.gamestudio.game.block_puzzle.consoleui;
 
 import main.java.sk.tuke.gamestudio.entity.Score;
+import main.java.sk.tuke.gamestudio.entity.User;
 import main.java.sk.tuke.gamestudio.game.block_puzzle.core.*;
 import main.java.sk.tuke.gamestudio.game.block_puzzle.levels.Level;
+import main.java.sk.tuke.gamestudio.service.RatingService;
+import main.java.sk.tuke.gamestudio.service.RatingServiceJDBC;
 import main.java.sk.tuke.gamestudio.service.ScoreService;
 import main.java.sk.tuke.gamestudio.service.ScoreServiceJDBC;
 
@@ -13,10 +16,12 @@ public class ConsoleUI {
     private Level level;
     private final Field field;
     private Score score;
+    private User user;
     private Shape currentShape;
     private final LevelMenuConsoleUI levelMenu;
     private final StartMenuConsoleUI startMenu;
     private final ScoreService scoreService;
+    private final RatingService ratingService;
     private final Scanner console;
     private int currentShapeIdx = 0;
     private boolean shapeIsMarked;
@@ -30,6 +35,7 @@ public class ConsoleUI {
         startMenu = new StartMenuConsoleUI(field);
         levelMenu = new LevelMenuConsoleUI(field);
         scoreService = new ScoreServiceJDBC();
+        ratingService = new RatingServiceJDBC();
     }
 
     public void play() {
@@ -37,6 +43,7 @@ public class ConsoleUI {
         field.clearMap();
         selectLevel();
         field.generateFieldEdges();
+
         while (true) {
             addShapesToMap();
             drawMap();
@@ -48,6 +55,7 @@ public class ConsoleUI {
         }
         scoreService.addCompletedLevel(score, levelMenu.getSelectedLevel());
         showTopScores();
+        rateBlockPuzzle();
     }
     private void logIn() {
         startMenu.generateLogInPrompt();
@@ -57,6 +65,7 @@ public class ConsoleUI {
             startMenu.parseInput();
 
         score = startMenu.getScore();
+        user = startMenu.getUser();
     }
     private void selectLevel() {
         levelMenu.setScore(score);
@@ -78,11 +87,46 @@ public class ConsoleUI {
         }
     }
     private void showTopScores() {
-        System.out.println("\u001B[33m" + "Top 5 scores:" + "\u001B[0m");
+        System.out.println("\n"+"\u001B[33m" + "Top 5 scores:" + "\u001B[0m");
         scoreService.getTopScores()
                 .forEach(score -> System.out.println("\u001B[33m"+score.login()+
                         "    \u001B[31m"+"max level: \u001B[33m"+score.levelsCompleted()+
                         "\u001B[0m    \u001B[31m"+" completed at: \u001B[33m"+score.date()+"\u001B[0m"));
+    }
+    private void rateBlockPuzzle() {
+        System.out.print("\n"+"\u001B[34m"+"Would you like to rate our game? (Y/N): "+"\u001B[0m");
+        String input;
+
+        while (!(input = console.nextLine()).equalsIgnoreCase("Y")) {
+            if (input.equalsIgnoreCase("N"))    return;
+            System.out.print("          \u001B[31m" + "Bad input! Please enter Y or N: " + "\u001B[0m");
+        }
+
+        userRatingBlockPuzzle();
+        userCommentBlockPuzzle();
+
+        System.out.println("\n"+"\u001B[32m"+"Thank you for your rating!"+"\u001B[0m");
+    }
+    private void userRatingBlockPuzzle() {
+        System.out.print("\n"+"\u001B[34m"+"Please rate our game from 1 to 5: "+"\u001B[0m");
+        String input;
+
+        while (!(input = console.nextLine()).matches("([1-5])")) {
+            System.out.print("          \u001B[31m"+"Invalid rating! Please enter a number from 1 to 5: "+"\u001B[0m");
+        }
+        int rating = Integer.parseInt(input);
+
+        ratingService.addRating(user, rating);
+    }
+    private void userCommentBlockPuzzle() {
+        System.out.println("\n"+"\u001B[34m"+"Please leave your comments (max 300 characters):"+"\u001B[0m");
+        String input;
+
+        while ((input = console.nextLine()).length() > 300) {
+            System.out.println("          \u001B[31m"+"Comments are too long! Please keep them within 300 characters:"+"\u001B[0m");
+        }
+        String comment = input;
+        //TODO COMMENT SERVICE
     }
     private void addShapesToMap() {
         List<Shape> shapes = level.getShapes();

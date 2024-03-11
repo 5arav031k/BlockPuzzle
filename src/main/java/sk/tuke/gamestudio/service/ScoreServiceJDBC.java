@@ -8,10 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ScoreServiceJDBC implements ScoreService{
-    private final String URL = "jdbc:postgresql://localhost:5432/gamestudio";
-    private final String USER = "postgres";
-    private final String PASSWORD = "}bI1;8s=O,";
+public class ScoreServiceJDBC extends Service implements ScoreService {
 
     @Override
     public void addCompletedLevel(Score score, int level) {
@@ -22,7 +19,7 @@ public class ScoreServiceJDBC implements ScoreService{
              PreparedStatement statement = connection.prepareStatement(ADD_LEVEL))
         {
            statement.setInt(1, level);
-           statement.setTimestamp(2, new Timestamp(score.date().getTime()));
+           statement.setTimestamp(2, new Timestamp(new Date().getTime()));
            statement.setString(3, score.login());
            statement.executeUpdate();
         } catch (SQLException e) {
@@ -68,7 +65,7 @@ public class ScoreServiceJDBC implements ScoreService{
 
     @Override
     public List<Score> getTopScores() {
-        String GET_SCORE = "SELECT * FROM score ORDER BY levels_completed DESC LIMIT 5";
+        String GET_SCORE = "SELECT * FROM score ORDER BY levels_completed DESC, completed_at LIMIT 5";
         List<Score> scoreList = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD))
         {
@@ -84,6 +81,13 @@ public class ScoreServiceJDBC implements ScoreService{
 
     @Override
     public void reset() {
-
+        String RESET = "DELETE FROM score";
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement statement = connection.prepareStatement(RESET))
+        {
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Problem: " + e.getMessage());
+        }
     }
 }

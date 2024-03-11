@@ -6,13 +6,9 @@ import main.java.sk.tuke.gamestudio.game.block_puzzle.levels.LevelJDBC;
 
 import java.sql.*;
 
-public class LevelServiceJDBC implements LevelService {
+public class LevelServiceJDBC extends Service implements LevelService {
     @Override
-    public Level getLevelJDBC(int level_id, Field field) {
-        final String URL = "jdbc:postgresql://localhost:5432/gamestudio";
-        final String USER = "postgres";
-        final String PASSWORD = "}bI1;8s=O,";
-
+    public Level getLevelJDBC(int level_id, Field field) {;
         Level level = new LevelJDBC(field);
         String GET_SHAPES_COUNT = "SELECT shapes_count FROM levels WHERE level_id = "+level_id;
         String GET_SHAPES = "SELECT * FROM shapes WHERE level_id = "+level_id+" ORDER BY shape_id";
