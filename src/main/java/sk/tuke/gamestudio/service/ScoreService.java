@@ -9,6 +9,6 @@ public interface ScoreService {
     void addCompletedLevel(Score score, int level);
     Score addScore(User user);
     Score getScore(User user);
-    List<Score> getTopScores(String game);
+    List<Score> getTopScores();
     void reset();
 }

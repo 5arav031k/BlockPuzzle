@@ -4,6 +4,7 @@ import main.java.sk.tuke.gamestudio.entity.Score;
 import main.java.sk.tuke.gamestudio.entity.User;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -66,8 +67,19 @@ public class ScoreServiceJDBC implements ScoreService{
     }
 
     @Override
-    public List<Score> getTopScores(String game) {
-        return null;
+    public List<Score> getTopScores() {
+        String GET_SCORE = "SELECT * FROM score ORDER BY levels_completed DESC LIMIT 5";
+        List<Score> scoreList = new ArrayList<>();
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD))
+        {
+            ResultSet rs = connection.prepareStatement(GET_SCORE).executeQuery();
+            while (rs.next())
+                scoreList.add(new Score(rs.getString(1), rs.getInt(2), rs.getTimestamp(3)));
+
+        } catch (SQLException e) {
+            System.out.println("Problem: " + e.getMessage());
+        }
+        return scoreList;
     }
 
     @Override

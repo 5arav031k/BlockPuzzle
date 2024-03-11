@@ -47,6 +47,7 @@ public class ConsoleUI {
             field.clearField();
         }
         scoreService.addCompletedLevel(score, levelMenu.getSelectedLevel());
+        showTopScores();
     }
     private void logIn() {
         startMenu.generateLogInPrompt();
@@ -75,6 +76,13 @@ public class ConsoleUI {
             }
             System.out.println();
         }
+    }
+    private void showTopScores() {
+        System.out.println("\u001B[33m" + "Top 5 scores:" + "\u001B[0m");
+        scoreService.getTopScores()
+                .forEach(score -> System.out.println("\u001B[33m"+score.login()+
+                        "    \u001B[31m"+"max level: \u001B[33m"+score.levelsCompleted()+
+                        "\u001B[0m    \u001B[31m"+" completed at: \u001B[33m"+score.date()+"\u001B[0m"));
     }
     private void addShapesToMap() {
         List<Shape> shapes = level.getShapes();
