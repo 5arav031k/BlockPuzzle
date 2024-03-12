@@ -34,6 +34,7 @@ public class StartMenuConsoleUI {
     public boolean isUserLogIn() {
         return isUserLogIn;
     }
+
     public void generateLogInPrompt() {
         String[] login = "(1) Log In".split("");
         for (int i = 19; i <= 28; i++) {
@@ -51,6 +52,7 @@ public class StartMenuConsoleUI {
 
         generateGameName();
     }
+
     private void generateGameName() {
         String[] title1 = "╔═══♪✩♫═══╗                    ╔═══♪✩♫═══╗".split("");
         String[] title2 = "║ ●  ♚  ● ║    Block Puzzle    ║ ●  ♚  ● ║".split("");
@@ -73,10 +75,11 @@ public class StartMenuConsoleUI {
         field.getMap()[title2.length+4][5].setValue("\u001B[0m");
         field.getMap()[title2.length+4][6].setValue("\u001B[0m");
     }
+
     public void parseInput() {
         System.out.print("Choose 1 or 2: ");
         String command = console.nextLine().trim().toUpperCase();
-        if (command.equals("E"))
+        if (command.equals("EXIT"))
             System.exit(0);
 
         UserService userService = new UserServiceJDBC();
@@ -100,6 +103,7 @@ public class StartMenuConsoleUI {
             System.out.println("          \u001B[31m" + "Bad input!" + "\u001B[0m");
         }
     }
+
     private String getLogin() {
         System.out.print("Enter login (min 3 characters): ");
         String login = console.nextLine();

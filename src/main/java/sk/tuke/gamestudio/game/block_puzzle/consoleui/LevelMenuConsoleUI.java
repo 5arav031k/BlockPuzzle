@@ -66,6 +66,7 @@ public class LevelMenuConsoleUI {
         markLevels();
         generateGameName();
     }
+
     private void generateGameName() {
         String[] name = "█▀▀▀█▄█▀██▀▀▀█▄ Block❀Puzzle ▄█▀▀▀█▄█▀██▀▀▀█".split("");
         for (int i = 0; i < name.length; i++) {
@@ -80,6 +81,7 @@ public class LevelMenuConsoleUI {
         field.getMap()[32][5].setValue("\u001B[32m▄");
         field.getMap()[46][5].setValue("█\u001B[0m");
     }
+
     private void markLevels() {
         //levels 1 to 3
         for (int a = 3, b = 14, j = 0; a <= 36; a += 16, b += 16, j++) {
@@ -102,10 +104,11 @@ public class LevelMenuConsoleUI {
             }
         }
     }
+
     public void parseInput() {
         System.out.print("Choose level: ");
         String command = console.nextLine().trim().toUpperCase();
-        if (command.equals("E"))
+        if (command.equals("EXIT"))
             System.exit(0);
 
         try {
