@@ -131,9 +131,9 @@ public class ConsoleUI {
         while ((input = console.nextLine()).length() > 300) {
             System.out.println("          \u001B[31m"+"Comments are too long! Please keep them within 300 characters:"+"\u001B[0m");
         }
-        String comment = input;
-
-        commentService.addComment(user, comment);
+        String comment = input.trim();
+        if (!comment.isEmpty())
+            commentService.addComment(user, comment);
     }
 
     private void addShapesToMap() {
