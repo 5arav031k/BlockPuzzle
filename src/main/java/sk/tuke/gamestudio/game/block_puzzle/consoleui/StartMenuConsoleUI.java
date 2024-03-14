@@ -26,11 +26,9 @@ public class StartMenuConsoleUI {
     public Score getScore() {
         return score;
     }
-
     public User getUser() {
         return user;
     }
-
     public boolean isUserLogIn() {
         return isUserLogIn;
     }

@@ -11,12 +11,12 @@ public class UserServiceJDBC extends Service implements UserService{
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD))
         {
             connection.prepareStatement(ADD_USER).executeUpdate();
-            return new User(login);
+            return new User(login, password);
         } catch (SQLException e) {
             if (e.getErrorCode() == 0)
                 System.out.println("           \u001B[31m" + "This login is already taken!" + "\u001B[0m");
             else
-                System.out.println(e.getMessage());
+                throw new GameStudioException(e);
         }
         return null;
     }
@@ -31,21 +31,20 @@ public class UserServiceJDBC extends Service implements UserService{
                 System.out.println("           \u001B[31m" + "Bad login or password!" + "\u001B[0m");
                 return null;
             }
-            return new User(login);
+            return new User(login, password);
         }
         catch (SQLException e) {
-            System.out.println("Problem: " + e.getMessage());
+            throw new GameStudioException(e);
         }
-        return null;
     }
 
     @Override
-    public void deleteUser(String login, String password) {
-        String DELETE_USER = String.format("DELETE FROM users WHERE login = '%s' AND password = '%s'", login, password);
+    public void deleteUser(User user) {
+        String DELETE_USER = String.format("DELETE FROM users WHERE login = '%s' AND password = '%s'", user.login(), user.password());
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
             connection.prepareStatement(DELETE_USER).executeUpdate();
         } catch (SQLException e) {
-            System.out.println("Problem: " + e.getMessage());
+            throw new GameStudioException(e);
         }
     }
 }

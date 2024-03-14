@@ -23,7 +23,7 @@ public class ScoreServiceJDBC extends Service implements ScoreService {
            statement.setString(3, score.login());
            statement.executeUpdate();
         } catch (SQLException e) {
-            System.out.println("Problem: " + e.getMessage());
+            throw new GameStudioException(e);
         }
     }
 
@@ -41,9 +41,8 @@ public class ScoreServiceJDBC extends Service implements ScoreService {
             statement.executeUpdate();
             return new Score(user.login(), 0, date);
         } catch (SQLException e) {
-            System.out.println("Problem: " + e.getMessage());
+            throw new GameStudioException(e);
         }
-        return null;
     }
 
     @Override
@@ -58,7 +57,7 @@ public class ScoreServiceJDBC extends Service implements ScoreService {
                 return new Score(user.login(), rs.getInt(1), rs.getTimestamp(2));
 
         } catch (SQLException e) {
-            System.out.println("Problem: " + e.getMessage());
+            throw new GameStudioException(e);
         }
         return null;
     }
@@ -74,7 +73,7 @@ public class ScoreServiceJDBC extends Service implements ScoreService {
                 scoreList.add(new Score(rs.getString(1), rs.getInt(2), rs.getTimestamp(3)));
 
         } catch (SQLException e) {
-            System.out.println("Problem: " + e.getMessage());
+            throw new GameStudioException(e);
         }
         return scoreList;
     }
@@ -87,7 +86,7 @@ public class ScoreServiceJDBC extends Service implements ScoreService {
         {
             statement.executeUpdate();
         } catch (SQLException e) {
-            System.out.println("Problem: " + e.getMessage());
+            throw new GameStudioException(e);
         }
     }
 }

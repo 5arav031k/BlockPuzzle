@@ -39,18 +39,21 @@ public class Field {
         generateMapEdges();
         clearMap();
     }
+
     public void clearMap() {
         for (int i = 1; i < mapWidth -1; i++) {
             for (int j = 1; j < mapHeight -1; j++)
                 map[i][j].setValue(" ");
         }
     }
+
     public void clearField() {
         for (int i = 3; i < fieldHeight+3; i++) {
             for (int j = 8; j < fieldWidth*2+8; j++)
                 map[j][i].setValue(" ");
         }
     }
+
     public void generateMapEdges() {
         for (int i = 0; i < mapWidth; i++) {
             map[i][0].setValue("‾");
@@ -62,6 +65,7 @@ public class Field {
             map[mapWidth-1][i].setValue("|");
         }
     }
+
     public void generateFieldEdges() {
         for (int i = 3; i < fieldHeight+3; i++) {
             map[7][i].setValue("|");
@@ -73,6 +77,7 @@ public class Field {
             map[i][fieldHeight+3].setValue("‾");
         }
     }
+
     public boolean isSolved() {
         for (int i = 3; i < fieldHeight+3; i++) {
             for (int j = 8; j < fieldWidth*2+8; j++) {
@@ -83,6 +88,7 @@ public class Field {
         winMsg();
         return true;
     }
+
     private void winMsg() {
         System.out.println("                 \u001B[32m" + "CONGRATULATIONS!" + "\u001B[0m");
     }

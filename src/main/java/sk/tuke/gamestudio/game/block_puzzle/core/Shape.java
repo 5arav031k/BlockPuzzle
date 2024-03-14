@@ -49,6 +49,7 @@ public class Shape {
         coordinates.setMinY(coordinates.getMinY()-1);
         coordinates.setMaxY(coordinates.getMaxY()-1);
     }
+
     public void moveDown() {
         if (coordinates.getMaxY() == 2+field.getFieldHeight())
             return;
@@ -56,6 +57,7 @@ public class Shape {
         coordinates.setMinY(coordinates.getMinY()+1);
         coordinates.setMaxY(coordinates.getMaxY()+1);
     }
+
     public void moveLeft() {
         if (coordinates.getMinX() == 8)
             return;
@@ -63,6 +65,7 @@ public class Shape {
         coordinates.setMinX(coordinates.getMinX()-2);
         coordinates.setMaxX(coordinates.getMaxX()-2);
     }
+
     public void moveRight() {
         if (coordinates.getMaxX() == 7+field.getFieldWidth()*2)
             return;
@@ -70,6 +73,7 @@ public class Shape {
         coordinates.setMinX(coordinates.getMinX()+2);
         coordinates.setMaxX(coordinates.getMaxX()+2);
     }
+
     public void placeShapeToField() {
         if (!isPlacedOnField) {
             coordinates.setMinX(coordinates.getFirstMinX());
@@ -93,6 +97,7 @@ public class Shape {
         coordinates.setMaxY(coordinates.getMaxY()+coordinates.getMinY());
         isPlacedOnField = true;
     }
+
     public void hideShape() {
         isPlacedOnField = false;
         int x = coordinates.getFirstMinX() - coordinates.getMinX();
@@ -103,6 +108,7 @@ public class Shape {
             shapeTile.setY(shapeTile.getY()+y);
         }
     }
+
     public void markShapeIdx(Field field, String shapeIdx) {
         FieldTile[][] map = field.getMap();
         for (int i = 0; i < field.getMapHeight(); i++) {
@@ -115,6 +121,7 @@ public class Shape {
             }
         }
     }
+
     public void unmarkShapeIdx(Field field, String shapeIdx) {
         FieldTile[][] map = field.getMap();
         for (int i = 0; i < field.getMapHeight(); i++) {

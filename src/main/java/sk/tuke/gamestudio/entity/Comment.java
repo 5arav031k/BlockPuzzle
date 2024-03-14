@@ -2,5 +2,5 @@ package main.java.sk.tuke.gamestudio.entity;
 
 import java.util.Date;
 
-public record Score(String login, int levelsCompleted, Date playedOn) {
+public record Comment(String login, String comment, Date commentOn){
 }

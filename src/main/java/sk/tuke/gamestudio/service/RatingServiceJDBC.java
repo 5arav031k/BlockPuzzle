@@ -1,25 +1,52 @@
 package main.java.sk.tuke.gamestudio.service;
 
+import main.java.sk.tuke.gamestudio.entity.Rating;
 import main.java.sk.tuke.gamestudio.entity.User;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class RatingServiceJDBC extends Service implements RatingService{
     @Override
-    public void addRating(User user, int rating) {
-        String ADD_RATING = "INSERT INTO rating (login, rating) VALUES (?, ?) ON CONFLICT (login) DO UPDATE SET rating = EXCLUDED.rating";
+    public void setRating(Rating rating) {
+        String ADD_RATING = "INSERT INTO rating (login, rating, rated_on) VALUES (?, ?, ?) ON CONFLICT (login) DO UPDATE SET rating = EXCLUDED.rating, rated_on = EXCLUDED.rated_on";
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement statement = connection.prepareStatement(ADD_RATING))
         {
-            statement.setString(1, user.login());
-            statement.setInt(2, rating);
+            statement.setString(1, rating.login());
+            statement.setInt(2, rating.rating());
+            statement.setTimestamp(3, new Timestamp(rating.ratedOn().getTime()));
             statement.executeUpdate();
         } catch (SQLException e) {
-            System.out.println("Problem: " + e.getMessage());
+            throw new GameStudioException(e);
         }
+    }
+
+    @Override
+    public int getAverageRating() {
+        String GET_AVERAGE_RATING = "SELECT ROUND(AVG(rating)) AS average_rating FROM rating";
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement statement = connection.prepareStatement(GET_AVERAGE_RATING);
+             ResultSet rs = statement.executeQuery())
+        {
+            if (rs.next())  return rs.getInt(1);
+        } catch (SQLException e) {
+            throw new GameStudioException(e);
+        }
+        return 0;
+    }
+
+    @Override
+    public int getRating(User user) {
+        String GET_RATING = String.format("SELECT rating from rating WHERE login = '%s'", user.login());
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement statement = connection.prepareStatement(GET_RATING);
+             ResultSet rs = statement.executeQuery())
+        {
+            if (rs.next())  return rs.getInt(1);
+        } catch (SQLException e) {
+            throw new GameStudioException(e);
+        }
+        return 0;
     }
 
     @Override
@@ -30,7 +57,7 @@ public class RatingServiceJDBC extends Service implements RatingService{
         {
             statement.executeUpdate();
         } catch (SQLException e) {
-            System.out.println("Problem: " + e.getMessage());
+            throw new GameStudioException(e);
         }
     }
 }

@@ -3,7 +3,7 @@ package main.java.sk.tuke.gamestudio.game.block_puzzle.consoleui;
 import main.java.sk.tuke.gamestudio.entity.Score;
 import main.java.sk.tuke.gamestudio.game.block_puzzle.core.Color;
 import main.java.sk.tuke.gamestudio.game.block_puzzle.core.Field;
-import main.java.sk.tuke.gamestudio.game.block_puzzle.levels.Level;
+import main.java.sk.tuke.gamestudio.entity.Level;
 import main.java.sk.tuke.gamestudio.service.LevelService;
 import main.java.sk.tuke.gamestudio.service.LevelServiceJDBC;
 
@@ -25,7 +25,6 @@ public class LevelMenuConsoleUI {
     public void setScore(Score score) {
         this.score = score;
     }
-
     public int getSelectedLevel() {
         return selectedLevel;
     }
@@ -120,7 +119,7 @@ public class LevelMenuConsoleUI {
 
         if (command.matches("([1-" + (score.levelsCompleted()+1) + "])")) {
             LevelService levelService = new LevelServiceJDBC();
-            level = levelService.getLevelJDBC(selectedLevel, field);
+            level = levelService.getLevel(selectedLevel, field);
             isLevelSelected = true;
         }
         else {

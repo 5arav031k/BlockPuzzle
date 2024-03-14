@@ -1,11 +1,14 @@
 package main.java.sk.tuke.gamestudio.game.block_puzzle.consoleui;
 
+import main.java.sk.tuke.gamestudio.entity.Comment;
+import main.java.sk.tuke.gamestudio.entity.Rating;
 import main.java.sk.tuke.gamestudio.entity.Score;
 import main.java.sk.tuke.gamestudio.entity.User;
 import main.java.sk.tuke.gamestudio.game.block_puzzle.core.*;
-import main.java.sk.tuke.gamestudio.game.block_puzzle.levels.Level;
+import main.java.sk.tuke.gamestudio.entity.Level;
 import main.java.sk.tuke.gamestudio.service.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -94,7 +97,7 @@ public class ConsoleUI {
         scoreService.getTopScores()
                 .forEach(score -> System.out.println("\u001B[33m"+score.login()+
                         "    \u001B[31m"+"max level: \u001B[33m"+score.levelsCompleted()+
-                        "\u001B[0m    \u001B[31m"+" completed at: \u001B[33m"+score.date()+"\u001B[0m"));
+                        "\u001B[0m    \u001B[31m"+" completed at: \u001B[33m"+score.playedOn()+"\u001B[0m"));
     }
 
     private void rateBlockPuzzle() {
@@ -121,7 +124,7 @@ public class ConsoleUI {
         }
         int rating = Integer.parseInt(input);
 
-        ratingService.addRating(user, rating);
+        ratingService.setRating(new Rating(user.login(), rating, new Date()));
     }
 
     private void userCommentBlockPuzzle() {
@@ -133,7 +136,7 @@ public class ConsoleUI {
         }
         String comment = input.trim();
         if (!comment.isEmpty())
-            commentService.addComment(user, comment);
+            commentService.addComment(new Comment(user.login(), comment, new Date()));
     }
 
     private void addShapesToMap() {
