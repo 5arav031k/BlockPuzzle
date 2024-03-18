@@ -93,11 +93,12 @@ public class ConsoleUI {
     }
 
     private void showTopScores() {
-        System.out.println("\n"+"\u001B[33m" + "Top 5 scores:" + "\u001B[0m");
-        scoreService.getTopScores()
-                .forEach(score -> System.out.println("\u001B[33m"+score.login()+
-                        "    \u001B[31m"+"max level: \u001B[33m"+score.levelsCompleted()+
-                        "\u001B[0m    \u001B[31m"+" completed at: \u001B[33m"+score.playedOn()+"\u001B[0m"));
+        System.out.format("\n\u001B[33m"+"%36s"+"\u001B[0m\n", "Top 5 scores:");
+        scoreService.getTopScores().forEach(score -> {
+            System.out.format("\u001B[33m"+"%-15s", score.login());
+            System.out.format("\u001B[31m"+"max level: \u001B[33m"+"%-6d"+"\u001B[0m", score.levelsCompleted());
+            System.out.println("\u001B[31m"+"completed at: \u001B[33m"+score.playedOn()+"\u001B[0m");
+        });
     }
 
     private void rateBlockPuzzle() {
@@ -168,6 +169,11 @@ public class ConsoleUI {
         if (command.equals("EXIT"))
             System.exit(0);
 
+        if (command.equals("X")) {
+            resetShapes();
+            return;
+        }
+
         if (!isFirstCommand && command.matches("([1-" + level.getShapeCount() + "])") && currentShapeIdx == Integer.parseInt(command)) {
             currentShape.unmarkShapeIdx(field, String.valueOf(currentShapeIdx));
             currentShape.hideShape();
@@ -175,9 +181,10 @@ public class ConsoleUI {
             return;
         }
 
-        if (!shapeIsMarked && command.matches("([1-" + level.getShapeCount() + "])"))
+        if (!shapeIsMarked && command.matches("([1-" + level.getShapeCount() + "])")) {
             selectShape(command);
-        else if (!isFirstCommand && command.matches("([UDLRX])"))
+        }
+        else if (!isFirstCommand && command.matches("([UDLR])"))
             moveShape(command);
         else
             printErrors(command);
@@ -186,7 +193,7 @@ public class ConsoleUI {
     private String promptMsg() {
         String message;
         if (isFirstCommand)
-            message = "Choose a shape (1-" + level.getShapeCount() + "): ";
+            message = "Choose a shape (1-" + level.getShapeCount() + "), (X) for reset: ";
         else if (shapeIsMarked)
             message = "Enter a command (U,D,L,R), (X) for reset\n" +
                     "or (" + (currentShapeIdx) + ") to hide a shape: ";
@@ -227,7 +234,6 @@ public class ConsoleUI {
             case "D": currentShape.moveDown(); break;
             case "L": currentShape.moveLeft(); break;
             case "R": currentShape.moveRight(); break;
-            case "X": resetShapes(); break;
         }
     }
 
