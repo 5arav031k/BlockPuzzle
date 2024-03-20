@@ -36,31 +36,31 @@ public class LevelMenuConsoleUI {
     }
 
     public void generateLevelMenu() {
-        for (int i = 1; i < 4; i++) {
-            for (int j : new int[]{3, 14, 19, 30, 35, 46}) {
-                field.getMap()[j][i].setValue("|");
-                field.getMap()[j][i+6].setValue("|");
+        for (int col = 1; col < 4; col++) {
+            for (int row : new int[]{3, 14, 19, 30, 35, 46}) {
+                field.getMap()[row][col].setValue("|");
+                field.getMap()[row][col+6].setValue("|");
             }
         }
 
-        for (int i = 4; i < 14; i++) {
-            for (int j : new int[]{1, 3, 7, 9}) {
-                field.getMap()[i][j].setValue(j == 3 || j == 9 ? "_" : "‾");
-                field.getMap()[i+16][j].setValue(j == 3 || j == 9 ? "_" : "‾");
-                field.getMap()[i+32][j].setValue(j == 3 || j == 9 ? "_" : "‾");
+        for (int row = 4; row < 14; row++) {
+            for (int col : new int[]{1, 3, 7, 9}) {
+                field.getMap()[row][col].setValue(col == 3 || col == 9 ? "_" : "‾");
+                field.getMap()[row+16][col].setValue(col == 3 || col == 9 ? "_" : "‾");
+                field.getMap()[row+32][col].setValue(col == 3 || col == 9 ? "_" : "‾");
             }
         }
 
-        for (int i = 6, j = 1; i < 39; i += 16, j++) {
-            String[] values = {"L", "e", "v", "e", "l", String.valueOf(j)};
+        for (int row = 6, levelNumber = 1; row < 39; row += 16, levelNumber++) {
+            String[] values = {"L", "e", "v", "e", "l", String.valueOf(levelNumber)};
             for (int s = 0; s < values.length; s++)
-                field.getMap()[i+s][2].setValue(values[s]);
+                field.getMap()[row+s][2].setValue(values[s]);
         }
 
-        for (int i = 6, j = 4; i < 39; i+= 16, j++) {
-            String[] values = {"L", "e", "v", "e", "l", String.valueOf(j)};
+        for (int row = 6, levelNumber = 4; row < 39; row+= 16, levelNumber++) {
+            String[] values = {"L", "e", "v", "e", "l", String.valueOf(levelNumber)};
             for (int s = 0; s < values.length; s++)
-                field.getMap()[i+s][8].setValue(values[s]);
+                field.getMap()[row+s][8].setValue(values[s]);
         }
         markLevels();
         generateGameName();
@@ -68,8 +68,8 @@ public class LevelMenuConsoleUI {
 
     private void generateGameName() {
         String[] name = "█▀▀▀█▄█▀██▀▀▀█▄ Block❀Puzzle ▄█▀▀▀█▄█▀██▀▀▀█".split("");
-        for (int i = 0; i < name.length; i++) {
-            field.getMap()[i+3][5].setValue(name[i]);
+        for (int row = 0; row < name.length; row++) {
+            field.getMap()[row+3][5].setValue(name[row]);
         }
         field.getMap()[3][5].setValue("\u001B[32m█");
         field.getMap()[17][5].setValue("▄\u001B[0m");
@@ -83,23 +83,23 @@ public class LevelMenuConsoleUI {
 
     private void markLevels() {
         //levels 1 to 3
-        for (int a = 3, b = 14, j = 0; a <= 36; a += 16, b += 16, j++) {
-            String color = score.levelsCompleted() > j ? Color.GREEN_BACKGROUND :
-                    score.levelsCompleted() == j ? Color.YELLOW_BACKGROUND : Color.BLACK_BACKGROUND;
+        for (int row = 3, row1 = 14, levelNumber = 0; row <= 36; row += 16, row1 += 16, levelNumber++) {
+            String color = score.levelsCompleted() > levelNumber ? Color.GREEN_BACKGROUND :
+                    score.levelsCompleted() == levelNumber ? Color.YELLOW_BACKGROUND : Color.BLACK_BACKGROUND;
 
-            for (int i = 1; i <= 3; i++) {
-                field.getMap()[a][i].setValue(color + field.getMap()[a][i].getValue());
-                field.getMap()[b][i].setValue(field.getMap()[b][i].getValue() + Color.RESET);
+            for (int col = 1; col <= 3; col++) {
+                field.getMap()[row][col].setValue(color + field.getMap()[row][col].getValue());
+                field.getMap()[row1][col].setValue(field.getMap()[row1][col].getValue() + Color.RESET);
             }
         }
 
         //levels 4 to 6
-        for (int a = 3, b = 14, j = 3; a <= 36; a += 16, b += 16, j++) {
-            String color = score.levelsCompleted() > j ? Color.GREEN_BACKGROUND :
-                    score.levelsCompleted() == j ? Color.YELLOW_BACKGROUND : Color.BLACK_BACKGROUND;
-            for (int i = 7; i <= 9; i++) {
-                field.getMap()[a][i].setValue(color + field.getMap()[a][i].getValue());
-                field.getMap()[b][i].setValue(field.getMap()[b][i].getValue() + Color.RESET);
+        for (int row = 3, row1 = 14, levelNumber = 3; row <= 36; row += 16, row1 += 16, levelNumber++) {
+            String color = score.levelsCompleted() > levelNumber ? Color.GREEN_BACKGROUND :
+                    score.levelsCompleted() == levelNumber ? Color.YELLOW_BACKGROUND : Color.BLACK_BACKGROUND;
+            for (int col = 7; col <= 9; col++) {
+                field.getMap()[row][col].setValue(color + field.getMap()[row][col].getValue());
+                field.getMap()[row1][col].setValue(field.getMap()[row1][col].getValue() + Color.RESET);
             }
         }
     }

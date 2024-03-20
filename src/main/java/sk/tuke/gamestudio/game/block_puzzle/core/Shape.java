@@ -111,12 +111,12 @@ public class Shape {
 
     public void markShapeIdx(Field field, String shapeIdx) {
         FieldTile[][] map = field.getMap();
-        for (int i = 0; i < field.getMapHeight(); i++) {
-            for (int j = 0; j < field.getMapWidth(); j++) {
-                if (map[j][i].getValue().equals(shapeIdx)) {
-                    map[j-1][i].setValue("\u001B[32m" + "(" + "\u001B[0m");
-                    map[j][i].setValue("\u001B[32m" + shapeIdx + "\u001B[0m");
-                    map[j+1][i].setValue("\u001B[32m" + ")" + "\u001B[0m");
+        for (int col = 0; col < field.getMapHeight(); col++) {
+            for (int row = 0; row < field.getMapWidth(); row++) {
+                if (map[row][col].getValue().equals(shapeIdx)) {
+                    map[row-1][col].setValue("\u001B[32m" + "(" + "\u001B[0m");
+                    map[row][col].setValue("\u001B[32m" + shapeIdx + "\u001B[0m");
+                    map[row+1][col].setValue("\u001B[32m" + ")" + "\u001B[0m");
                 }
             }
         }
@@ -124,12 +124,12 @@ public class Shape {
 
     public void unmarkShapeIdx(Field field, String shapeIdx) {
         FieldTile[][] map = field.getMap();
-        for (int i = 0; i < field.getMapHeight(); i++) {
-            for (int j = 0; j < field.getMapWidth(); j++) {
-                if (map[j][i].getValue().equals("\u001B[32m" + shapeIdx + "\u001B[0m")) {
-                    map[j-1][i].setValue("(");
-                    map[j][i].setValue(shapeIdx);
-                    map[j+1][i].setValue(")");
+        for (int col = 0; col < field.getMapHeight(); col++) {
+            for (int row = 0; row < field.getMapWidth(); row++) {
+                if (map[row][col].getValue().equals("\u001B[32m" + shapeIdx + "\u001B[0m")) {
+                    map[row-1][col].setValue("(");
+                    map[row][col].setValue(shapeIdx);
+                    map[row+1][col].setValue(")");
                 }
             }
         }

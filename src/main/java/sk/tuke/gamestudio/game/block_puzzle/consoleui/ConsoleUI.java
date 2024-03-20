@@ -84,9 +84,9 @@ public class ConsoleUI {
     }
 
     private void drawMap() {
-        for (int i = 0; i < field.getMapHeight(); i++) {
-            for (int j = 0; j < field.getMapWidth(); j++) {
-                System.out.print(field.getMap()[j][i].getValue());
+        for (int col = 0; col < field.getMapHeight(); col++) {
+            for (int row = 0; row < field.getMapWidth(); row++) {
+                System.out.print(field.getMap()[row][col].getValue());
             }
             System.out.println();
         }
