@@ -1,7 +1,7 @@
-package main.java.sk.tuke.gamestudio.service;
+package sk.tuke.gamestudio.service;
 
-import main.java.sk.tuke.gamestudio.entity.Comment;
-import main.java.sk.tuke.gamestudio.entity.User;
+import sk.tuke.gamestudio.entity.Comment;
+import sk.tuke.gamestudio.entity.User;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -14,9 +14,9 @@ public class CommentServiceJDBC extends Service implements CommentService{
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement statement = connection.prepareStatement(ADD_COMMENT))
         {
-            statement.setString(1, comment.login());
-            statement.setString(2, comment.comment());
-            statement.setTimestamp(3, new Timestamp(comment.commentOn().getTime()));
+            statement.setString(1, comment.getLogin());
+            statement.setString(2, comment.getComment());
+            statement.setTimestamp(3, new Timestamp(comment.getCommentedOn().getTime()));
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new GameStudioException(e);
@@ -26,7 +26,7 @@ public class CommentServiceJDBC extends Service implements CommentService{
     @Override
     public List<Comment> getComments(User user) {
         List<Comment> comments = new ArrayList<>();
-        String GET_COMMENTS = String.format("SELECT * from comment WHERE login = '%s' ORDER BY commented_on DESC", user.login());
+        String GET_COMMENTS = String.format("SELECT * from comment WHERE login = '%s' ORDER BY commented_on DESC", user.getLogin());
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement statement = connection.prepareStatement(GET_COMMENTS);
              ResultSet rs = statement.executeQuery())

@@ -1,4 +1,4 @@
-package main.java.sk.tuke.gamestudio.game.block_puzzle.core;
+package sk.tuke.gamestudio.game.block_puzzle.core;
 
 public class Field {
     private static FieldTile[][] map;
@@ -85,11 +85,6 @@ public class Field {
                     return false;
             }
         }
-        winMsg();
         return true;
-    }
-
-    private void winMsg() {
-        System.out.println("                 \u001B[32m" + "CONGRATULATIONS!" + "\u001B[0m");
     }
 }

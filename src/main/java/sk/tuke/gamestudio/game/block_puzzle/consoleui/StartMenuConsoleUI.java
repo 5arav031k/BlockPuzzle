@@ -1,12 +1,12 @@
-package main.java.sk.tuke.gamestudio.game.block_puzzle.consoleui;
+package sk.tuke.gamestudio.game.block_puzzle.consoleui;
 
-import main.java.sk.tuke.gamestudio.entity.Score;
-import main.java.sk.tuke.gamestudio.entity.User;
-import main.java.sk.tuke.gamestudio.game.block_puzzle.core.Field;
-import main.java.sk.tuke.gamestudio.service.ScoreService;
-import main.java.sk.tuke.gamestudio.service.ScoreServiceJDBC;
-import main.java.sk.tuke.gamestudio.service.UserService;
-import main.java.sk.tuke.gamestudio.service.UserServiceJDBC;
+import sk.tuke.gamestudio.entity.Score;
+import sk.tuke.gamestudio.entity.User;
+import sk.tuke.gamestudio.game.block_puzzle.core.Field;
+import sk.tuke.gamestudio.service.ScoreService;
+import sk.tuke.gamestudio.service.ScoreServiceJDBC;
+import sk.tuke.gamestudio.service.UserService;
+import sk.tuke.gamestudio.service.UserServiceJDBC;
 
 import java.util.Scanner;
 

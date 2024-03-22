@@ -1,4 +1,4 @@
-package main.java.sk.tuke.gamestudio.game.block_puzzle.core;
+package sk.tuke.gamestudio.game.block_puzzle.core;
 
 public class Color {
     public static final String RESET = "\u001B[0m";

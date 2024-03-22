@@ -1,6 +1,6 @@
-package main.java.sk.tuke.gamestudio.service;
+package sk.tuke.gamestudio.service;
 
-import main.java.sk.tuke.gamestudio.entity.User;
+import sk.tuke.gamestudio.entity.User;
 
 public interface UserService {
     User addUser(String login, String password) throws GameStudioException;

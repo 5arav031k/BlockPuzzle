@@ -1,7 +1,7 @@
-package main.java.sk.tuke.gamestudio.service;
+package sk.tuke.gamestudio.service;
 
-import main.java.sk.tuke.gamestudio.entity.Score;
-import main.java.sk.tuke.gamestudio.entity.User;
+import sk.tuke.gamestudio.entity.Score;
+import sk.tuke.gamestudio.entity.User;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ public class ScoreServiceJDBC extends Service implements ScoreService {
 
     @Override
     public void addCompletedLevel(Score score, int level) {
-        if (level <= score.levelsCompleted())
+        if (level <= score.getLevelsCompleted())
             return;
         String ADD_LEVEL = "UPDATE score SET levels_completed = ?, completed_at = ? WHERE login = ?";
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
@@ -20,7 +20,7 @@ public class ScoreServiceJDBC extends Service implements ScoreService {
         {
            statement.setInt(1, level);
            statement.setTimestamp(2, new Timestamp(new Date().getTime()));
-           statement.setString(3, score.login());
+           statement.setString(3, score.getLogin());
            statement.executeUpdate();
         } catch (SQLException e) {
             throw new GameStudioException(e);
@@ -36,10 +36,10 @@ public class ScoreServiceJDBC extends Service implements ScoreService {
              PreparedStatement statement = connection.prepareStatement(ADD_SCORE))
         {
             Date date = new Date();
-            statement.setString(1, user.login());
+            statement.setString(1, user.getLogin());
             statement.setTimestamp(2, new Timestamp(date.getTime()));
             statement.executeUpdate();
-            return new Score(user.login(), 0, date);
+            return new Score(user.getLogin(), 0, date);
         } catch (SQLException e) {
             throw new GameStudioException(e);
         }
@@ -49,12 +49,12 @@ public class ScoreServiceJDBC extends Service implements ScoreService {
     public Score getScore(User user) {
         if (user == null)   return null;
 
-        String GET_SCORE = String.format("SELECT levels_completed, completed_at FROM score WHERE login = '%s'", user.login());
+        String GET_SCORE = String.format("SELECT levels_completed, completed_at FROM score WHERE login = '%s'", user.getLogin());
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD))
         {
             ResultSet rs = connection.prepareStatement(GET_SCORE).executeQuery();
             if (rs.next())
-                return new Score(user.login(), rs.getInt(1), rs.getTimestamp(2));
+                return new Score(user.getLogin(), rs.getInt(1), rs.getTimestamp(2));
 
         } catch (SQLException e) {
             throw new GameStudioException(e);

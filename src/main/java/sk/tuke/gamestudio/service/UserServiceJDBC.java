@@ -1,6 +1,6 @@
-package main.java.sk.tuke.gamestudio.service;
+package sk.tuke.gamestudio.service;
 
-import main.java.sk.tuke.gamestudio.entity.User;
+import sk.tuke.gamestudio.entity.User;
 
 import java.sql.*;
 
@@ -40,7 +40,7 @@ public class UserServiceJDBC extends Service implements UserService{
 
     @Override
     public void deleteUser(User user) {
-        String DELETE_USER = String.format("DELETE FROM users WHERE login = '%s' AND password = '%s'", user.login(), user.password());
+        String DELETE_USER = String.format("DELETE FROM users WHERE login = '%s' AND password = '%s'", user.getLogin(), user.getPassword());
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
             connection.prepareStatement(DELETE_USER).executeUpdate();
         } catch (SQLException e) {

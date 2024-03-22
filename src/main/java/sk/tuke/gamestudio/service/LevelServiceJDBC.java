@@ -1,7 +1,7 @@
-package main.java.sk.tuke.gamestudio.service;
+package sk.tuke.gamestudio.service;
 
-import main.java.sk.tuke.gamestudio.game.block_puzzle.core.*;
-import main.java.sk.tuke.gamestudio.entity.Level;
+import sk.tuke.gamestudio.game.block_puzzle.core.*;
+import sk.tuke.gamestudio.entity.Level;
 
 import java.sql.*;
 

@@ -1,12 +1,12 @@
-package main.java.sk.tuke.gamestudio.game.block_puzzle.consoleui;
+package sk.tuke.gamestudio.game.block_puzzle.consoleui;
 
-import main.java.sk.tuke.gamestudio.entity.Comment;
-import main.java.sk.tuke.gamestudio.entity.Rating;
-import main.java.sk.tuke.gamestudio.entity.Score;
-import main.java.sk.tuke.gamestudio.entity.User;
-import main.java.sk.tuke.gamestudio.game.block_puzzle.core.*;
-import main.java.sk.tuke.gamestudio.entity.Level;
-import main.java.sk.tuke.gamestudio.service.*;
+import sk.tuke.gamestudio.entity.Comment;
+import sk.tuke.gamestudio.entity.Rating;
+import sk.tuke.gamestudio.entity.Score;
+import sk.tuke.gamestudio.entity.User;
+import sk.tuke.gamestudio.game.block_puzzle.core.*;
+import sk.tuke.gamestudio.entity.Level;
+import sk.tuke.gamestudio.service.*;
 
 import java.util.Date;
 import java.util.List;
@@ -49,12 +49,15 @@ public class ConsoleUI {
         while (true) {
             addShapesToMap();
             drawMap();
-            if (field.isSolved())
+            if (field.isSolved()) {
+                winMsg();
                 break;
+            }
             processInput();
             shapeIsMarked = false;
             field.clearField();
         }
+
         scoreService.addCompletedLevel(score, levelMenu.getSelectedLevel());
         showTopScores();
         rateBlockPuzzle();
@@ -95,9 +98,9 @@ public class ConsoleUI {
     private void showTopScores() {
         System.out.format("\n\u001B[33m"+"%36s"+"\u001B[0m\n", "Top 5 scores:");
         scoreService.getTopScores().forEach(score -> {
-            System.out.format("\u001B[33m"+"%-15s", score.login());
-            System.out.format("\u001B[31m"+"max level: \u001B[33m"+"%-6d"+"\u001B[0m", score.levelsCompleted());
-            System.out.println("\u001B[31m"+"completed at: \u001B[33m"+score.playedOn()+"\u001B[0m");
+            System.out.format("\u001B[33m"+"%-15s", score.getLogin());
+            System.out.format("\u001B[31m"+"max level: \u001B[33m"+"%-6d"+"\u001B[0m", score.getLevelsCompleted());
+            System.out.println("\u001B[31m"+"completed at: \u001B[33m"+score.getPlayedOn()+"\u001B[0m");
         });
     }
 
@@ -125,7 +128,7 @@ public class ConsoleUI {
         }
         int rating = Integer.parseInt(input);
 
-        ratingService.setRating(new Rating(user.login(), rating, new Date()));
+        ratingService.setRating(new Rating(user.getLogin(), rating, new Date()));
     }
 
     private void userCommentBlockPuzzle() {
@@ -137,7 +140,7 @@ public class ConsoleUI {
         }
         String comment = input.trim();
         if (!comment.isEmpty())
-            commentService.addComment(new Comment(user.login(), comment, new Date()));
+            commentService.addComment(new Comment(user.getLogin(), comment, new Date()));
     }
 
     private void addShapesToMap() {
@@ -248,5 +251,9 @@ public class ConsoleUI {
             System.out.println("          \u001B[31m" + "Move the shape or hide it!" + "\u001B[0m");
         else
             System.out.println("          \u001B[31m" + "Bad input!" + "\u001B[0m");
+    }
+
+    private void winMsg() {
+        System.out.println("                 \u001B[32m" + "CONGRATULATIONS!" + "\u001B[0m");
     }
 }

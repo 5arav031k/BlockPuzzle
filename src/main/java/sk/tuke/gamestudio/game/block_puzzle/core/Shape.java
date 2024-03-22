@@ -1,6 +1,6 @@
-package main.java.sk.tuke.gamestudio.game.block_puzzle.core;
+package sk.tuke.gamestudio.game.block_puzzle.core;
 
-import main.java.sk.tuke.gamestudio.game.block_puzzle.entity.ShapeCoordinates;
+import sk.tuke.gamestudio.game.block_puzzle.entity.ShapeCoordinates;
 
 import java.util.ArrayList;
 import java.util.List;

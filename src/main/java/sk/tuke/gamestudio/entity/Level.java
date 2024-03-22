@@ -1,7 +1,7 @@
-package main.java.sk.tuke.gamestudio.entity;
+package sk.tuke.gamestudio.entity;
 
-import main.java.sk.tuke.gamestudio.game.block_puzzle.core.Field;
-import main.java.sk.tuke.gamestudio.game.block_puzzle.core.Shape;
+import sk.tuke.gamestudio.game.block_puzzle.core.Field;
+import sk.tuke.gamestudio.game.block_puzzle.core.Shape;
 
 import java.util.ArrayList;
 import java.util.List;

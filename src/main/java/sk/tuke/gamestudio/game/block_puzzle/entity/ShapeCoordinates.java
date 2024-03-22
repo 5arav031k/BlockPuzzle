@@ -1,4 +1,4 @@
-package main.java.sk.tuke.gamestudio.game.block_puzzle.entity;
+package sk.tuke.gamestudio.game.block_puzzle.entity;
 
 public class ShapeCoordinates {
     private int minX;
