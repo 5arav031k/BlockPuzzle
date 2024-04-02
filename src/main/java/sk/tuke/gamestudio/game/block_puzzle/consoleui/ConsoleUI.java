@@ -100,7 +100,7 @@ public class ConsoleUI {
         scoreService.getTopScores().forEach(score -> {
             System.out.format("\u001B[33m"+"%-15s", score.getLogin());
             System.out.format("\u001B[31m"+"max level: \u001B[33m"+"%-6d"+"\u001B[0m", score.getLevelsCompleted());
-            System.out.println("\u001B[31m"+"completed at: \u001B[33m"+score.getPlayedOn()+"\u001B[0m");
+            System.out.println("\u001B[31m"+"completed at: \u001B[33m"+score.getCompletedAt()+"\u001B[0m");
         });
     }
 
