@@ -88,13 +88,12 @@ public class StartMenuConsoleUI {
             String password = getPassword();
             if (command.equals("1")) {
                 user = userService.logIn(login, password);
-                score = scoreService.getScore(user);
             }
             else {
                 user = userService.addUser(login, password);
-                score = scoreService.addScore(user);
+                scoreService.addScore(user);
             }
-
+            score = scoreService.getScore(user);
             isUserLogIn = user != null;
         }
         else {

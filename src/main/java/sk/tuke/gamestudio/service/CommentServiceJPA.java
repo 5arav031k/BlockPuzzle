@@ -3,7 +3,6 @@ package sk.tuke.gamestudio.service;
 import sk.tuke.gamestudio.entity.Comment;
 import sk.tuke.gamestudio.entity.User;
 
-import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import javax.persistence.PersistenceContext;
 import javax.persistence.EntityManager;
@@ -22,11 +21,13 @@ public class CommentServiceJPA implements CommentService{
     @Override
     public List<Comment> getComments(User user) throws GameStudioException {
         return entityManager.createNamedQuery("Comment.getComments", Comment.class)
-                .setParameter("login", user.getLogin()).setMaxResults(5).getResultList();
+                .setParameter("login", user.getLogin())
+                .setMaxResults(5)
+                .getResultList();
     }
 
     @Override
     public void reset() throws GameStudioException {
-        entityManager.createNamedQuery("Comment.reset", Comment.class).executeUpdate();
+        entityManager.createNamedQuery("Comment.reset").executeUpdate();
     }
 }

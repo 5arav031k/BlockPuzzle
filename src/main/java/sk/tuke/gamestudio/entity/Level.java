@@ -9,25 +9,19 @@ import java.util.ArrayList;
 import java.util.List;
 @Entity
 @Table(name = "levels")
-@NamedNativeQuery(name = "Level.getShapeCount",
-        query = "SELECT l.shapes_count FROM levels l WHERE l.level_id = :level_id")
-@NamedNativeQuery(name = "Level.getShapes",
-        query = "SELECT * FROM shapes s WHERE s.level_id = :level_id ORDER BY s.shape_id")
-@NamedNativeQuery(name = "Level.getTileId",
-        query = "SELECT st.tile_id FROM shapes_tiles st WHERE st.shape_id = :shape_id")
-@NamedNativeQuery(name = "Level.getTile",
-        query = "SELECT t.tile_pos_x, t.tile_pos_y FROM tiles t WHERE t.tile_id = :tile_id ORDER BY t.tile_id")
+@NamedNativeQuery(name = "Level.getLevel",
+        query = "SELECT * FROM levels l WHERE l.level_id = :level_id")
 
 public class Level implements Serializable {
     @Id
-    @GeneratedValue
+    @Column(name = "level_id")
     private int ident;
+    @Column(name = "shapes_count")
+    private int shapeCount;
     @Transient
     private List<Shape> shapes;
     @Transient
     private Field field;
-    @Column(name = "shapes_count")
-    private int shapeCount;
 
     public Level(Field field) {
         this.field = field;
@@ -40,11 +34,9 @@ public class Level implements Serializable {
     public int getIdent() {
         return ident;
     }
-
     public void setIdent(int ident) {
         this.ident = ident;
     }
-
     public int getShapeCount() {
         return shapeCount;
     }
@@ -56,5 +48,8 @@ public class Level implements Serializable {
     }
     public Field getField() {
         return field;
+    }
+    public void setField(Field field) {
+        this.field = field;
     }
 }

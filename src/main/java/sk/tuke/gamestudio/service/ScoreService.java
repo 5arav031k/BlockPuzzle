@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ScoreService {
     void addCompletedLevel(Score score, int level) throws GameStudioException;
-    Score addScore(User user) throws GameStudioException;
+    void addScore(User user) throws GameStudioException;
     Score getScore(User user) throws GameStudioException;
     List<Score> getTopScores() throws GameStudioException;
     void reset() throws GameStudioException;

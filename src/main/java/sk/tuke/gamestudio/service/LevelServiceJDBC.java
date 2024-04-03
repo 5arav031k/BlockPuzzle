@@ -28,8 +28,7 @@ public class LevelServiceJDBC extends Service implements LevelService {
         return level;
     }
 
-    @Override
-    public void generateShapes(Connection connection, ResultSet shapes_rs) {
+    private void generateShapes(Connection connection, ResultSet shapes_rs) {
         try {
             while (shapes_rs.next()) {
                 int current_shape_id = shapes_rs.getInt("shape_id");

@@ -20,7 +20,7 @@ public class ScoreServiceJPA implements ScoreService{
         if (level <= score.getLevelsCompleted())
             return;
 
-        entityManager.createNamedQuery("Score.addCompletedLevel", Score.class)
+        entityManager.createNamedQuery("Score.addCompletedLevel")
                 .setParameter("levelsCompleted", level)
                 .setParameter("completedAt", new Timestamp(new Date().getTime()))
                 .setParameter("login", score.getLogin())
@@ -28,22 +28,33 @@ public class ScoreServiceJPA implements ScoreService{
     }
 
     @Override
-    public Score addScore(User user) throws GameStudioException {
-        return null;
+    public void addScore(User user) throws GameStudioException {
+        if (user == null)   return;
+
+        entityManager.createNamedQuery("Score.addScore")
+                .setParameter("login", user.getLogin())
+                .setParameter("completedAt", new Timestamp(new Date().getTime()))
+                .executeUpdate();
     }
 
     @Override
     public Score getScore(User user) throws GameStudioException {
-        return null;
+        if (user == null)   return null;
+
+        return entityManager.createNamedQuery("Score.getScore", Score.class)
+                .setParameter("login", user.getLogin())
+                .getSingleResult();
     }
 
     @Override
     public List<Score> getTopScores() throws GameStudioException {
-        return null;
+        return entityManager.createNamedQuery("Score.getTopScores", Score.class)
+                .setMaxResults(5)
+                .getResultList();
     }
 
     @Override
     public void reset() throws GameStudioException {
-
+        entityManager.createNamedQuery("Score.reset").executeUpdate();
     }
 }

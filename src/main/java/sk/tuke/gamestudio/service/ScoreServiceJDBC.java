@@ -28,8 +28,8 @@ public class ScoreServiceJDBC extends Service implements ScoreService {
     }
 
     @Override
-    public Score addScore(User user) {
-        if (user == null)   return null;
+    public void addScore(User user) {
+        if (user == null)   return;
 
         String ADD_SCORE = "INSERT INTO score VALUES (?, DEFAULT, ?)";
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
@@ -39,7 +39,6 @@ public class ScoreServiceJDBC extends Service implements ScoreService {
             statement.setString(1, user.getLogin());
             statement.setTimestamp(2, new Timestamp(date.getTime()));
             statement.executeUpdate();
-            return new Score(user.getLogin(), 0, date);
         } catch (SQLException e) {
             throw new GameStudioException(e);
         }

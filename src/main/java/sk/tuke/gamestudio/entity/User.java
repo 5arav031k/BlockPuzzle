@@ -7,14 +7,15 @@ import java.io.Serializable;
 @Table(name = "users")
 @NamedNativeQuery(name = "User.addUser",
         query = "INSERT INTO users (user_id, login, password) VALUES (DEFAULT, :login, :password)")
-@NamedQuery(name = "User.logIn",
-        query = "SELECT u.login FROM User u WHERE u.login = :login AND u.password = :password")
+@NamedNativeQuery(name = "User.logIn",
+        query = "SELECT * FROM users u WHERE u.login = :login AND u.password = :password")
 @NamedQuery(name = "User.deleteUser",
         query = "DELETE FROM User u WHERE u.login = :login AND u.password = :password")
 
 public class User implements Serializable {
     @Id
     @GeneratedValue
+    @Column(name = "user_id")
     private int ident;
     @Column(name = "login")
     private String login;

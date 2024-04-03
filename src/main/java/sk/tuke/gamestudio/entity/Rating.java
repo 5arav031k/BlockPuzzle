@@ -9,7 +9,7 @@ import java.util.Date;
         query = "INSERT INTO Rating (login, rating, rated_on) VALUES (:login, :rating, :ratedOn) " +
                 "ON CONFLICT (login) DO UPDATE SET rating = EXCLUDED.rating, rated_on = EXCLUDED.rated_on")
 @NamedNativeQuery(name = "Rating.getAverageRating",
-        query = "SELECT ROUND(AVG(r.rating), 2) AS average_rating FROM Rating r")
+        query = "SELECT ROUND(AVG(r.rating)) AS average_rating FROM Rating r")
 @NamedQuery(name = "Rating.getRating",
         query = "SELECT r.rating from Rating r WHERE r.login = :login")
 @NamedQuery(name = "Rating.reset",
