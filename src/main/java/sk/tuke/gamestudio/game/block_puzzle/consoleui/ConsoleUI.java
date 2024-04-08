@@ -1,5 +1,6 @@
 package sk.tuke.gamestudio.game.block_puzzle.consoleui;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import sk.tuke.gamestudio.entity.Comment;
 import sk.tuke.gamestudio.entity.Rating;
 import sk.tuke.gamestudio.entity.Score;
@@ -8,36 +9,37 @@ import sk.tuke.gamestudio.game.block_puzzle.core.*;
 import sk.tuke.gamestudio.entity.Level;
 import sk.tuke.gamestudio.service.*;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleUI {
     private Level level;
-    private final Field field;
+    @Autowired
+    private Field field;
     private Score score;
     private User user;
     private Shape currentShape;
-    private final LevelMenuConsoleUI levelMenu;
-    private final StartMenuConsoleUI startMenu;
-    private final ScoreService scoreService;
-    private final RatingService ratingService;
-    private final CommentService commentService;
+    @Autowired
+    private LevelMenuConsoleUI levelMenu;
+    @Autowired
+    private StartMenuConsoleUI startMenu;
+    @Autowired
+    private ScoreService scoreService;
+    @Autowired
+    private RatingService ratingService;
+    @Autowired
+    private CommentService commentService;
     private final Scanner console;
     private int currentShapeIdx = 0;
     private boolean shapeIsMarked;
     private boolean isFirstCommand;
 
     public ConsoleUI() {
-        field = new Field(5, 4);
         isFirstCommand = true;
         shapeIsMarked = false;
         console = new Scanner(System.in);
-        startMenu = new StartMenuConsoleUI(field);
-        levelMenu = new LevelMenuConsoleUI(field);
-        scoreService = new ScoreServiceJDBC();
-        ratingService = new RatingServiceJDBC();
-        commentService = new CommentServiceJDBC();
     }
 
     public void play() {
@@ -46,7 +48,7 @@ public class ConsoleUI {
         selectLevel();
         field.generateFieldEdges();
 
-        while (true) {
+        while (field.getFieldState() == FieldState.PLAYING) {
             addShapesToMap();
             drawMap();
             if (field.isSolved()) {
@@ -60,6 +62,8 @@ public class ConsoleUI {
 
         scoreService.addCompletedLevel(score, levelMenu.getSelectedLevel());
         showTopScores();
+        showLastComments();
+        showAverageRating();
         rateBlockPuzzle();
     }
 
@@ -96,12 +100,26 @@ public class ConsoleUI {
     }
 
     private void showTopScores() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         System.out.format("\n\u001B[33m"+"%36s"+"\u001B[0m\n", "Top 5 scores:");
         scoreService.getTopScores().forEach(score -> {
             System.out.format("\u001B[33m"+"%-15s", score.getLogin());
             System.out.format("\u001B[31m"+"max level: \u001B[33m"+"%-6d"+"\u001B[0m", score.getLevelsCompleted());
-            System.out.println("\u001B[31m"+"completed at: \u001B[33m"+score.getCompletedAt()+"\u001B[0m");
+            System.out.println("\u001B[31m"+"completed at: \u001B[33m"+dateFormat.format(score.getCompletedAt())+"\u001B[0m");
         });
+    }
+
+    private void showLastComments() {
+        System.out.format("\n\u001B[33m"+"%36s"+"\u001B[0m\n", "Last 7 comments:");
+        commentService.getComments().forEach(comment -> {
+            System.out.format("\u001B[33m"+"%-15s", comment.getLogin());
+            System.out.println("\u001B[31m"+"comment: \u001B[33m"+comment.getComment()+"\u001B[0m");
+        });
+    }
+
+    private void showAverageRating() {
+        System.out.print("\n\u001B[33m"+"Average game rating:"+"\u001B[0m ");
+        System.out.println("\u001B[32m"+ratingService.getAverageRating()+"\u001B[0m");
     }
 
     private void rateBlockPuzzle() {
@@ -234,9 +252,9 @@ public class ConsoleUI {
     private void moveShape(String command) {
         switch (command) {
             case "U": currentShape.moveUp(); break;
-            case "D": currentShape.moveDown(); break;
+            case "D": currentShape.moveDown(field); break;
             case "L": currentShape.moveLeft(); break;
-            case "R": currentShape.moveRight(); break;
+            case "R": currentShape.moveRight(field); break;
         }
     }
 

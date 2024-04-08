@@ -1,17 +1,28 @@
 package sk.tuke.gamestudio.game.block_puzzle.core;
 
+import lombok.Getter;
+import lombok.Setter;
 import sk.tuke.gamestudio.game.block_puzzle.entity.ShapeCoordinates;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Shape {
-    private final List<ShapeTile> shape;
-    private final String shapeColor;
-    private final ShapeCoordinates coordinates;
-    private Field field;
+public class Shape implements Serializable {
+    @Getter
+    private List<ShapeTile> shape;
+    @Getter
+    private String shapeColor;
+    @Getter
+    private ShapeCoordinates coordinates;
+    @Setter
+    @Getter
+    private int shapeNumber;
+    @Setter
     private boolean isPlacedOnField;
+    @Setter
     private int shapeWidth;
+    @Setter
     private int shapeHeight;
     public Shape(String shapeColor) {
         this.shapeColor = shapeColor;
@@ -20,26 +31,21 @@ public class Shape {
         isPlacedOnField = false;
     }
 
-    public void setShapeWidth(int shapeWidth) {
+    public Shape(String shapeColor, int shapeNumber, int shapeWidth, int shapeHeight) {
+        this.shapeColor = shapeColor;
+        this.shapeNumber = shapeNumber;
         this.shapeWidth = shapeWidth;
-    }
-    public void setShapeHeight(int shapeHeight) {
         this.shapeHeight = shapeHeight;
+        shape = new ArrayList<>();
+        coordinates = new ShapeCoordinates();
+        isPlacedOnField = false;
     }
-    public void setField(Field field) {
-        this.field = field;
+
+    public Shape() {
     }
-    public ShapeCoordinates getCoordinates() {
-        return coordinates;
-    }
+
     public boolean isPlacedOnField() {
         return isPlacedOnField;
-    }
-    public List<ShapeTile> getShape() {
-        return shape;
-    }
-    public String getShapeColor() {
-        return shapeColor;
     }
 
     public void moveUp() {
@@ -50,7 +56,7 @@ public class Shape {
         coordinates.setMaxY(coordinates.getMaxY()-1);
     }
 
-    public void moveDown() {
+    public void moveDown(Field field) {
         if (coordinates.getMaxY() == 2+field.getFieldHeight())
             return;
         shape.forEach(shapeTile -> shapeTile.setY(shapeTile.getY()+1));
@@ -66,7 +72,7 @@ public class Shape {
         coordinates.setMaxX(coordinates.getMaxX()-2);
     }
 
-    public void moveRight() {
+    public void moveRight(Field field) {
         if (coordinates.getMaxX() == 7+field.getFieldWidth()*2)
             return;
         shape.forEach(shapeTile -> shapeTile.setX(shapeTile.getX()+2));

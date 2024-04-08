@@ -1,34 +1,33 @@
 package sk.tuke.gamestudio.game.block_puzzle.consoleui;
 
+import lombok.Getter;
+import org.springframework.beans.factory.annotation.Autowired;
 import sk.tuke.gamestudio.entity.Score;
 import sk.tuke.gamestudio.entity.User;
 import sk.tuke.gamestudio.game.block_puzzle.core.Field;
-import sk.tuke.gamestudio.service.ScoreService;
-import sk.tuke.gamestudio.service.ScoreServiceJDBC;
-import sk.tuke.gamestudio.service.UserService;
-import sk.tuke.gamestudio.service.UserServiceJDBC;
+import sk.tuke.gamestudio.service.*;
 
 import java.util.Scanner;
 
 public class StartMenuConsoleUI {
-    private final Field field;
+    @Autowired
+    private Field field;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private ScoreService scoreService;
     private final Scanner console;
     private boolean isUserLogIn;
+    @Getter
     private Score score;
+    @Getter
     private User user;
 
-    public StartMenuConsoleUI(Field field) {
-        this.field = field;
+    public StartMenuConsoleUI() {
         console = new Scanner(System.in);
         isUserLogIn = false;
     }
 
-    public Score getScore() {
-        return score;
-    }
-    public User getUser() {
-        return user;
-    }
     public boolean isUserLogIn() {
         return isUserLogIn;
     }
@@ -80,20 +79,33 @@ public class StartMenuConsoleUI {
         if (command.equals("EXIT"))
             System.exit(0);
 
-        UserService userService = new UserServiceJDBC();
-        ScoreService scoreService = new ScoreServiceJDBC();
-
         if (command.matches("([1-2])")) {
             String login = getLogin();
             String password = getPassword();
             if (command.equals("1")) {
-                user = userService.logIn(login, password);
+                try {
+                    user = userService.logIn(login, password);
+                } catch (Exception e) {
+                    System.out.println("           \u001B[31m" + "Bad login or password!" + "\u001B[0m");
+                }
             }
             else {
-                user = userService.addUser(login, password);
-                scoreService.addScore(user);
+                try {
+                    user = userService.addUser(login, password);
+                } catch (Exception e) {
+                    System.out.println("           \u001B[31m" + "This login is already taken!" + "\u001B[0m");
+                }
+                if (user != null)
+                    scoreService.addScore(user.getLogin());
             }
-            score = scoreService.getScore(user);
+            if (user != null) {
+                try {
+                    score = scoreService.getScore(user.getLogin());
+                } catch (Exception e) {
+                    System.out.println("           \u001B[31m" + "Bad username!" + "\u001B[0m");
+                }
+            }
+
             isUserLogIn = user != null;
         }
         else {

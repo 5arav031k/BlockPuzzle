@@ -2,8 +2,7 @@ package sk.tuke.gamestudio.service;
 
 import sk.tuke.gamestudio.entity.User;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.persistence.*;
 import javax.transaction.Transactional;
 
 @Transactional
@@ -13,20 +12,25 @@ public class UserServiceJPA implements UserService{
 
     @Override
     public User addUser(String login, String password) throws GameStudioException {
-        entityManager.createNamedQuery("User.addUser")
-                .setParameter("login", login)
-                .setParameter("password", password)
-                .executeUpdate();
-
-        return new User(login, password);
+        User newUser = new User(login, password);
+        try {
+            entityManager.persist(newUser);
+            return newUser;
+        } catch (Exception e) {
+            throw new GameStudioException(e);
+        }
     }
 
     @Override
     public User logIn(String login, String password) throws GameStudioException {
-        return entityManager.createNamedQuery("User.logIn", User.class)
-                .setParameter("login", login)
-                .setParameter("password", password)
-                .getSingleResult();
+        try {
+            return entityManager.createNamedQuery("User.logIn", User.class)
+                    .setParameter("login", login)
+                    .setParameter("password", password)
+                    .getSingleResult();
+        } catch (Exception e) {
+            throw new GameStudioException(e);
+        }
     }
 
     @Override

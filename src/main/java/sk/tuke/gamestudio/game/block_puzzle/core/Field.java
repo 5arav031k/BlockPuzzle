@@ -1,34 +1,25 @@
 package sk.tuke.gamestudio.game.block_puzzle.core;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
 public class Field {
-    private static FieldTile[][] map;
     private final int mapWidth = 50;
     private final int mapHeight = 11;
-    private final int fieldWidth;
-    private final int fieldHeight;
+    private final FieldTile[][] map = new FieldTile[mapWidth][mapHeight];
+    @Setter
+    private int fieldWidth;
+    @Setter
+    private int fieldHeight;
+    @Setter
+    private FieldState fieldState;
 
     public Field(int fieldWidth, int fieldHeight) {
         this.fieldWidth = fieldWidth;
         this.fieldHeight = fieldHeight;
-        map = new FieldTile[mapWidth][mapHeight];
+        fieldState = FieldState.PLAYING;
         initialize();
-    }
-
-
-    public FieldTile[][] getMap() {
-        return map;
-    }
-    public int getMapWidth() {
-        return mapWidth;
-    }
-    public int getMapHeight() {
-        return mapHeight;
-    }
-    public int getFieldWidth() {
-        return fieldWidth;
-    }
-    public int getFieldHeight() {
-        return fieldHeight;
     }
 
     private void initialize() {
@@ -85,6 +76,7 @@ public class Field {
                     return false;
             }
         }
+        fieldState = FieldState.SOLVED;
         return true;
     }
 }

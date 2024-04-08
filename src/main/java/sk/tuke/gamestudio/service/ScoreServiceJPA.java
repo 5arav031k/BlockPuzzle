@@ -1,7 +1,6 @@
 package sk.tuke.gamestudio.service;
 
 import sk.tuke.gamestudio.entity.Score;
-import sk.tuke.gamestudio.entity.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -28,22 +27,26 @@ public class ScoreServiceJPA implements ScoreService{
     }
 
     @Override
-    public void addScore(User user) throws GameStudioException {
-        if (user == null)   return;
-
-        entityManager.createNamedQuery("Score.addScore")
-                .setParameter("login", user.getLogin())
-                .setParameter("completedAt", new Timestamp(new Date().getTime()))
-                .executeUpdate();
+    public void addScore(String username) throws GameStudioException {
+        try {
+            entityManager.createNamedQuery("Score.addScore")
+                    .setParameter("login", username)
+                    .setParameter("completedAt", new Timestamp(new Date().getTime()))
+                    .executeUpdate();
+        } catch (Exception e) {
+            throw new GameStudioException(e);
+        }
     }
 
     @Override
-    public Score getScore(User user) throws GameStudioException {
-        if (user == null)   return null;
-
-        return entityManager.createNamedQuery("Score.getScore", Score.class)
-                .setParameter("login", user.getLogin())
-                .getSingleResult();
+    public Score getScore(String username) throws GameStudioException {
+        try {
+            return entityManager.createNamedQuery("Score.getScore", Score.class)
+                    .setParameter("login", username)
+                    .getSingleResult();
+        } catch (Exception e) {
+            throw new GameStudioException(e);
+        }
     }
 
     @Override

@@ -1,38 +1,36 @@
 package sk.tuke.gamestudio.game.block_puzzle.consoleui;
 
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 import sk.tuke.gamestudio.entity.Score;
 import sk.tuke.gamestudio.game.block_puzzle.core.Color;
 import sk.tuke.gamestudio.game.block_puzzle.core.Field;
 import sk.tuke.gamestudio.entity.Level;
 import sk.tuke.gamestudio.service.LevelService;
-import sk.tuke.gamestudio.service.LevelServiceJDBC;
 
 import java.util.Scanner;
 
 public class LevelMenuConsoleUI {
-    private final Field field;
+    @Autowired
+    private Field field;
+    @Setter
     private Score score;
+    @Getter
     private Level level;
+    @Autowired
+    private LevelService levelService;
     private final Scanner console;
+    @Getter
     private int selectedLevel;
     private boolean isLevelSelected;
-    public LevelMenuConsoleUI(Field field) {
-        this.field = field;
+    public LevelMenuConsoleUI() {
         isLevelSelected = false;
         console = new Scanner(System.in);
     }
 
-    public void setScore(Score score) {
-        this.score = score;
-    }
-    public int getSelectedLevel() {
-        return selectedLevel;
-    }
     public boolean isLevelSelected() {
         return isLevelSelected;
-    }
-    public Level getLevel() {
-        return level;
     }
 
     public void generateLevelMenu() {
@@ -118,8 +116,8 @@ public class LevelMenuConsoleUI {
         }
 
         if (command.matches("([1-" + (score.getLevelsCompleted()+1) + "])")) {
-            LevelService levelService = new LevelServiceJDBC();
-            level = levelService.getLevel(selectedLevel, field);
+            level = levelService.getLevel(selectedLevel);
+            level.getShapes().forEach(shape -> placeShapeNumberOnField(shape.getShapeNumber()));
             isLevelSelected = true;
         }
         else {
@@ -128,5 +126,32 @@ public class LevelMenuConsoleUI {
             else
                 System.out.println("          \u001B[31m" + "Bad input!" + "\u001B[0m");
         }
+    }
+
+    private void placeShapeNumberOnField(int shapeNumber) {
+        int posX = 24;
+        int posY = 2;
+        switch (shapeNumber) {
+            case 2:
+                posY = 5;
+                break;
+            case 3:
+                posY = 8;
+                break;
+            case 4:
+                posX = 38;
+                break;
+            case 5:
+                posX = 38;
+                posY = level.getShapeCount() <= 5 ? 8 : 5;
+                break;
+            case 6:
+                posX = 38;
+                posY = 8;
+                break;
+        }
+        field.getMap()[posX][posY].setValue("(");
+        field.getMap()[posX+1][posY].setValue(String.valueOf(shapeNumber));
+        field.getMap()[posX+2][posY].setValue(")");
     }
 }

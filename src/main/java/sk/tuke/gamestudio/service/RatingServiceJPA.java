@@ -1,10 +1,8 @@
 package sk.tuke.gamestudio.service;
 
 import sk.tuke.gamestudio.entity.Rating;
-import sk.tuke.gamestudio.entity.User;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Id;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
@@ -25,14 +23,15 @@ public class RatingServiceJPA implements RatingService{
 
     @Override
     public int getAverageRating() throws GameStudioException {
-        return entityManager.createNamedQuery("Rating.getAverageRating", Integer.class)
+        Double rating = entityManager.createNamedQuery("Rating.getAverageRating", Double.class)
                 .getSingleResult();
+        return (int) Math.round(rating);
     }
 
     @Override
-    public int getRating(User user) throws GameStudioException {
+    public int getRating(String login) throws GameStudioException {
         return entityManager.createNamedQuery("Rating.getRating", Integer.class)
-                .setParameter("login", user.getLogin())
+                .setParameter("login", login)
                 .getSingleResult();
     }
 

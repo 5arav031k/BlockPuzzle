@@ -1,7 +1,6 @@
 package sk.tuke.gamestudio.service;
 
 import sk.tuke.gamestudio.entity.Score;
-import sk.tuke.gamestudio.entity.User;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -28,15 +27,13 @@ public class ScoreServiceJDBC extends Service implements ScoreService {
     }
 
     @Override
-    public void addScore(User user) {
-        if (user == null)   return;
-
+    public void addScore(String username) {
         String ADD_SCORE = "INSERT INTO score VALUES (?, DEFAULT, ?)";
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement statement = connection.prepareStatement(ADD_SCORE))
         {
             Date date = new Date();
-            statement.setString(1, user.getLogin());
+            statement.setString(1, username);
             statement.setTimestamp(2, new Timestamp(date.getTime()));
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -45,15 +42,13 @@ public class ScoreServiceJDBC extends Service implements ScoreService {
     }
 
     @Override
-    public Score getScore(User user) {
-        if (user == null)   return null;
-
-        String GET_SCORE = String.format("SELECT levels_completed, completed_at FROM score WHERE login = '%s'", user.getLogin());
+    public Score getScore(String username) {
+        String GET_SCORE = String.format("SELECT levels_completed, completed_at FROM score WHERE login = '%s'", username);
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD))
         {
             ResultSet rs = connection.prepareStatement(GET_SCORE).executeQuery();
             if (rs.next())
-                return new Score(user.getLogin(), rs.getInt(1), rs.getTimestamp(2));
+                return new Score(username, rs.getInt(1), rs.getTimestamp(2));
 
         } catch (SQLException e) {
             throw new GameStudioException(e);

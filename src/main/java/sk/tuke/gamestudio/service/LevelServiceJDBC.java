@@ -1,5 +1,6 @@
 package sk.tuke.gamestudio.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import sk.tuke.gamestudio.game.block_puzzle.core.*;
 import sk.tuke.gamestudio.entity.Level;
 
@@ -7,10 +8,12 @@ import java.sql.*;
 
 public class LevelServiceJDBC extends Service implements LevelService {
     private Level level;
+    @Autowired
+    private Field field;
 
     @Override
-    public Level getLevel(int level_id, Field field) {
-        level = new Level(field);
+    public Level getLevel(int level_id) {
+        level = new Level();
         String GET_SHAPES_COUNT = "SELECT shapes_count FROM levels WHERE level_id = "+level_id;
         String GET_SHAPES = "SELECT * FROM shapes WHERE level_id = "+level_id+" ORDER BY shape_id";
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD))
@@ -18,7 +21,7 @@ public class LevelServiceJDBC extends Service implements LevelService {
             ResultSet levels_rs = connection.prepareStatement(GET_SHAPES_COUNT).executeQuery();
             if (!levels_rs.next()) return null;
 
-            level.setShapesCount(levels_rs.getInt(1));
+            level.setShapeCount(levels_rs.getInt(1));
 
             ResultSet shapes_rs = connection.prepareStatement(GET_SHAPES).executeQuery();
             generateShapes(connection, shapes_rs);
@@ -38,7 +41,6 @@ public class LevelServiceJDBC extends Service implements LevelService {
                 placeShapeNumberOnField(shapeNumber);
 
                 Shape shape = new Shape(Color.getColorByString(color));
-                shape.setField(level.getField());
                 shape.setShapeWidth(shapes_rs.getInt("shape_width"));
                 shape.setShapeHeight(shapes_rs.getInt("shape_height"));
 
@@ -71,9 +73,9 @@ public class LevelServiceJDBC extends Service implements LevelService {
                 posY = 8;
                 break;
         }
-        level.getField().getMap()[posX][posY].setValue("(");
-        level.getField().getMap()[posX+1][posY].setValue(String.valueOf(shapeNumber));
-        level.getField().getMap()[posX+2][posY].setValue(")");
+        field.getMap()[posX][posY].setValue("(");
+        field.getMap()[posX+1][posY].setValue(String.valueOf(shapeNumber));
+        field.getMap()[posX+2][posY].setValue(")");
     }
     private void generateTiles(Connection connection, Shape shape, int shape_id) {
         int minX = Integer.MAX_VALUE;

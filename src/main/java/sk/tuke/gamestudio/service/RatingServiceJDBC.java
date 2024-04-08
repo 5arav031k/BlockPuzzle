@@ -1,7 +1,6 @@
 package sk.tuke.gamestudio.service;
 
 import sk.tuke.gamestudio.entity.Rating;
-import sk.tuke.gamestudio.entity.User;
 
 import java.sql.*;
 
@@ -36,8 +35,8 @@ public class RatingServiceJDBC extends Service implements RatingService{
     }
 
     @Override
-    public int getRating(User user) {
-        String GET_RATING = String.format("SELECT rating from rating WHERE login = '%s'", user.getLogin());
+    public int getRating(String login) {
+        String GET_RATING = String.format("SELECT rating from rating WHERE login = '%s'", login);
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement statement = connection.prepareStatement(GET_RATING);
              ResultSet rs = statement.executeQuery())

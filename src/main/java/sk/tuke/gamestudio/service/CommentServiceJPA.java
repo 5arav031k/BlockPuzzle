@@ -1,7 +1,6 @@
 package sk.tuke.gamestudio.service;
 
 import sk.tuke.gamestudio.entity.Comment;
-import sk.tuke.gamestudio.entity.User;
 
 import javax.transaction.Transactional;
 import javax.persistence.PersistenceContext;
@@ -19,10 +18,9 @@ public class CommentServiceJPA implements CommentService{
     }
 
     @Override
-    public List<Comment> getComments(User user) throws GameStudioException {
+    public List<Comment> getComments() throws GameStudioException {
         return entityManager.createNamedQuery("Comment.getComments", Comment.class)
-                .setParameter("login", user.getLogin())
-                .setMaxResults(5)
+                .setMaxResults(7)
                 .getResultList();
     }
 

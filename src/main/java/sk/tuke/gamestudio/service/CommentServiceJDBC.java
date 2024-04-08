@@ -1,7 +1,6 @@
 package sk.tuke.gamestudio.service;
 
 import sk.tuke.gamestudio.entity.Comment;
-import sk.tuke.gamestudio.entity.User;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -24,9 +23,9 @@ public class CommentServiceJDBC extends Service implements CommentService{
     }
 
     @Override
-    public List<Comment> getComments(User user) {
+    public List<Comment> getComments() {
         List<Comment> comments = new ArrayList<>();
-        String GET_COMMENTS = String.format("SELECT * from comment WHERE login = '%s' ORDER BY commented_on DESC", user.getLogin());
+        String GET_COMMENTS = String.format("SELECT * from comment LIMIT 7 ORDER BY commented_on DESC");
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement statement = connection.prepareStatement(GET_COMMENTS);
              ResultSet rs = statement.executeQuery())

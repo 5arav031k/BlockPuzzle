@@ -1,0 +1,12 @@
+POST http://localhost:8080/api/score/completedLevel
+Content-Type: application/json
+
+{
+  "level": 2,
+  "score": {
+    "completedAt": "2024-04-04 16:41:07.7740",
+    "ident": 3,
+    "levelsCompleted": 1,
+    "login": "roman"
+  }
+}
