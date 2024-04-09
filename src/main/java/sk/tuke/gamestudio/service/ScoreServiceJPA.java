@@ -10,12 +10,16 @@ import java.util.Date;
 import java.util.List;
 
 @Transactional
-public class ScoreServiceJPA implements ScoreService{
+public class ScoreServiceJPA implements ScoreService {
+
     @PersistenceContext
     private EntityManager entityManager;
 
     @Override
     public void addCompletedLevel(Score score, int level) throws GameStudioException {
+        if (score == null || score.getLevelsCompleted() < 0 || score.getLevelsCompleted() > 6 || level < 0 || level > 6)
+            throw new GameStudioException("Invalid score or level");
+
         if (level <= score.getLevelsCompleted())
             return;
 
@@ -29,12 +33,12 @@ public class ScoreServiceJPA implements ScoreService{
     @Override
     public void addScore(String username) throws GameStudioException {
         try {
-            entityManager.createNamedQuery("Score.addScore")
+            entityManager.createNativeQuery("INSERT INTO Score (login, levels_completed, completed_at) VALUES (:login, 0, :completedAt)")
                     .setParameter("login", username)
                     .setParameter("completedAt", new Timestamp(new Date().getTime()))
                     .executeUpdate();
         } catch (Exception e) {
-            throw new GameStudioException(e);
+            throw new GameStudioException("Could not add score", e);
         }
     }
 
@@ -45,15 +49,19 @@ public class ScoreServiceJPA implements ScoreService{
                     .setParameter("login", username)
                     .getSingleResult();
         } catch (Exception e) {
-            throw new GameStudioException(e);
+            throw new GameStudioException("Could not get score");
         }
     }
 
     @Override
     public List<Score> getTopScores() throws GameStudioException {
-        return entityManager.createNamedQuery("Score.getTopScores", Score.class)
-                .setMaxResults(5)
-                .getResultList();
+        try {
+            return entityManager.createNamedQuery("Score.getTopScores", Score.class)
+                    .setMaxResults(5)
+                    .getResultList();
+        } catch (Exception e) {
+            throw new GameStudioException("Could not get top scores");
+        }
     }
 
     @Override

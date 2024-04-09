@@ -10,6 +10,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/score")
 public class ScoreServiceRest {
+
     @Autowired
     private ScoreService scoreService;
 
@@ -18,8 +19,8 @@ public class ScoreServiceRest {
         scoreService.addCompletedLevel(score, level);
     }
 
-    @PostMapping("/addScore")
-    public void addScore(@RequestBody String username) {
+    @PostMapping("/addScore/{username}")
+    public void addScore(@PathVariable String username) {
         scoreService.addScore(username);
     }
 

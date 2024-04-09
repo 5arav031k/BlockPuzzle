@@ -21,7 +21,7 @@ public class Level implements Serializable {
     @Column(name = "level_id")
     private int ident;
 
-    @Column(name = "shapes_count")
+    @Column(name = "shapes_count", nullable = false)
     private int shapeCount;
 
     @Transient

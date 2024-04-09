@@ -8,16 +8,17 @@ import sk.tuke.gamestudio.service.UserService;
 @RestController
 @RequestMapping("api/user")
 public class UserServiceRest {
+
     @Autowired
     private UserService userService;
 
-    @PostMapping("/addUser/{login}")
-    public User addUser(@PathVariable String login, @RequestBody String password) {
-        return userService.addUser(login, password);
+    @PostMapping("/addUser")
+    public User addUser(@RequestBody User user) {
+        return userService.addUser(user.getLogin(), user.getPassword());
     }
 
-    @PostMapping("/logIn/{login}")
-    public User logIn(@PathVariable String login, @RequestBody String password) {
-        return userService.logIn(login, password);
+    @PostMapping("/logIn")
+    public User logIn(@RequestBody User user) {
+        return userService.logIn(user.getLogin(), user.getPassword());
     }
 }

@@ -8,6 +8,7 @@ import sk.tuke.gamestudio.service.RatingService;
 @RestController
 @RequestMapping("/api/rating")
 public class RatingServiceRest {
+
     @Autowired
     private RatingService ratingService;
 
@@ -16,7 +17,7 @@ public class RatingServiceRest {
         ratingService.setRating(rating);
     }
 
-    @GetMapping("/averageRating")
+    @GetMapping("/getAverageRating")
     public int getAverageRating() {
         return ratingService.getAverageRating();
     }

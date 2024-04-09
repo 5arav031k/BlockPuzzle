@@ -9,12 +9,16 @@ import java.util.List;
 
 @Transactional
 public class CommentServiceJPA implements CommentService{
+
     @PersistenceContext
     private EntityManager entityManager;
 
     @Override
     public void addComment(Comment comment) throws GameStudioException {
-        entityManager.persist(comment);
+        if (comment != null && comment.getComment().length() < 300 && !comment.getComment().isEmpty())
+            entityManager.persist(comment);
+        else
+            throw new GameStudioException("Invalid comment");
     }
 
     @Override

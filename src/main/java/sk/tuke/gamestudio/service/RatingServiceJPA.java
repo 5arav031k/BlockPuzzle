@@ -8,12 +8,16 @@ import javax.transaction.Transactional;
 import java.sql.Timestamp;
 
 @Transactional
-public class RatingServiceJPA implements RatingService{
+public class RatingServiceJPA implements RatingService {
+
     @PersistenceContext
     private EntityManager entityManager;
 
     @Override
     public void setRating(Rating rating) throws GameStudioException {
+        if (rating == null || rating.getRating() < 1 || rating.getRating() > 5)
+            throw new GameStudioException("Invalid rating");
+
         entityManager.createNamedQuery("Rating.setRating")
                 .setParameter("login", rating.getLogin())
                 .setParameter("rating", rating.getRating())
@@ -25,14 +29,20 @@ public class RatingServiceJPA implements RatingService{
     public int getAverageRating() throws GameStudioException {
         Double rating = entityManager.createNamedQuery("Rating.getAverageRating", Double.class)
                 .getSingleResult();
+        if (rating == null)
+            return 0;
+
         return (int) Math.round(rating);
     }
 
     @Override
     public int getRating(String login) throws GameStudioException {
-        return entityManager.createNamedQuery("Rating.getRating", Integer.class)
+        int rating = entityManager.createNamedQuery("Rating.getRating", Integer.class)
                 .setParameter("login", login)
                 .getSingleResult();
+        if (rating == 0)
+            throw new GameStudioException("Rating does not exist for login: " + login);
+        return rating;
     }
 
     @Override

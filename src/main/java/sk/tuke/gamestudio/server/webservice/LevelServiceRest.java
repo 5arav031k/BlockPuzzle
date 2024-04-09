@@ -8,6 +8,7 @@ import sk.tuke.gamestudio.service.LevelService;
 @RestController
 @RequestMapping("api/level")
 public class LevelServiceRest {
+
     @Autowired
     private LevelService levelService;
 

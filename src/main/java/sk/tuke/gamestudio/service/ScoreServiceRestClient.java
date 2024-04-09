@@ -1,6 +1,7 @@
 package sk.tuke.gamestudio.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import sk.tuke.gamestudio.entity.Score;
 
@@ -8,7 +9,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class ScoreServiceRestClient implements ScoreService{
+@Service
+public class ScoreServiceRestClient implements ScoreService {
     private final String url = "http://localhost:8080/api/score";
 
     @Autowired
@@ -21,7 +23,7 @@ public class ScoreServiceRestClient implements ScoreService{
 
     @Override
     public void addScore(String username) throws GameStudioException {
-        restTemplate.postForObject(url+"/addScore", username, String.class);
+        restTemplate.postForObject(url+"/addScore/"+username, null, String.class);
     }
 
     @Override

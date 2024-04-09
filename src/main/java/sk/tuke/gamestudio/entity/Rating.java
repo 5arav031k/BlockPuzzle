@@ -2,6 +2,8 @@ package sk.tuke.gamestudio.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -21,27 +23,25 @@ import java.util.Date;
 
 @Setter
 @Getter
+@NoArgsConstructor
 public class Rating implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int ident;
 
-    @Column(name = "login", unique = true)
+    @Column(name = "login", unique = true, nullable = false)
     private String login;
 
-    @Column(name = "rating")
+    @Column(name = "rating", nullable = false)
     private int rating;
 
-    @Column(name = "rated_on")
+    @Column(name = "rated_on", nullable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private Date ratedOn;
 
-    public Rating(String login, int rating, Date ratedOn) {
+    public Rating(@NonNull String login, int rating, @NonNull Date ratedOn) {
         this.login = login;
         this.rating = rating;
         this.ratedOn = ratedOn;
-    }
-
-    public Rating() {
     }
 }

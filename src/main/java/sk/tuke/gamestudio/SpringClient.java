@@ -7,6 +7,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.web.client.RestTemplate;
 import sk.tuke.gamestudio.game.block_puzzle.consoleui.ConsoleUI;
 import sk.tuke.gamestudio.game.block_puzzle.consoleui.LevelMenuConsoleUI;
@@ -17,6 +18,7 @@ import sk.tuke.gamestudio.service.*;
 @SpringBootApplication
 @ComponentScan(excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX,
 		pattern = "sk.tuke.gamestudio.server.*"))
+
 public class SpringClient {
 	public static void main(String[] args) {
 //		SpringApplication.run(SpringClient.class, args);
@@ -66,5 +68,9 @@ public class SpringClient {
 	@Bean
 	public Field field() {
 		return new Field(5, 4);
+	}
+	@Bean
+	public Argon2PasswordEncoder passwordEncoder() {
+		return new Argon2PasswordEncoder(16, 32, 1, 65536, 1);
 	}
 }

@@ -1,9 +1,11 @@
 package sk.tuke.gamestudio.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import sk.tuke.gamestudio.entity.User;
 
+@Service
 public class UserServiceRestClient implements UserService {
     private final String url = "http://localhost:8080/api/user";
 
@@ -12,12 +14,12 @@ public class UserServiceRestClient implements UserService {
 
     @Override
     public User addUser(String login, String password) throws GameStudioException {
-        return restTemplate.postForEntity(url+"/addUser/"+login, password, User.class).getBody();
+        return restTemplate.postForEntity(url+"/addUser", new User(login, password), User.class).getBody();
     }
 
     @Override
     public User logIn(String login, String password) throws GameStudioException {
-        return restTemplate.postForEntity(url+"/logIn/"+login, password, User.class).getBody();
+        return restTemplate.postForEntity(url+"/logIn", new User(login, password), User.class).getBody();
     }
 
     @Override

@@ -1,12 +1,66 @@
-POST http://localhost:8080/api/score/completedLevel
+## Comment
+### addComment
+POST http://localhost:8080/api/comment/addComment
 Content-Type: application/json
 
 {
-  "level": 2,
-  "score": {
-    "completedAt": "2024-04-04 16:41:07.7740",
-    "ident": 3,
-    "levelsCompleted": 1,
-    "login": "roman"
-  }
+  "login": "roman",
+  "comment": "cool",
+  "commentedOn": "2024-04-04T14:47:20"
+}
+### getComments
+GET http://localhost:8080/api/comment/getComments
+
+## Level
+### getLevel
+GET http://localhost:8080/api/level/getLevel/1
+
+## Rating
+### setRating
+POST http://localhost:8080/api/rating/setRating
+Content-Type: application/json
+
+{
+  "login": "roman",
+  "rating": 5,
+  "ratedOn": "2024-04-04T14:46:20"
+}
+### getAverageRating
+GET http://localhost:8080/api/rating/getAverageRating
+### getRating
+GET http://localhost:8080/api/rating/getRating/roman
+
+## Score
+### addCompletedLevel
+POST http://localhost:8080/api/score/addCompletedLevel/1
+Content-Type: application/json
+
+{
+  "login": "roman",
+  "levelsCompleted": 2,
+  "completedAt": "2024-04-04T14:46:20"
+}
+### addScore
+POST http://localhost:8080/api/score/addScore/roman
+### getScore
+GET http://localhost:8080/api/score/getScore/roman
+### getTopScores
+GET http://localhost:8080/api/score/getTopScores
+
+## User
+### addUser
+POST http://localhost:8080/api/user/addUser
+Content-Type: application/json
+
+{
+  "login": "user3",
+  "password": "user3123"
+}
+### logIn
+POST http://localhost:8080/api/user/logIn
+Content-Type: application/json
+
+{
+  "login": "roman",
+  "password": "123456"
 }
