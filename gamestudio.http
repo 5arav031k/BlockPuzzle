@@ -37,7 +37,7 @@ Content-Type: application/json
 
 {
   "login": "roman",
-  "levelsCompleted": 2,
+  "levelsCompleted": 0,
   "completedAt": "2024-04-04T14:46:20"
 }
 ### addScore
