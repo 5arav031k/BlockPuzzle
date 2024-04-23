@@ -37,7 +37,7 @@ public class UserServiceJPA implements UserService {
             entityManager.persist(newUser);
             return newUser;
         } catch (Exception e) {
-            throw new GameStudioException("Error adding user", e);
+            throw new GameStudioException("This login is already taken!", e);
         }
     }
 
@@ -53,12 +53,12 @@ public class UserServiceJPA implements UserService {
                     .getSingleResult();
 
             if (!passwordEncoder.matches(password, expectedPassword)) {
-                throw new GameStudioException("Incorrect password");
+                throw new GameStudioException("Bad login or password!");
             }
 
             return new User(login, expectedPassword);
         } catch (Exception e) {
-            throw new GameStudioException("Error logging in", e);
+            throw new GameStudioException("Bad login or password!", e);
         }
     }
 
@@ -68,9 +68,13 @@ public class UserServiceJPA implements UserService {
             throw new GameStudioException("User cannot be null");
         }
 
-        entityManager.createNamedQuery("User.deleteUser")
-                .setParameter("login", user.getLogin())
-                .setParameter("password", passwordEncoder.encode(user.getPassword()))
-                .executeUpdate();
+        try {
+            entityManager.createNamedQuery("User.deleteUser")
+                    .setParameter("login", user.getLogin())
+                    .setParameter("password", passwordEncoder.encode(user.getPassword()))
+                    .executeUpdate();
+        } catch (Exception e) {
+            throw new GameStudioException("User does not exist!", e);
+        }
     }
 }

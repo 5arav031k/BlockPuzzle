@@ -1,0 +1,69 @@
+@font-face {
+    font-family: 'Kelly Slab-Regular';
+    src: url('fonts/KellySlab-Regular.ttf') format('truetype')
+}
+
+.header {
+    position: absolute;
+    top: 135px;
+    left: 380px;
+    font-family: "Kelly Slab-Regular", sans-serif;
+    font-weight: 400;
+    font-size: 64px;
+}
+
+.header-text-wrapper {
+    color: #9df3ff;
+}
+
+.span {
+    color: #ae29dd;
+}
+
+button {
+    all: unset;
+    box-sizing: border-box;
+    position: absolute;
+    left: 565px;
+    cursor: pointer;
+}
+
+button#login {
+    top: 345px;
+}
+
+button#signUp {
+    top: 479px;
+}
+
+.overlap-group {
+    position: relative;
+    width: 309px;
+    height: 61px;
+    border-radius: 50px;
+    background: linear-gradient(180deg, rgb(152.99, 0, 206.75) 0%, rgb(207.36, 126.14, 235.9) 100%);
+}
+
+.login-text-wrapper {
+    position: absolute;
+    top: 11px;
+    left: 113px;
+    font-family: "Inter-Regular", Helvetica;
+    font-size: 32px;
+}
+
+.sign_up-text-wrapper {
+    position: absolute;
+    top: 11px;
+    left: 38px;
+    font-family: "Inter-Regular", Helvetica;
+    font-size: 32px;
+}
+
+.icon-park-block {
+    position: absolute;
+    width: 183px;
+    height: 183px;
+    top: 449px;
+    left: 197px;
+}

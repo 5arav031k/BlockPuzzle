@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/css/login-sign_up.css"/>
+        <link rel="stylesheet" href="/css/index.css"/>
+        <title>BlockPuzzle</title>
+    </head>
+    <body>
+        <div class="game">
+            <div class="background">
+                <div class="header">
+                    <span class="header-text-wrapper">Welcome to </span> <span class="span">Block Puzzle</span>
+                </div>
+                <a href="/block_puzzle/login" class="link-text-wrapper">Already have an account?</a>
+                <form action="/block_puzzle/signUp" method="post">
+                    <input class="username" name="username" type="text" placeholder="Username" minlength="3" required>
+                    <input class="password" name="password" type="password" placeholder="Password" minlength="6" required>
+                    <input class="submit-button submit-text-wrapper" type="submit" value="Sign up">
+                </form>
+                <span class="error-wrapper" id="signUp" th:if="${signUp_error == 'This login is already taken!'}">This login is already taken!</span>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,89 @@
+@font-face {
+    font-family: 'Kelly Slab-Regular';
+    src: url('fonts/KellySlab-Regular.ttf') format('truetype')
+}
+
+.header {
+    position: absolute;
+    top: 125px;
+    left: 380px;
+    font-family: "Kelly Slab-Regular", sans-serif;
+    font-weight: 400;
+    font-size: 64px;
+}
+
+.header-text-wrapper {
+    color: #9df3ff;
+}
+
+.span {
+    color: #ae29dd;
+}
+
+.error-wrapper {
+    position: absolute;
+    font-size: 28px;
+    top: 220px;
+    color: red;
+}
+
+#login.error-wrapper {
+    left: 592px;
+}
+
+#signUp.error-wrapper {
+    left: 569px;
+}
+
+.submit-button {
+    width: 171px;
+    top: 521px;
+    background-color: #1bc700;
+    display: flex;
+    justify-content: center;
+}
+
+.submit-text-wrapper {
+    color: #ffffff;
+    font-size: 32px;
+}
+
+.link-text-wrapper {
+    position: absolute;
+    top: 537px;
+    left: 775px;
+    font-family: "Inter-Regular", Helvetica;
+    font-weight: 400;
+    color: #ffffff;
+    font-size: 24px;
+    letter-spacing: 0;
+    line-height: normal;
+}
+
+input {
+    padding: 17px 30px;
+    background-color: #d9d9d9;
+    font-size: 24px;
+    position: absolute;
+    left: 544px;
+    border-radius: 30px;
+    border: none;
+}
+
+.username {
+    position: relative;
+    top: 281px;
+}
+
+.password {
+    position: absolute;
+    top: 401px;
+}
+
+input:placeholder-shown {
+    position: absolute;
+    font-family: "Inter-Regular", Helvetica;
+    font-weight: 400;
+    color: #7f7f7f;
+    font-size: 24px;
+}

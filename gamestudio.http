@@ -32,12 +32,12 @@ GET http://localhost:8080/api/rating/getRating/roman
 
 ## Score
 ### addCompletedLevel
-POST http://localhost:8080/api/score/addCompletedLevel/1
+POST http://localhost:8080/api/score/addCompletedLevel/2
 Content-Type: application/json
 
 {
   "login": "roman",
-  "levelsCompleted": 0,
+  "levelsCompleted": 1,
   "completedAt": "2024-04-04T14:46:20"
 }
 ### addScore
@@ -61,6 +61,6 @@ POST http://localhost:8080/api/user/logIn
 Content-Type: application/json
 
 {
-  "login": "roman",
+  "login": "user123",
   "password": "123456"
 }

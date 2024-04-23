@@ -39,9 +39,9 @@ public class Field {
     }
 
     public void clearField() {
-        for (int row = 3; row < fieldHeight+3; row++) {
-            for (int col = 8; col < fieldWidth*2+8; col++)
-                map[col][row].setValue(" ");
+        for (int col = 3; col < fieldHeight+3; col++) {
+            for (int row = 8; row < fieldWidth*2+8; row++)
+                map[row][col].setValue(" ");
         }
     }
 
