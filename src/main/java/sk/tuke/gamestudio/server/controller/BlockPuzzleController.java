@@ -6,7 +6,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.WebApplicationContext;
-import sk.tuke.gamestudio.entity.User;
 import sk.tuke.gamestudio.game.block_puzzle.core.Field;
 
 @Controller
@@ -16,21 +15,13 @@ public class BlockPuzzleController {
     private Field field = new Field(5, 4);
 
     @GetMapping
-    public String blockPuzzle(Model model) {
-        if (model.containsAttribute("User")) {
-            System.out.println("user " + model.getAttribute("User"));
-            prepareModel(model);
-            return "/game-menu";
-        }
-        System.out.println("user is null");
+    public String blockPuzzle() {
         return "start_menu";
     }
 
-    @GetMapping("/new")
-    public String newGame(Model model) {
-        field = new Field(5, 4);
-        prepareModel(model);
-        return null;
+    @GetMapping("/game_menu")
+    public String newGame() {
+        return "game_menu";
     }
 
     private String getHtmlField() {

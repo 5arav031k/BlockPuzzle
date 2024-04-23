@@ -1,0 +1,109 @@
+button {
+    all: unset;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.play-button {
+    display: flex;
+    width: 255px;
+    height: 66px;
+    gap: 10px;
+    padding: 10px;
+    top: 479px;
+    left: 593px;
+    border-radius: 30px;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    background-color: #f9ff00;
+}
+
+#leaders.text-wrapper,
+#play-button.text-wrapper {
+    position: relative;
+    width: fit-content;
+    font-family: "Inter-Regular", Helvetica;
+    font-weight: 400;
+    color: #000000;
+    font-size: 32px;
+    letter-spacing: 0;
+    line-height: normal;
+}
+
+.leaders {
+    display: inline-flex;
+    flex-direction: column;
+    height: 139px;
+    padding: 0 10px;
+    top: 86px;
+    left: 1110px;
+    border-radius: 15px;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    background-color: #f9ff00;
+}
+
+.leaders .leaders-img {
+    position: relative;
+    width: 89px;
+    height: 91px;
+    object-fit: cover;
+}
+
+.exit-button {
+    position: absolute;
+    width: 121px;
+    height: 121px;
+    top: 91px;
+    left: 121px;
+}
+
+.tetris-icon {
+    position: absolute;
+    width: 417px;
+    height: 417px;
+    top: 16px;
+    left: 512px;
+}
+
+.community {
+    display: flex;
+    width: 279px;
+    height: 118px;
+    gap: 11px;
+    top: 282px;
+    left: 1042px;
+    border-radius: 15px;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    background-color: #f9ff00;
+}
+
+.community .community-png {
+    position: relative;
+    width: 81.23px;
+    height: 80.09px;
+}
+
+#community.text-wrapper {
+    position: relative;
+    width: fit-content;
+    font-family: "Inter-Regular", Helvetica;
+    font-weight: 400;
+    color: #000000;
+    font-size: 30px;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+}
+
+.icon-park-block {
+    position: absolute;
+    width: 244px;
+    height: 244px;
+    top: 350px;
+    left: 118px;
+}
