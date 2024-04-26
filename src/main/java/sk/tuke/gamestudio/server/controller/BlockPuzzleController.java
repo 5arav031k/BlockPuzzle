@@ -20,8 +20,13 @@ public class BlockPuzzleController {
     }
 
     @GetMapping("/game_menu")
-    public String newGame() {
+    public String gameMenu() {
         return "game_menu";
+    }
+
+    @GetMapping("/play")
+    public String play() {
+        return "play";
     }
 
     private String getHtmlField() {

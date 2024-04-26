@@ -5,19 +5,24 @@
 
 .header {
     position: absolute;
-    top: 125px;
-    left: 380px;
+    top: 18%;
+    left: 50%;
+    transform: translateX(-50%);
     font-family: "Kelly Slab-Regular", sans-serif;
     font-weight: 400;
+    text-align: center;
     font-size: 64px;
+    width: 100%;
 }
 
 .header-text-wrapper {
     color: #9df3ff;
+    display: inline-block;
 }
 
 .span {
     color: #ae29dd;
+    display: inline-block;
 }
 
 .error-wrapper {
@@ -28,16 +33,19 @@
 }
 
 #login.error-wrapper {
-    left: 592px;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 #signUp.error-wrapper {
-    left: 569px;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .submit-button {
     width: 171px;
     top: 521px;
+    left: 43.5%;
     background-color: #1bc700;
     display: flex;
     justify-content: center;
@@ -50,8 +58,8 @@
 
 .link-text-wrapper {
     position: absolute;
-    top: 537px;
-    left: 775px;
+    top: 78%;
+    left: 53%;
     font-family: "Inter-Regular", Helvetica;
     font-weight: 400;
     color: #ffffff;
@@ -65,19 +73,20 @@ input {
     background-color: #d9d9d9;
     font-size: 24px;
     position: absolute;
-    left: 544px;
+    left: 50%;
+    transform: translateX(-50%);
     border-radius: 30px;
     border: none;
 }
 
 .username {
-    position: relative;
-    top: 281px;
+    position: absolute;
+    top: 41%;
 }
 
 .password {
     position: absolute;
-    top: 401px;
+    top: 58%;
 }
 
 input:placeholder-shown {

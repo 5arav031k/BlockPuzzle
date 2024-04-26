@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,12 +20,18 @@
                 <a href="/block_puzzle/exit">
                     <img class="exit-button" src="/images/exit-button.png" alt="exit-button">
                 </a>
-                <img class="tetris-icon" src="/images/tetris-icon.png" alt="tetris-icon">
+                <div class="tetris-icon-wrapper">
+                    <img class="tetris-icon" src="/images/tetris-icon.png" alt="tetris-icon">
+                </div>
+
+                <!--/*@thymesVar id="userController" type="sk.tuke.gamestudio.server.controller.UserController"*/-->
+<!--                th:if="${userController.isUserLoggedIn()}"-->
+
                 <button type="button" class="community" onclick="location.href='/block_puzzle/community'">
                     <img class="community-png" src="/images/community.png" alt="community-img">
                     <div class="text-wrapper" id="community">Community</div>
                 </button>
-                <img class="icon-park-block" src="/images/icon-park-block.png" alt="icon-park-img">
+                <img class="icon-park-block-2" src="/images/icon-park-block-2.png" alt="icon-park-img">
             </div>
         </div>
     </body>

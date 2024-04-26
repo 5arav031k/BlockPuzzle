@@ -1,6 +1,8 @@
 button {
     all: unset;
     box-sizing: border-box;
+    margin: 0 auto;
+    display: block;
     cursor: pointer;
 }
 
@@ -10,12 +12,11 @@ button {
     height: 66px;
     gap: 10px;
     padding: 10px;
-    top: 479px;
-    left: 593px;
+    top: 68%;
     border-radius: 30px;
     align-items: center;
     justify-content: center;
-    position: absolute;
+    position: relative;
     background-color: #f9ff00;
 }
 
@@ -32,17 +33,17 @@ button {
 }
 
 .leaders {
-    display: inline-flex;
+    display: flex;
     flex-direction: column;
     height: 139px;
     padding: 0 10px;
-    top: 86px;
-    left: 1110px;
+    left: 77%;
     border-radius: 15px;
     align-items: center;
     justify-content: center;
     position: absolute;
     background-color: #f9ff00;
+    z-index: 100;
 }
 
 .leaders .leaders-img {
@@ -56,16 +57,26 @@ button {
     position: absolute;
     width: 121px;
     height: 121px;
-    top: 91px;
-    left: 121px;
+    top: 10%;
+    left: 12%;
+    z-index: 100;
+}
+
+.tetris-icon-wrapper {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    top: -5%;
 }
 
 .tetris-icon {
-    position: absolute;
+    position: relative;
     width: 417px;
     height: 417px;
-    top: 16px;
-    left: 512px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .community {
@@ -73,8 +84,8 @@ button {
     width: 279px;
     height: 118px;
     gap: 11px;
-    top: 282px;
-    left: 1042px;
+    top: 40%;
+    left: 72.5%;
     border-radius: 15px;
     align-items: center;
     justify-content: center;
@@ -100,10 +111,10 @@ button {
     white-space: nowrap;
 }
 
-.icon-park-block {
+.icon-park-block-2 {
     position: absolute;
     width: 244px;
     height: 244px;
-    top: 350px;
-    left: 118px;
+    top: 51%;
+    left: 10%;
 }

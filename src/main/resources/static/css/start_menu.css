@@ -5,40 +5,49 @@
 
 .header {
     position: absolute;
-    top: 135px;
-    left: 380px;
+    top: 22%;
+    left: 50%;
+    transform: translateX(-50%);
     font-family: "Kelly Slab-Regular", sans-serif;
     font-weight: 400;
+    text-align: center;
     font-size: 64px;
+    width: 100%;
 }
 
 .header-text-wrapper {
     color: #9df3ff;
+    display: inline-block;
 }
 
 .span {
     color: #ae29dd;
+    display: inline-block;
 }
+
 
 button {
     all: unset;
     box-sizing: border-box;
     position: absolute;
-    left: 565px;
+    margin: 0 auto;
+    display: block;
     cursor: pointer;
 }
 
 button#login {
-    top: 345px;
+    top: 50%;
 }
 
 button#signUp {
-    top: 479px;
+    top: 70%;
 }
 
 .overlap-group {
-    position: relative;
+    position: fixed;
     width: 309px;
+    left: 50%;
+    transform: translateX(-50%);
     height: 61px;
     border-radius: 50px;
     background: linear-gradient(180deg, rgb(152.99, 0, 206.75) 0%, rgb(207.36, 126.14, 235.9) 100%);
@@ -64,6 +73,6 @@ button#signUp {
     position: absolute;
     width: 183px;
     height: 183px;
-    top: 449px;
-    left: 197px;
+    top: 66%;
+    left: 14%;
 }
