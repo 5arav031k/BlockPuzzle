@@ -1,12 +1,15 @@
 package sk.tuke.gamestudio.server.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.WebApplicationContext;
+import sk.tuke.gamestudio.entity.Level;
 import sk.tuke.gamestudio.entity.Score;
+import sk.tuke.gamestudio.service.GameStudioException;
+import sk.tuke.gamestudio.service.LevelService;
 
 import javax.servlet.http.HttpSession;
 
@@ -14,13 +17,30 @@ import javax.servlet.http.HttpSession;
 @Scope(WebApplicationContext.SCOPE_SESSION)
 @RequestMapping("/block_puzzle/level_menu")
 public class LevelController {
+    @Autowired
+    private LevelService levelService;
     private int completedLevels;
 
     @GetMapping
     public String levelMenuPage(HttpSession session, Model model) {
-        completedLevels = ((Score) session.getAttribute("userScore")).getLevelsCompleted();
-        model.addAttribute("htmlLevels", getHtmlLevels());
-        return "level_menu";
+        try {
+            completedLevels = ((Score) session.getAttribute("userScore")).getLevelsCompleted();
+            model.addAttribute("htmlLevels", getHtmlLevels());
+            return "level_menu";
+        } catch (Exception e) {
+            return "redirect:/block_puzzle/login";
+        }
+    }
+
+    @PostMapping
+    public String play(@RequestParam int levelID, HttpSession session) {
+        try {
+            Level level = levelService.getLevel(levelID);
+            session.setAttribute("level", level);
+            return "redirect:/block_puzzle/play";
+        } catch (GameStudioException e) {
+            return "level_menu";
+        }
     }
 
     private String getHtmlLevels() {
@@ -28,7 +48,7 @@ public class LevelController {
         htmlLevels.append("<tr>");
         for (int level = 1; level <= 6; level++) {
             htmlLevels.append("<td id="+getId(level)+">")
-                    .append("<button type='button'"+getUrl(level)+">")
+                    .append("<button type='"+getButtonType(level)+"' name='levelID' value='"+level+"'>")
                     .append("Level"+level)
                     .append("</button>")
                     .append("</td>");
@@ -50,7 +70,7 @@ public class LevelController {
         return "closed-level";
     }
 
-    private String getUrl(int level) {
-        return completedLevels + 1 >= level ? " onclick=\"location.href='/block_puzzle/play'\"" : "";
+    private String getButtonType(int level) {
+        return completedLevels + 1 >= level ? "submit" : "button";
     }
 }

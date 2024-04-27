@@ -27,15 +27,15 @@ public class Color {
         };
     }
 
-    public static ColorEnum getColorEnum(String color) {
+    public static String getStringByColor(String color) {
         return switch (color) {
-            case "RED" -> ColorEnum.RED;
-            case "GREEN" -> ColorEnum.GREEN;
-            case "YELLOW" -> ColorEnum.YELLOW;
-            case "BLUE" -> ColorEnum.BLUE;
-            case "PURPLE" -> ColorEnum.PURPLE;
-            case "CYAN" -> ColorEnum.CYAN;
-            case "GRAY" -> ColorEnum.GRAY;
+            case COLOR_RED -> "RED";
+            case COLOR_GREEN -> "GREEN";
+            case COLOR_YELLOW -> "YELLOW";
+            case COLOR_BLUE -> "BLUE";
+            case COLOR_PURPLE -> "PURPLE";
+            case COLOR_CYAN -> "CYAN";
+            case COLOR_GRAY -> "GRAY";
             default -> null;
         };
     }

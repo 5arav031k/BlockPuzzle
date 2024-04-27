@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/css/play.css"/>
+        <link rel="stylesheet" href="/css/index.css"/>
+        <title>BlockPuzzle</title>
+    </head>
+    <body>
+        <div class="game">
+            <div class="background">
+                <div class="desk">
+                    <table id="field">
+                        <tbody th:utext="${htmlField}"></tbody>
+                    </table>
+                    <form action="/block_puzzle/play/placeShapeOnField" method="post">
+                        <table id="shapes">
+                            <tbody th:utext="${htmlShapes}"></tbody>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -14,8 +14,6 @@ public class Shape implements Serializable {
     @Getter
     private String shapeColor;
     @Getter
-    private ColorEnum shapeColorEnum;
-    @Getter
     private ShapeCoordinates coordinates;
     @Setter
     @Getter
@@ -26,9 +24,9 @@ public class Shape implements Serializable {
     private int shapeWidth;
     @Setter
     private int shapeHeight;
+
     public Shape(String shapeColor) {
         this.shapeColor = shapeColor;
-        shapeColorEnum = Color.getColorEnum(shapeColor);
         shape = new ArrayList<>();
         coordinates = new ShapeCoordinates();
         isPlacedOnField = false;
@@ -39,7 +37,6 @@ public class Shape implements Serializable {
         this.shapeNumber = shapeNumber;
         this.shapeWidth = shapeWidth;
         this.shapeHeight = shapeHeight;
-        shapeColorEnum = Color.getColorEnum(shapeColor);
         shape = new ArrayList<>();
         coordinates = new ShapeCoordinates();
         isPlacedOnField = false;

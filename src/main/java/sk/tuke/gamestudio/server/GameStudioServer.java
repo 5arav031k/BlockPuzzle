@@ -17,7 +17,7 @@ import sk.tuke.gamestudio.service.*;
         pattern = "sk.tuke.gamestudio.service"))
 public class GameStudioServer {
     public static void main(String[] args) {
-        SpringApplication.run(GameStudioServer.class, args);
+        SpringApplication.run(GameStudioServer.class);
     }
 
     @Bean

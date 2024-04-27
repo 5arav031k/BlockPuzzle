@@ -10,10 +10,14 @@
     <body>
         <div class="game">
             <div class="background">
-                <table>
-                    <tbody th:utext="${htmlLevels}">
-                    </tbody>
-                </table>
+                <form action="/block_puzzle/level_menu" method="post">
+                    <table>
+                        <tbody th:utext="${htmlLevels}"></tbody>
+                    </table>
+                </form>
+                <a href="/block_puzzle/game_menu">
+                    <img class="icon-back" src="/images/icon-back.png" alt="icon-back-img">
+                </a>
             </div>
         </div>
     </body>

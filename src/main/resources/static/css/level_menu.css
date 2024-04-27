@@ -2,7 +2,7 @@ table {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translateX(-50%) translateY(-50%);
+    transform: translate(-50%, -50%);
     width: 74%;
     height: 94%;
     border-spacing: 9em 6em;
@@ -40,4 +40,12 @@ button {
     box-sizing: border-box;
     border: none;
     cursor: pointer;
+}
+
+.icon-back {
+    position: absolute;
+    width: 4.4%;
+    height: 10%;
+    top: 9%;
+    left: 7%;
 }
