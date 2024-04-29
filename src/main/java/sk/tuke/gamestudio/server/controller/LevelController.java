@@ -23,6 +23,7 @@ public class LevelController {
 
     @GetMapping
     public String levelMenuPage(HttpSession session, Model model) {
+        session.removeAttribute("level");
         try {
             completedLevels = ((Score) session.getAttribute("userScore")).getLevelsCompleted();
             model.addAttribute("htmlLevels", getHtmlLevels());
@@ -33,7 +34,8 @@ public class LevelController {
     }
 
     @PostMapping
-    public String play(@RequestParam int levelID, HttpSession session) {
+    public String levelMenu(@RequestParam int levelID, HttpSession session) {
+        session.removeAttribute("level");
         try {
             Level level = levelService.getLevel(levelID);
             session.setAttribute("level", level);

@@ -11,9 +11,11 @@
         <div class="game">
             <div class="background">
                 <div class="desk">
-                    <table id="field">
-                        <tbody th:utext="${htmlField}"></tbody>
-                    </table>
+                    <form action="/block_puzzle/play/hideShape" method="post">
+                        <table id="field">
+                            <tbody th:utext="${htmlField}"></tbody>
+                        </table>
+                    </form>
                     <form action="/block_puzzle/play/placeShapeOnField" method="post">
                         <table id="shapes">
                             <tbody th:utext="${htmlShapes}"></tbody>

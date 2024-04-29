@@ -33,8 +33,10 @@ public class Field {
 
     public void clearMap() {
         for (int row = 1; row < mapWidth -1; row++) {
-            for (int col = 1; col < mapHeight -1; col++)
+            for (int col = 1; col < mapHeight -1; col++) {
                 map[row][col].setValue(" ");
+                map[row][col].setTileState(TileState.NOT_MARKED);
+            }
         }
     }
 

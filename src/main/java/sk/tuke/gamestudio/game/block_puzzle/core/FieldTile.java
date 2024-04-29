@@ -7,4 +7,5 @@ import lombok.Setter;
 @Getter
 public class FieldTile {
     private String value;
+    private TileState tileState = TileState.NOT_MARKED;
 }

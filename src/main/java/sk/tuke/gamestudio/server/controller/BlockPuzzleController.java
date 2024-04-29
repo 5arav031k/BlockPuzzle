@@ -22,8 +22,7 @@ public class BlockPuzzleController {
     private final Field field = new Field(5, 4);
     private Level level;
     private Shape currentShape;
-    private int currentShapeIndex;
-    private boolean shapeIsMarked;
+    private int currentShapeIndex = 0;
 
     @GetMapping
     public String blockPuzzle() {
@@ -46,15 +45,34 @@ public class BlockPuzzleController {
         addShapesToMap();
         model.addAttribute("htmlField", getHtmlField());
         model.addAttribute("htmlShapes", getHtmlShapes());
+        field.clearMap();
+
         session.setAttribute("level", level);
         return "play";
     }
 
     @PostMapping("/play/placeShapeOnField")
     public String placeShapeOnField(@RequestParam int shapeNumber) {
+        if (level == null)
+            return "redirect:/block_puzzle/level_menu";
         currentShape = level.getShapes().get(shapeNumber-1);
         currentShapeIndex = level.getShapes().indexOf(currentShape)+1;
         currentShape.placeShapeToField();
+
+        return "redirect:/block_puzzle/play";
+    }
+
+    @PostMapping("/play/hideShape")
+    public String hideShape(@RequestParam int shapeNumber) {
+        if (level == null)
+            return "redirect:/block_puzzle/level_menu";
+        if (shapeNumber != currentShapeIndex) {
+            currentShape = level.getShapes().get(shapeNumber-1);
+            currentShapeIndex = shapeNumber;
+            return "redirect:/block_puzzle/play";
+        }
+        currentShape.hideShape();
+        currentShapeIndex = 0;
         return "redirect:/block_puzzle/play";
     }
 
@@ -64,11 +82,20 @@ public class BlockPuzzleController {
             html.append("<tr>");
             for (int row = 8; row < 8+field.getFieldWidth()*2; row+=2) {
                 String value = field.getMap()[row][col].getValue();
-                html.append("<td"+getId(value)+">");
-                String buttonType = getButtonType(value);
-                if (buttonType != null) {
-                    html.append("<button type=").append(buttonType).append("></button>");
+                TileState state = field.getMap()[row][col].getTileState();
+                html.append("<td" + getClass(value) + getColorId(value) + ">");
+
+                if (state == TileState.MARKED) {
+                    html.append("<img id='fluent-icon' src='/images/fluent-icon.png' alt='fluent-icon-img' />");
                 }
+                else {
+                    String buttonType = getButtonType(value);
+                    if (buttonType != null) {
+                        html.append("<button type=").append(buttonType).append(">");
+                        html.append("</button>");
+                    }
+                }
+
                 html.append("</td>");
             }
             html.append("</tr>");
@@ -91,7 +118,7 @@ public class BlockPuzzleController {
     private void appendHtmlForRange(StringBuilder html, int col, int startRow, int endRow) {
         for (int row = startRow; row < endRow; row += 2) {
             String value = field.getMap()[row][col].getValue();
-            html.append("<td").append(getId(value)).append(">");
+            html.append("<td").append(getColorId(value)).append(">");
             String buttonType = getButtonType(value);
             if (buttonType != null) {
                 html.append("<button type=").append(buttonType).append("></button>");
@@ -101,12 +128,19 @@ public class BlockPuzzleController {
     }
 
 
-    private String getId(String cell) {
+    private String getColorId(String cell) {
         String color = Color.getStringByColor(cell);
         if (color == null)
             return "";
 
         return " id="+color;
+    }
+
+    private String getClass(String cell) {
+        if (currentShape == null || !currentShape.getShapeColor().equals(cell))
+            return "";
+
+        return " class=MARKED";
     }
 
     private String getButtonType(String cell) {
@@ -133,11 +167,13 @@ public class BlockPuzzleController {
                         && tileX >= 8 && tileX <= (7+field.getFieldWidth()*2)
                         && tileY >= 3 && tileY <= (2+field.getFieldHeight()))
                 {
-                    field.getMap()[tileX][tileY].setValue(Color.MARKED);
-                    shapeIsMarked = true;
+                    if (shape.getShapeNumber() == currentShapeIndex) {
+                        field.getMap()[tileX][tileY].setTileState(TileState.MARKED);
+                    }
                 }
-                else
-                    field.getMap()[shapeTile.getX()][shapeTile.getY()].setValue(shape.getShapeColor());
+                else {
+                    field.getMap()[tileX][tileY].setValue(shape.getShapeColor());
+                }
             }
         }
     }
