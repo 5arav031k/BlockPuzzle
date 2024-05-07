@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.WebApplicationContext;
 import sk.tuke.gamestudio.entity.Level;
 import sk.tuke.gamestudio.entity.Score;
+import sk.tuke.gamestudio.game.block_puzzle.core.Field;
 import sk.tuke.gamestudio.service.GameStudioException;
 import sk.tuke.gamestudio.service.LevelService;
 
@@ -24,6 +25,7 @@ public class LevelController {
     @GetMapping
     public String levelMenuPage(HttpSession session, Model model) {
         session.removeAttribute("level");
+        session.removeAttribute("field");
         try {
             completedLevels = ((Score) session.getAttribute("userScore")).getLevelsCompleted();
             model.addAttribute("htmlLevels", getHtmlLevels());
@@ -36,9 +38,11 @@ public class LevelController {
     @PostMapping
     public String levelMenu(@RequestParam int levelID, HttpSession session) {
         session.removeAttribute("level");
+        session.removeAttribute("field");
         try {
             Level level = levelService.getLevel(levelID);
             session.setAttribute("level", level);
+            session.setAttribute("field", new Field(5, 4));
             return "redirect:/block_puzzle/play";
         } catch (GameStudioException e) {
             return "level_menu";

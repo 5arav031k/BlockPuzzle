@@ -11,7 +11,7 @@
         <div class="game">
             <div class="background">
                 <div class="desk">
-                    <form action="/block_puzzle/play/hideShape" method="post">
+                    <form action="/block_puzzle/play/hideOrSelectShape" method="post">
                         <table id="field">
                             <tbody th:utext="${htmlField}"></tbody>
                         </table>
@@ -21,6 +21,17 @@
                             <tbody th:utext="${htmlShapes}"></tbody>
                         </table>
                     </form>
+                    <!--/*@thymesVar id="blockPuzzleController" type="sk.tuke.gamestudio.server.controller.BlockPuzzleController"*/-->
+                    <button type="button" onclick="location.href='/block_puzzle/level_menu'" th:if="${isSolved}">
+                        <img class="next-level-button" src="/images/next-level.png">
+                    </button>
+                    <script>
+                        document.addEventListener("keydown", function(event) {
+                            if (/^[wasd]$/i.test(event.key)) {
+                                window.open('/block_puzzle/play/moveShape/'+event.key.toUpperCase(), '_self');
+                            }
+                        });
+                    </script>
                 </div>
             </div>
         </div>
