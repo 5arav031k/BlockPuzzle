@@ -37,12 +37,13 @@ public class RatingServiceJPA implements RatingService {
 
     @Override
     public int getRating(String login) throws GameStudioException {
-        int rating = entityManager.createNamedQuery("Rating.getRating", Integer.class)
-                .setParameter("login", login)
-                .getSingleResult();
-        if (rating == 0)
-            throw new GameStudioException("Rating does not exist for login: " + login);
-        return rating;
+        try {
+            return entityManager.createNamedQuery("Rating.getRating", Integer.class)
+                    .setParameter("login", login)
+                    .getSingleResult();
+        } catch (Exception e) {
+            return 0;
+        }
     }
 
     @Override

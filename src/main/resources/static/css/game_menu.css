@@ -118,3 +118,7 @@ button {
     top: 51%;
     left: 10%;
 }
+
+button:hover {
+    background-color: #FDFFA2;
+}

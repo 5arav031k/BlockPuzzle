@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/css/index.css"/>
+        <link rel="stylesheet" href="/css/community.css"/>
+        <title>BlockPuzzle</title>
+    </head>
+    <body>
+        <div class="game">
+            <div class="background">
+                <section class="add-comment">
+                    <form action="/block_puzzle/community/addCommentAndRating" method="post">
+                        <input class="add-rating" name="rating" type="number" placeholder="Add rating (1-5)" min="1" max="5" title="Please enter a number between 1 and 5">
+                        <textarea name="comment" rows="4" cols="100" maxlength="300" placeholder="Add comment (max 300)" required></textarea>
+                        <button class="submit-button" type="submit">Submit</button>
+                    </form>
+                </section>
+                <!--/*@thymesVar id="communityController" type="sk.tuke.gamestudio.server.controller.CommunityController"*/-->
+                <section class="comments-tbl">
+                    <h1>Comments</h1>
+                    <div class="tbl-header">
+                        <table cellpadding="0" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th>USERNAME</th>
+                                <th>COMMENT</th>
+                                <th>TIME</th>
+                                <th>RATING</th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div class="tbl-content">
+                        <table cellpadding="0" cellspacing="0">
+                            <tbody th:utext="${htmlCommentsAndRating}"></tbody>
+                        </table>
+                    </div>
+                </section>
+                <a href="/block_puzzle/game_menu">
+                    <img class="icon-back" src="/images/icon-back.png" alt="icon-back-img">
+                </a>
+            </div>
+        </div>
+    </body>
+</html>

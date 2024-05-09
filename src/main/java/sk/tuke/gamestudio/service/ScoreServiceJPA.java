@@ -57,7 +57,6 @@ public class ScoreServiceJPA implements ScoreService {
     public List<Score> getTopScores() throws GameStudioException {
         try {
             return entityManager.createNamedQuery("Score.getTopScores", Score.class)
-                    .setMaxResults(5)
                     .getResultList();
         } catch (Exception e) {
             throw new GameStudioException("Could not get top scores");

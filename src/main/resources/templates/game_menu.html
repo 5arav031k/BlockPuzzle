@@ -13,13 +13,15 @@
                 <button type="button" class="play-button" onclick="location.href='/block_puzzle/level_menu'">
                     <div class="text-wrapper" id="play-button">Play</div>
                 </button>
-                <button type="button" class="leaders" onclick="location.href='leaders'">
+                <button type="button" class="leaders" onclick="location.href='/block_puzzle/leaders'">
                     <img class="leaders-img" src="/images/leaders.png" alt="leaders-img">
                     <div class="text-wrapper" id="leaders">Leaders</div>
                 </button>
-                <a href="/block_puzzle/exit">
-                    <img class="exit-button" src="/images/exit-button.png" alt="exit-button">
-                </a>
+                <form action="/block_puzzle/exit" method="post">
+                    <button type="submit">
+                        <img class="exit-button" src="/images/exit-button.png" alt="exit-button">
+                    </button>
+                </form>
                 <div class="tetris-icon-wrapper">
                     <img class="tetris-icon" src="/images/tetris-icon.png" alt="tetris-icon">
                 </div>

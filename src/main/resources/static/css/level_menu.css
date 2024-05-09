@@ -22,12 +22,24 @@ td#completed-level {
     background-color: #00e750;
 }
 
+td#completed-level:hover {
+    background-color: #47FF87;
+}
+
 td#open-level {
     background-color: #faff00;
 }
 
+td#open-level:hover {
+    background-color: #FDFFA2;
+}
+
 td#closed-level {
     background-color: #717271;
+}
+
+td#closed-level:hover {
+    background-color: #8C8C8C;
 }
 
 button {

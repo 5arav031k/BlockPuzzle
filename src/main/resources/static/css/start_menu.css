@@ -43,6 +43,10 @@ button#signUp {
     top: 70%;
 }
 
+.overlap-group:hover {
+    background: #E9AAFF;
+}
+
 .overlap-group {
     position: fixed;
     width: 309px;

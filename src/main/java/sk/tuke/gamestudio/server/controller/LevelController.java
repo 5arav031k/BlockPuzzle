@@ -11,6 +11,7 @@ import sk.tuke.gamestudio.entity.Score;
 import sk.tuke.gamestudio.game.block_puzzle.core.Field;
 import sk.tuke.gamestudio.service.GameStudioException;
 import sk.tuke.gamestudio.service.LevelService;
+import sk.tuke.gamestudio.service.ScoreService;
 
 import javax.servlet.http.HttpSession;
 
@@ -20,6 +21,8 @@ import javax.servlet.http.HttpSession;
 public class LevelController {
     @Autowired
     private LevelService levelService;
+    @Autowired
+    private ScoreService scoreService;
     private int completedLevels;
 
     @GetMapping
@@ -31,7 +34,7 @@ public class LevelController {
             model.addAttribute("htmlLevels", getHtmlLevels());
             return "level_menu";
         } catch (Exception e) {
-            return "redirect:/block_puzzle/login";
+            return "redirect:/block_puzzle";
         }
     }
 
@@ -45,8 +48,23 @@ public class LevelController {
             session.setAttribute("field", new Field(5, 4));
             return "redirect:/block_puzzle/play";
         } catch (GameStudioException e) {
-            return "level_menu";
+            return "redirect:/block_puzzle/level_menu";
         }
+    }
+
+    @PostMapping("/next_level")
+    public String nextLevel(HttpSession session) {
+        Level level = (Level) session.getAttribute("level");
+        Score score = (Score) session.getAttribute("userScore");
+        if (level == null) {
+            return "redirect:/block_puzzle/level_menu";
+        }
+        if (score == null) {
+            return "redirect:/block_puzzle";
+        }
+        scoreService.addCompletedLevel(score, level.getIdent());
+        session.setAttribute("userScore", scoreService.getScore(score.getLogin()));
+        return levelMenu(level.getIdent()+1, session);
     }
 
     private String getHtmlLevels() {

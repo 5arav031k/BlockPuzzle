@@ -49,6 +49,11 @@
     background-color: #1bc700;
     display: flex;
     justify-content: center;
+    cursor: pointer;
+}
+
+.submit-button:hover {
+    background-color: #22F600;
 }
 
 .submit-text-wrapper {

@@ -27,8 +27,10 @@ button[disabled] {
 
 table#field {
     position: absolute;
-    width: 46.5%;
-    height: 82%;
+    /*width: 46.5%;*/
+    /*height: 83%;*/
+    width: 643px;
+    height: 515px;
     top: 50%;
     transform: translateY(-50%);
     left: 4.5%;
@@ -43,9 +45,9 @@ table#shapes td {
 
 table#field td {
     font-size: 0;
-    padding: 0;
-    height: 25%;
-    width: 20%;
+    height: 125px;
+    width: 125px;
+    box-sizing: border-box;
     background-color: rgba(255, 0, 0, 0.13);
     text-align: -webkit-center;
 }
@@ -69,30 +71,38 @@ table#shapes td#PURPLE {
     box-shadow: 0 4px 4px #00000040;
 }
 
-.current-shape {
+table#field td.current-shape {
     border-style: solid;
     border-color: black;
     border-width: 2px;
 }
 
 .RED {
-background-color: #ff0000 !important;
+    background-color: #ff0000 !important;
 }
 
 .GREEN {
-background-color: #1cc800 !important;
+    background-color: #1cc800 !important;
 }
 
 .YELLOW {
-background-color: #f3f800 !important;
+    background-color: #f3f800 !important;
 }
 
 .BLUE {
-background-color: #00a3ff !important;
+    background-color: #00a3ff !important;
 }
 
 .PURPLE {
-background-color: #ff00e5 !important;
+    background-color: #ff00e5 !important;
+}
+
+.CYAN {
+    background-color: #00ffff !important;
+}
+
+.GRAY {
+    background-color: #808080 !important;
 }
 
 .marked-icon {
@@ -107,8 +117,21 @@ background-color: #ff00e5 !important;
 
 .next-level-button {
     position: absolute;
-    width: 63px;
-    height: 39px;
-    top: 20px;
-    left: 748px;
+    width: 4.5%;
+    height: 6%;
+    top: 3%;
+    left: 57.5%;
+}
+
+.back-button-png {
+    width: 47px;
+    height: 38px;
+}
+
+.back-button {
+    position: absolute;
+    width: 2%;
+    height: 3%;
+    top: 1.7%;
+    left: 1%;
 }

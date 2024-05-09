@@ -22,8 +22,13 @@
                         </table>
                     </form>
                     <!--/*@thymesVar id="blockPuzzleController" type="sk.tuke.gamestudio.server.controller.BlockPuzzleController"*/-->
-                    <button type="button" onclick="location.href='/block_puzzle/level_menu'" th:if="${isSolved}">
-                        <img class="next-level-button" src="/images/next-level.png">
+                    <form action="/block_puzzle/level_menu/next_level" method="post" th:if="${isSolved}">
+                        <button type="submit">
+                            <img class="next-level-button" src="/images/next-level.png" alt="next-level-button-png">
+                        </button>
+                    </form>
+                    <button type="button" class="back-button" onclick="location.href='/block_puzzle/level_menu'">
+                        <img class="back-button-png" src="/images/back-button.png" alt="back-button-png">
                     </button>
                     <script>
                         document.addEventListener("keydown", function(event) {

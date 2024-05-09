@@ -15,13 +15,11 @@ import java.util.List;
 @Scope(WebApplicationContext.SCOPE_SESSION)
 @RequestMapping("/block_puzzle")
 public class BlockPuzzleController {
-
     private Field field;
     private Level level;
     private Shape currentShape;
     private int currentShapeIndex = 0;
     private boolean shapeIsMarked = false;
-    private boolean isSolved = false;
 
     @GetMapping
     public String blockPuzzle() {
@@ -33,6 +31,12 @@ public class BlockPuzzleController {
         return "game_menu";
     }
 
+    @PostMapping("/exit")
+    public String exit(HttpSession session) {
+        session.invalidate();
+        return "redirect:/block_puzzle";
+    }
+
     @GetMapping("/play")
     public String playPage(HttpSession session, Model model) {
         level = (Level) session.getAttribute("level");
@@ -41,25 +45,14 @@ public class BlockPuzzleController {
             return "redirect:/block_puzzle/level_menu";
 
         addShapesToMap();
-        if (field.isSolved())
-            isSolved = true;
         model.addAttribute("htmlField", getHtmlField());
         model.addAttribute("htmlShapes", getHtmlShapes());
-        model.addAttribute("isSolved", isSolved);
+        model.addAttribute("isSolved", field.isSolved());
         shapeIsMarked = false;
         field.clearMap();
 
         session.setAttribute("level", level);
         return "play";
-    }
-
-    private void drawMap() {
-        for (int col = 0; col < field.getMapHeight(); col++) {
-            for (int row = 0; row < field.getMapWidth(); row++) {
-                System.out.print(field.getMap()[row][col].getValue());
-            }
-            System.out.println();
-        }
     }
 
     @PostMapping("/play/placeShapeOnField")
