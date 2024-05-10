@@ -4,7 +4,7 @@
 }
 
 .add-comment {
-    margin: 30px 400px;
+    margin: 25px 400px;
     text-align: center;
 }
 
@@ -98,7 +98,7 @@ textarea::placeholder {
 }
 
 .comments-tbl {
-    margin: 35px 245px;
+    margin: 25px 245px;
     font-family: "Kelly Slab-Regular", sans-serif;
 }
 
@@ -111,6 +111,10 @@ h1 {
     letter-spacing: 7px;
 }
 
+.avg-rating {
+    text-align: right;
+}
+
 table {
     width:100%;
     table-layout: fixed;
@@ -121,7 +125,7 @@ table {
 }
 
 .tbl-content {
-    height: 294px;
+    height: 285px;
     overflow-x:auto;
     margin-top: 0;
     border: 1px solid rgba(255, 255, 255, 0.3);

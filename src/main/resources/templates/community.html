@@ -19,7 +19,10 @@
                 </section>
                 <!--/*@thymesVar id="communityController" type="sk.tuke.gamestudio.server.controller.CommunityController"*/-->
                 <section class="comments-tbl">
-                    <h1>Comments</h1>
+                    <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                        <h1 class="comments">Comments</h1>
+                        <h1 class="avg-rating">Average rating: <span th:text="${avg_rating}"></span></h1>
+                    </div>
                     <div class="tbl-header">
                         <table cellpadding="0" cellspacing="0">
                             <thead>

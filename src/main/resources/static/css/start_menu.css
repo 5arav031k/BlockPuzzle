@@ -37,9 +37,11 @@ button {
 
 button#login {
     top: 50%;
+    position: relative;
 }
 
 button#signUp {
+    position: relative;
     top: 70%;
 }
 

@@ -32,17 +32,18 @@ public class CommunityController {
     private User user;
 
     @GetMapping
-    public String community(HttpSession session, Model model) {
-        user = (User) session.getAttribute("user");
-        if (user == null) {
-            return "redirect:/block_puzzle";
-        }
+    public String community(Model model) {
         model.addAttribute("htmlCommentsAndRating", getHtmlCommentsAndRating());
+        model.addAttribute("avg_rating", ratingService.getAverageRating());
         return "community";
     }
 
     @PostMapping("/addCommentAndRating")
-    public String addComment(@RequestParam String comment, @RequestParam String rating) {
+    public String addComment(@RequestParam String comment, @RequestParam String rating, HttpSession session) {
+        user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/block_puzzle";
+        }
         try {
             Date date = new Date();
             commentService.addComment(new Comment(user.getLogin(), comment.trim(), date));

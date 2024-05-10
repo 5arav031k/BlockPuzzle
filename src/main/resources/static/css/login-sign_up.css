@@ -101,3 +101,11 @@ input:placeholder-shown {
     color: #7f7f7f;
     font-size: 24px;
 }
+
+.icon-back {
+    position: absolute;
+    width: 4.4%;
+    height: 10%;
+    top: 2%;
+    left: 2.5%;
+}

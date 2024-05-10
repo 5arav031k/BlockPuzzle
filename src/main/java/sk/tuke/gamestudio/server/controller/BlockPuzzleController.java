@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.WebApplicationContext;
 import sk.tuke.gamestudio.entity.Level;
+import sk.tuke.gamestudio.entity.User;
 import sk.tuke.gamestudio.game.block_puzzle.core.*;
 
 import javax.servlet.http.HttpSession;
@@ -27,7 +28,11 @@ public class BlockPuzzleController {
     }
 
     @GetMapping("/game_menu")
-    public String gameMenu() {
+    public String gameMenu(HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/block_puzzle";
+        }
         return "game_menu";
     }
 

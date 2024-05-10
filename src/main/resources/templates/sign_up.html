@@ -19,6 +19,9 @@
                     <input class="password" name="password" type="password" placeholder="Password" minlength="6" required>
                     <input class="submit-button submit-text-wrapper" type="submit" value="Sign up">
                 </form>
+                <a href="/block_puzzle">
+                    <img class="icon-back" src="/images/icon-back.png" alt="icon-back-img">
+                </a>
                 <span class="error-wrapper" id="signUp" th:if="${signUp_error == 'This login is already taken!'}">This login is already taken!</span>
             </div>
         </div>
