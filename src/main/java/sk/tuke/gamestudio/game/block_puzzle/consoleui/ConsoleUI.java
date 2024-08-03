@@ -1,11 +1,10 @@
 package sk.tuke.gamestudio.game.block_puzzle.consoleui;
 
-import sk.tuke.gamestudio.entity.Comment;
-import sk.tuke.gamestudio.entity.Rating;
-import sk.tuke.gamestudio.entity.Score;
-import sk.tuke.gamestudio.entity.User;
-import sk.tuke.gamestudio.game.block_puzzle.core.*;
-import sk.tuke.gamestudio.entity.Level;
+import sk.tuke.gamestudio.entity.*;
+import sk.tuke.gamestudio.game.block_puzzle.core.Color;
+import sk.tuke.gamestudio.game.block_puzzle.core.Field;
+import sk.tuke.gamestudio.game.block_puzzle.core.Shape;
+import sk.tuke.gamestudio.game.block_puzzle.core.ShapeTile;
 import sk.tuke.gamestudio.service.*;
 
 import java.util.Date;
@@ -96,35 +95,35 @@ public class ConsoleUI {
     }
 
     private void showTopScores() {
-        System.out.format("\n\u001B[33m"+"%36s"+"\u001B[0m\n", "Top 5 scores:");
+        System.out.format("\n\u001B[33m" + "%36s" + "\u001B[0m\n", "Top 5 scores:");
         scoreService.getTopScores().forEach(score -> {
-            System.out.format("\u001B[33m"+"%-15s", score.getLogin());
-            System.out.format("\u001B[31m"+"max level: \u001B[33m"+"%-6d"+"\u001B[0m", score.getLevelsCompleted());
-            System.out.println("\u001B[31m"+"completed at: \u001B[33m"+score.getPlayedOn()+"\u001B[0m");
+            System.out.format("\u001B[33m" + "%-15s", score.getLogin());
+            System.out.format("\u001B[31m" + "max level: \u001B[33m" + "%-6d" + "\u001B[0m", score.getLevelsCompleted());
+            System.out.println("\u001B[31m" + "completed at: \u001B[33m" + score.getPlayedOn() + "\u001B[0m");
         });
     }
 
     private void rateBlockPuzzle() {
-        System.out.print("\n"+"\u001B[34m"+"Would you like to rate our game? (Y/N): "+"\u001B[0m");
+        System.out.print("\n" + "\u001B[34m" + "Would you like to rate our game? (Y/N): " + "\u001B[0m");
         String input;
 
         while (!(input = console.nextLine()).equalsIgnoreCase("Y")) {
-            if (input.equalsIgnoreCase("N"))    return;
+            if (input.equalsIgnoreCase("N")) return;
             System.out.print("          \u001B[31m" + "Bad input! Please enter Y or N: " + "\u001B[0m");
         }
 
         userRatingBlockPuzzle();
         userCommentBlockPuzzle();
 
-        System.out.println("\n"+"\u001B[32m"+"Thank you for your rating!"+"\u001B[0m");
+        System.out.println("\n" + "\u001B[32m" + "Thank you for your rating!" + "\u001B[0m");
     }
 
     private void userRatingBlockPuzzle() {
-        System.out.print("\n"+"\u001B[34m"+"Please rate our game from 1 to 5: "+"\u001B[0m");
+        System.out.print("\n" + "\u001B[34m" + "Please rate our game from 1 to 5: " + "\u001B[0m");
         String input;
 
         while (!(input = console.nextLine()).matches("([1-5])")) {
-            System.out.print("          \u001B[31m"+"Invalid rating! Please enter a number from 1 to 5: "+"\u001B[0m");
+            System.out.print("          \u001B[31m" + "Invalid rating! Please enter a number from 1 to 5: " + "\u001B[0m");
         }
         int rating = Integer.parseInt(input);
 
@@ -132,11 +131,11 @@ public class ConsoleUI {
     }
 
     private void userCommentBlockPuzzle() {
-        System.out.println("\n"+"\u001B[34m"+"Please leave your comments (max 300 characters):"+"\u001B[0m");
+        System.out.println("\n" + "\u001B[34m" + "Please leave your comments (max 300 characters):" + "\u001B[0m");
         String input;
 
         while ((input = console.nextLine()).length() > 300) {
-            System.out.println("          \u001B[31m"+"Comments are too long! Please keep them within 300 characters:"+"\u001B[0m");
+            System.out.println("          \u001B[31m" + "Comments are too long! Please keep them within 300 characters:" + "\u001B[0m");
         }
         String comment = input.trim();
         if (!comment.isEmpty())
@@ -150,13 +149,11 @@ public class ConsoleUI {
                 int tileX = shapeTile.getX();
                 int tileY = shapeTile.getY();
                 if (!field.getMap()[tileX][tileY].getValue().equals(" ")
-                        && tileX >= 8 && tileX <= (7+field.getFieldWidth()*2)
-                        && tileY >= 3 && tileY <= (2+field.getFieldHeight()))
-                {
+                        && tileX >= 8 && tileX <= (7 + field.getFieldWidth() * 2)
+                        && tileY >= 3 && tileY <= (2 + field.getFieldHeight())) {
                     field.getMap()[tileX][tileY].setValue(Color.MARKED);
                     shapeIsMarked = true;
-                }
-                else
+                } else
                     field.getMap()[shapeTile.getX()][shapeTile.getY()].setValue(shape.getShapeColor());
             }
         }
@@ -186,8 +183,7 @@ public class ConsoleUI {
 
         if (!shapeIsMarked && command.matches("([1-" + level.getShapeCount() + "])")) {
             selectShape(command);
-        }
-        else if (!isFirstCommand && command.matches("([UDLR])"))
+        } else if (!isFirstCommand && command.matches("([UDLR])"))
             moveShape(command);
         else
             printErrors(command);
@@ -213,8 +209,8 @@ public class ConsoleUI {
         else
             isFirstCommand = false;
 
-        currentShape = level.getShapes().get(Integer.parseInt(command)-1);
-        currentShapeIdx = level.getShapes().indexOf(currentShape)+1;
+        currentShape = level.getShapes().get(Integer.parseInt(command) - 1);
+        currentShapeIdx = level.getShapes().indexOf(currentShape) + 1;
         currentShape.placeShapeToField();
         currentShape.markShapeIdx(field, command);
     }
@@ -233,10 +229,18 @@ public class ConsoleUI {
 
     private void moveShape(String command) {
         switch (command) {
-            case "U": currentShape.moveUp(); break;
-            case "D": currentShape.moveDown(); break;
-            case "L": currentShape.moveLeft(); break;
-            case "R": currentShape.moveRight(); break;
+            case "U":
+                currentShape.moveUp();
+                break;
+            case "D":
+                currentShape.moveDown();
+                break;
+            case "L":
+                currentShape.moveLeft();
+                break;
+            case "R":
+                currentShape.moveRight();
+                break;
         }
     }
 

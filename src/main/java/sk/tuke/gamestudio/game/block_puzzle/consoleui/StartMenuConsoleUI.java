@@ -1,5 +1,6 @@
 package sk.tuke.gamestudio.game.block_puzzle.consoleui;
 
+import lombok.Getter;
 import sk.tuke.gamestudio.entity.Score;
 import sk.tuke.gamestudio.entity.User;
 import sk.tuke.gamestudio.game.block_puzzle.core.Field;
@@ -11,11 +12,15 @@ import sk.tuke.gamestudio.service.UserServiceJDBC;
 import java.util.Scanner;
 
 public class StartMenuConsoleUI {
+    @Getter
+    private boolean isUserLogIn;
+    @Getter
+    private Score score;
+    @Getter
+    private User user;
+
     private final Field field;
     private final Scanner console;
-    private boolean isUserLogIn;
-    private Score score;
-    private User user;
 
     public StartMenuConsoleUI(Field field) {
         this.field = field;
@@ -23,27 +28,17 @@ public class StartMenuConsoleUI {
         isUserLogIn = false;
     }
 
-    public Score getScore() {
-        return score;
-    }
-    public User getUser() {
-        return user;
-    }
-    public boolean isUserLogIn() {
-        return isUserLogIn;
-    }
-
     public void generateLogInPrompt() {
         String[] login = "(1) Log In".split("");
         for (int row = 19; row <= 28; row++) {
-            field.getMap()[row][2].setValue(login[row-19]);
+            field.getMap()[row][2].setValue(login[row - 19]);
         }
         field.getMap()[19][2].setValue("\u001B[36m(");
         field.getMap()[28][2].setValue("n\u001B[0m");
 
         String[] createAccount = "(2) Create account".split("");
         for (int row = 16; row <= 33; row++) {
-            field.getMap()[row][8].setValue(createAccount[row-16]);
+            field.getMap()[row][8].setValue(createAccount[row - 16]);
         }
         field.getMap()[16][8].setValue("\u001B[36m(");
         field.getMap()[33][8].setValue("t\u001B[0m");
@@ -57,9 +52,9 @@ public class StartMenuConsoleUI {
         String[] title3 = "╚═══►❃◄═══╝                    ╚═══►❃◄═══╝".split("");
 
         for (int row = 0; row < title2.length; row++) {
-            field.getMap()[row+3][4].setValue(title1[row]);
-            field.getMap()[row+3][5].setValue(title2[row]);
-            field.getMap()[row+3][6].setValue(title3[row]);
+            field.getMap()[row + 3][4].setValue(title1[row]);
+            field.getMap()[row + 3][5].setValue(title2[row]);
+            field.getMap()[row + 3][6].setValue(title3[row]);
         }
         field.getMap()[3][4].setValue("\u001B[32m╔");
         field.getMap()[3][5].setValue("\u001B[32m║");
@@ -69,9 +64,9 @@ public class StartMenuConsoleUI {
         field.getMap()[29][5].setValue("e\u001B[0m");
         field.getMap()[34][5].setValue("\u001B[32m║");
 
-        field.getMap()[title2.length+4][4].setValue("\u001B[0m");
-        field.getMap()[title2.length+4][5].setValue("\u001B[0m");
-        field.getMap()[title2.length+4][6].setValue("\u001B[0m");
+        field.getMap()[title2.length + 4][4].setValue("\u001B[0m");
+        field.getMap()[title2.length + 4][5].setValue("\u001B[0m");
+        field.getMap()[title2.length + 4][6].setValue("\u001B[0m");
     }
 
     public void parseInput() {
@@ -89,15 +84,13 @@ public class StartMenuConsoleUI {
             if (command.equals("1")) {
                 user = userService.logIn(login, password);
                 score = scoreService.getScore(user);
-            }
-            else {
+            } else {
                 user = userService.addUser(login, password);
                 score = scoreService.addScore(user);
             }
 
             isUserLogIn = user != null;
-        }
-        else {
+        } else {
             System.out.println("          \u001B[31m" + "Bad input!" + "\u001B[0m");
         }
     }
