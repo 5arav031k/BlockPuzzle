@@ -3,25 +3,29 @@ package sk.tuke.gamestudio.service;
 import sk.tuke.gamestudio.entity.Score;
 import sk.tuke.gamestudio.entity.User;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ScoreServiceJDBC extends Service implements ScoreService {
+public class ScoreServiceJDBC implements ScoreService {
+    private final Connection connection = DBInitializer.getConnection();
 
     @Override
     public void addCompletedLevel(Score score, int level) {
         if (level <= score.getLevelsCompleted())
             return;
+
         String ADD_LEVEL = "UPDATE score SET levels_completed = ?, completed_at = ? WHERE login = ?";
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement statement = connection.prepareStatement(ADD_LEVEL))
-        {
-           statement.setInt(1, level);
-           statement.setTimestamp(2, new Timestamp(new Date().getTime()));
-           statement.setString(3, score.getLogin());
-           statement.executeUpdate();
+        try {
+            var statement = connection.prepareStatement(ADD_LEVEL);
+            statement.setInt(1, level);
+            statement.setTimestamp(2, new Timestamp(new Date().getTime()));
+            statement.setString(3, score.getLogin());
+            statement.executeUpdate();
         } catch (SQLException e) {
             throw new GameStudioException(e);
         }
@@ -29,12 +33,11 @@ public class ScoreServiceJDBC extends Service implements ScoreService {
 
     @Override
     public Score addScore(User user) {
-        if (user == null)   return null;
+        if (user == null) return null;
 
         String ADD_SCORE = "INSERT INTO score VALUES (?, DEFAULT, ?)";
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement statement = connection.prepareStatement(ADD_SCORE))
-        {
+        try {
+            var statement = connection.prepareStatement(ADD_SCORE);
             Date date = new Date();
             statement.setString(1, user.getLogin());
             statement.setTimestamp(2, new Timestamp(date.getTime()));
@@ -47,15 +50,15 @@ public class ScoreServiceJDBC extends Service implements ScoreService {
 
     @Override
     public Score getScore(User user) {
-        if (user == null)   return null;
+        if (user == null) return null;
 
-        String GET_SCORE = String.format("SELECT levels_completed, completed_at FROM score WHERE login = '%s'", user.getLogin());
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD))
-        {
-            ResultSet rs = connection.prepareStatement(GET_SCORE).executeQuery();
+        String GET_SCORE = "SELECT levels_completed, completed_at FROM score WHERE login = ?";
+        try {
+            var statement = connection.prepareStatement(GET_SCORE);
+            statement.setString(1, user.getLogin());
+            ResultSet rs = statement.executeQuery();
             if (rs.next())
                 return new Score(user.getLogin(), rs.getInt(1), rs.getTimestamp(2));
-
         } catch (SQLException e) {
             throw new GameStudioException(e);
         }
@@ -66,12 +69,10 @@ public class ScoreServiceJDBC extends Service implements ScoreService {
     public List<Score> getTopScores() {
         String GET_SCORE = "SELECT * FROM score ORDER BY levels_completed DESC, completed_at LIMIT 5";
         List<Score> scoreList = new ArrayList<>();
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD))
-        {
+        try {
             ResultSet rs = connection.prepareStatement(GET_SCORE).executeQuery();
             while (rs.next())
                 scoreList.add(new Score(rs.getString(1), rs.getInt(2), rs.getTimestamp(3)));
-
         } catch (SQLException e) {
             throw new GameStudioException(e);
         }
@@ -79,11 +80,11 @@ public class ScoreServiceJDBC extends Service implements ScoreService {
     }
 
     @Override
-    public void reset() {
-        String RESET = "DELETE FROM score";
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement statement = connection.prepareStatement(RESET))
-        {
+    public void reset(User user) {
+        String RESET = "DELETE FROM score WHERE login = ?";
+        try {
+            var statement = connection.prepareStatement(RESET);
+            statement.setString(1, user.getLogin());
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new GameStudioException(e);

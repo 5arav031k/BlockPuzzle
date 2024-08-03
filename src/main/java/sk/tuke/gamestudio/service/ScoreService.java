@@ -10,5 +10,5 @@ public interface ScoreService {
     Score addScore(User user) throws GameStudioException;
     Score getScore(User user) throws GameStudioException;
     List<Score> getTopScores() throws GameStudioException;
-    void reset() throws GameStudioException;
+    void reset(User user) throws GameStudioException;
 }

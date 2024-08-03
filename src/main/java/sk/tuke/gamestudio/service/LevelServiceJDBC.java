@@ -1,26 +1,36 @@
 package sk.tuke.gamestudio.service;
 
-import sk.tuke.gamestudio.game.block_puzzle.core.*;
 import sk.tuke.gamestudio.entity.Level;
+import sk.tuke.gamestudio.game.block_puzzle.core.Color;
+import sk.tuke.gamestudio.game.block_puzzle.core.Field;
+import sk.tuke.gamestudio.game.block_puzzle.core.Shape;
+import sk.tuke.gamestudio.game.block_puzzle.core.ShapeTile;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-public class LevelServiceJDBC extends Service implements LevelService {
+public class LevelServiceJDBC implements LevelService {
     private Level level;
+    private final Connection connection = DBInitializer.getConnection();
 
     @Override
     public Level getLevel(int level_id, Field field) {
         level = new Level(field);
-        String GET_SHAPES_COUNT = "SELECT shapes_count FROM levels WHERE level_id = "+level_id;
-        String GET_SHAPES = "SELECT * FROM shapes WHERE level_id = "+level_id+" ORDER BY shape_id";
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD))
-        {
-            ResultSet levels_rs = connection.prepareStatement(GET_SHAPES_COUNT).executeQuery();
+        String GET_SHAPES_COUNT = "SELECT shapes_count FROM levels WHERE level_id = ?";
+        String GET_SHAPES = "SELECT * FROM shapes WHERE level_id = ? ORDER BY shape_id";
+        try {
+            var statement = connection.prepareStatement(GET_SHAPES_COUNT);
+            statement.setInt(1, level_id);
+            ResultSet levels_rs = statement.executeQuery();
             if (!levels_rs.next()) return null;
 
-            level.setShapesCount(levels_rs.getInt(1));
+            level.setShapeCount(levels_rs.getInt(1));
 
-            ResultSet shapes_rs = connection.prepareStatement(GET_SHAPES).executeQuery();
+            statement = connection.prepareStatement(GET_SHAPES);
+            statement.setInt(1, level_id);
+            ResultSet shapes_rs = statement.executeQuery();
+
             generateShapes(connection, shapes_rs);
         } catch (SQLException e) {
             throw new GameStudioException(e);
@@ -50,6 +60,7 @@ public class LevelServiceJDBC extends Service implements LevelService {
             throw new GameStudioException(e);
         }
     }
+
     private void placeShapeNumberOnField(int shapeNumber) {
         int posX = 24;
         int posY = 2;
@@ -73,21 +84,27 @@ public class LevelServiceJDBC extends Service implements LevelService {
                 break;
         }
         level.getField().getMap()[posX][posY].setValue("(");
-        level.getField().getMap()[posX+1][posY].setValue(String.valueOf(shapeNumber));
-        level.getField().getMap()[posX+2][posY].setValue(")");
+        level.getField().getMap()[posX + 1][posY].setValue(String.valueOf(shapeNumber));
+        level.getField().getMap()[posX + 2][posY].setValue(")");
     }
+
     private void generateTiles(Connection connection, Shape shape, int shape_id) {
         int minX = Integer.MAX_VALUE;
         int minY = Integer.MAX_VALUE;
 
-        String GET_TILE_ID = "SELECT tile_id FROM shapes_tiles WHERE shape_id = " + shape_id;
-        try (ResultSet shapes_tiles_rs = connection.prepareStatement(GET_TILE_ID).executeQuery())
-        {
+        String GET_TILE_ID = "SELECT tile_id FROM shapes_tiles WHERE shape_id = ?";
+        String GET_TILE = "SELECT tile_pos_x, tile_pos_y FROM tiles WHERE tile_id = ? ORDER BY tile_id";
+        try {
+            var statement = connection.prepareStatement(GET_TILE_ID);
+            statement.setInt(1, shape_id);
+            ResultSet shapes_tiles_rs = statement.executeQuery();
+
             while (shapes_tiles_rs.next()) {
                 int current_tile_id = shapes_tiles_rs.getInt(1);
 
-                String GET_TILE = "SELECT tile_pos_x, tile_pos_y FROM tiles WHERE tile_id = " + current_tile_id + " ORDER BY tile_id";
-                ResultSet tiles_rs = connection.prepareStatement(GET_TILE).executeQuery();
+                statement = connection.prepareStatement(GET_TILE);
+                statement.setInt(1, current_tile_id);
+                ResultSet tiles_rs = statement.executeQuery();
                 if (!tiles_rs.next()) return;
 
                 int posX = tiles_rs.getInt(1);
