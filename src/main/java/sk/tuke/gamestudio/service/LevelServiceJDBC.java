@@ -12,7 +12,7 @@ import java.sql.SQLException;
 
 public class LevelServiceJDBC implements LevelService {
     private Level level;
-    private final Connection connection = DBInitializer.getConnection();
+    private final Connection connection = DBService.getConnection();
 
     @Override
     public Level getLevel(int level_id, Field field) {

@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 
 public class RatingServiceJDBC implements RatingService {
-    private final Connection connection = DBInitializer.getConnection();
+    private final Connection connection = DBService.getConnection();
 
     @Override
     public void setRating(Rating rating) {

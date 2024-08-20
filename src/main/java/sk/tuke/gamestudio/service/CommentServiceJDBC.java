@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CommentServiceJDBC implements CommentService {
-    private final Connection connection = DBInitializer.getConnection();
+    private final Connection connection = DBService.getConnection();
 
     @Override
     public void addComment(Comment comment) {
@@ -33,7 +33,7 @@ public class CommentServiceJDBC implements CommentService {
             statement.setString(1, user.getLogin());
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
-                comments.add(new Comment(rs.getString(1), rs.getString(2), rs.getTimestamp(3)));
+                comments.add(new Comment(user.getLogin(), rs.getString("comment"), rs.getTimestamp("commented_on")));
             }
         } catch (SQLException e) {
             throw new GameStudioException(e);

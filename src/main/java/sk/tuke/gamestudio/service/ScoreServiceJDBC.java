@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 public class ScoreServiceJDBC implements ScoreService {
-    private final Connection connection = DBInitializer.getConnection();
+    private final Connection connection = DBService.getConnection();
 
     @Override
     public void addCompletedLevel(Score score, int level) {
@@ -58,11 +58,12 @@ public class ScoreServiceJDBC implements ScoreService {
             statement.setString(1, user.getLogin());
             ResultSet rs = statement.executeQuery();
             if (rs.next())
-                return new Score(user.getLogin(), rs.getInt(1), rs.getTimestamp(2));
+                return new Score(user.getLogin(), rs.getInt("levels_completed"), rs.getTimestamp("completed_at"));
+            else
+                return addScore(user);
         } catch (SQLException e) {
             throw new GameStudioException(e);
         }
-        return null;
     }
 
     @Override
@@ -72,7 +73,7 @@ public class ScoreServiceJDBC implements ScoreService {
         try {
             ResultSet rs = connection.prepareStatement(GET_SCORE).executeQuery();
             while (rs.next())
-                scoreList.add(new Score(rs.getString(1), rs.getInt(2), rs.getTimestamp(3)));
+                scoreList.add(new Score(rs.getString("login"), rs.getInt("levels_completed"), rs.getTimestamp("completed_at")));
         } catch (SQLException e) {
             throw new GameStudioException(e);
         }

@@ -6,6 +6,8 @@ import sk.tuke.gamestudio.entity.Level;
 import sk.tuke.gamestudio.entity.Score;
 import sk.tuke.gamestudio.game.block_puzzle.core.Color;
 import sk.tuke.gamestudio.game.block_puzzle.core.Field;
+import sk.tuke.gamestudio.service.ExceptionConstants;
+import sk.tuke.gamestudio.service.GameStudioException;
 import sk.tuke.gamestudio.service.LevelService;
 import sk.tuke.gamestudio.service.LevelServiceJDBC;
 
@@ -108,19 +110,23 @@ public class LevelMenuConsoleUI {
         try {
             selectedLevel = Integer.parseInt(command);
         } catch (NumberFormatException e) {
-            System.out.println("          \u001B[31m" + "Bad input!" + "\u001B[0m");
+            GameStudioExceptionHandler.printError(ExceptionConstants.BAD_INPUT);
             return;
         }
 
         if (command.matches("([1-" + (score.getLevelsCompleted() + 1) + "])")) {
             LevelService levelService = new LevelServiceJDBC();
-            level = levelService.getLevel(selectedLevel, field);
-            isLevelSelected = true;
+            try {
+                level = levelService.getLevel(selectedLevel, field);
+            } catch (GameStudioException e) {
+                GameStudioExceptionHandler.handleException(e);
+            }
+            isLevelSelected = level == null;
         } else {
             if (selectedLevel > score.getLevelsCompleted() + 1 && selectedLevel <= 6)
                 System.out.println("          \u001B[31m" + "You should complete level " + (score.getLevelsCompleted() + 1) + " first!" + "\u001B[0m");
             else
-                System.out.println("          \u001B[31m" + "Bad input!" + "\u001B[0m");
+                GameStudioExceptionHandler.printError(ExceptionConstants.BAD_INPUT);
         }
     }
 }

@@ -166,10 +166,10 @@ public class ConsoleUI {
         System.out.print(promptMsg());
         String command = console.nextLine().trim().toUpperCase();
 
-        if (command.equals("EXIT"))
+        if (command.equalsIgnoreCase("EXIT") || command.equalsIgnoreCase("E"))
             System.exit(0);
 
-        if (command.equals("X")) {
+        if (command.equalsIgnoreCase("X")) {
             resetShapes();
             return;
         }
@@ -183,7 +183,7 @@ public class ConsoleUI {
 
         if (!shapeIsMarked && command.matches("([1-" + level.getShapeCount() + "])")) {
             selectShape(command);
-        } else if (!isFirstCommand && command.matches("([UDLR])"))
+        } else if (!isFirstCommand && command.matches("([WASD])"))
             moveShape(command);
         else
             printErrors(command);
@@ -192,12 +192,12 @@ public class ConsoleUI {
     private String promptMsg() {
         String message;
         if (isFirstCommand)
-            message = "Choose a shape (1-" + level.getShapeCount() + "), (X) for reset: ";
+            message = "Choose a shape (1-" + level.getShapeCount() + "), (X) for reset, (E) for exit: ";
         else if (shapeIsMarked)
-            message = "Enter a command (U,D,L,R), (X) for reset\n" +
+            message = "Enter a command (W,A,S,D), (X) for reset, (E) for exit\n" +
                     "or (" + (currentShapeIdx) + ") to hide a shape: ";
         else
-            message = "Enter a command (U,D,L,R), (X) for reset\n" +
+            message = "Enter a command (W,A,S,D), (X) for reset, (E) for exit\n" +
                     "or choose a shape (1-" + level.getShapeCount() + "): ";
 
         return message;
@@ -229,16 +229,16 @@ public class ConsoleUI {
 
     private void moveShape(String command) {
         switch (command) {
-            case "U":
+            case "W":
                 currentShape.moveUp();
                 break;
-            case "D":
+            case "S":
                 currentShape.moveDown();
                 break;
-            case "L":
+            case "A":
                 currentShape.moveLeft();
                 break;
-            case "R":
+            case "D":
                 currentShape.moveRight();
                 break;
         }

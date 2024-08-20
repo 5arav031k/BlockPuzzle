@@ -4,10 +4,7 @@ import lombok.Getter;
 import sk.tuke.gamestudio.entity.Score;
 import sk.tuke.gamestudio.entity.User;
 import sk.tuke.gamestudio.game.block_puzzle.core.Field;
-import sk.tuke.gamestudio.service.ScoreService;
-import sk.tuke.gamestudio.service.ScoreServiceJDBC;
-import sk.tuke.gamestudio.service.UserService;
-import sk.tuke.gamestudio.service.UserServiceJDBC;
+import sk.tuke.gamestudio.service.*;
 
 import java.util.Scanner;
 
@@ -82,16 +79,24 @@ public class StartMenuConsoleUI {
             String login = getLogin();
             String password = getPassword();
             if (command.equals("1")) {
-                user = userService.logIn(login, password);
-                score = scoreService.getScore(user);
+                try {
+                    user = userService.logIn(login, password);
+                    score = scoreService.getScore(user);
+                } catch (GameStudioException e) {
+                    GameStudioExceptionHandler.handleException(e);
+                }
             } else {
-                user = userService.addUser(login, password);
-                score = scoreService.addScore(user);
+                try {
+                    user = userService.addUser(login, password);
+                    score = scoreService.addScore(user);
+                } catch (GameStudioException e) {
+                    GameStudioExceptionHandler.handleException(e);
+                }
             }
 
             isUserLogIn = user != null;
         } else {
-            System.out.println("          \u001B[31m" + "Bad input!" + "\u001B[0m");
+            GameStudioExceptionHandler.printError(ExceptionConstants.BAD_INPUT);
         }
     }
 
@@ -99,7 +104,7 @@ public class StartMenuConsoleUI {
         System.out.print("Enter login (min 3 characters): ");
         String login = console.nextLine();
         while (login.length() < 3) {
-            System.out.println("          \u001B[31m" + "Bad input!" + "\u001B[0m");
+            GameStudioExceptionHandler.printError(ExceptionConstants.BAD_INPUT);
             System.out.print("Enter login (min 3 characters): ");
             login = console.nextLine();
         }
@@ -110,7 +115,7 @@ public class StartMenuConsoleUI {
         System.out.print("Enter password (min 6 characters): ");
         String password = console.nextLine();
         while (password.length() < 6) {
-            System.out.println("          \u001B[31m" + "Bad input!" + "\u001B[0m");
+            GameStudioExceptionHandler.printError(ExceptionConstants.BAD_INPUT);
             System.out.print("Enter password (min 6 characters): ");
             password = console.nextLine();
         }
