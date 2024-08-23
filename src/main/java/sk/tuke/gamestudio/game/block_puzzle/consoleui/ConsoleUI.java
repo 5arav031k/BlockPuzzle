@@ -1,10 +1,7 @@
 package sk.tuke.gamestudio.game.block_puzzle.consoleui;
 
 import sk.tuke.gamestudio.entity.*;
-import sk.tuke.gamestudio.game.block_puzzle.core.Color;
-import sk.tuke.gamestudio.game.block_puzzle.core.Field;
-import sk.tuke.gamestudio.game.block_puzzle.core.Shape;
-import sk.tuke.gamestudio.game.block_puzzle.core.ShapeTile;
+import sk.tuke.gamestudio.game.block_puzzle.core.*;
 import sk.tuke.gamestudio.service.*;
 
 import java.util.Date;
@@ -45,7 +42,7 @@ public class ConsoleUI {
         selectLevel();
         field.generateFieldEdges();
 
-        while (true) {
+        while (field.getFieldState() == FieldState.PLAYING) {
             addShapesToMap();
             drawMap();
             if (field.isSolved()) {
@@ -57,8 +54,14 @@ public class ConsoleUI {
             field.clearField();
         }
 
-        scoreService.addCompletedLevel(score, levelMenu.getSelectedLevel());
+        try {
+            scoreService.addCompletedLevel(score, levelMenu.getSelectedLevel());
+        } catch (GameStudioException e) {
+            GameStudioExceptionHandler.printError("Error while trying to complete this level, please try again");
+        }
         showTopScores();
+        showLastComments();
+        showAverageRating();
         rateBlockPuzzle();
     }
 
@@ -96,11 +99,36 @@ public class ConsoleUI {
 
     private void showTopScores() {
         System.out.format("\n\u001B[33m" + "%36s" + "\u001B[0m\n", "Top 5 scores:");
-        scoreService.getTopScores().forEach(score -> {
-            System.out.format("\u001B[33m" + "%-15s", score.getLogin());
-            System.out.format("\u001B[31m" + "max level: \u001B[33m" + "%-6d" + "\u001B[0m", score.getLevelsCompleted());
-            System.out.println("\u001B[31m" + "completed at: \u001B[33m" + score.getPlayedOn() + "\u001B[0m");
-        });
+        try {
+            scoreService.getTopScores().forEach(score -> {
+                System.out.format("\u001B[33m" + "%-15s", score.getLogin());
+                System.out.format("\u001B[31m" + "max level: \u001B[33m" + "%-6d" + "\u001B[0m", score.getLevelsCompleted());
+                System.out.println("\u001B[31m" + "completed at: \u001B[33m" + score.getPlayedOn() + "\u001B[0m");
+            });
+        } catch (GameStudioException e) {
+            GameStudioExceptionHandler.printError("Error while getting scores");
+        }
+    }
+
+    private void showLastComments() {
+        System.out.format("\n\u001B[33m"+"%36s"+"\u001B[0m\n", "Last 7 comments:");
+        try {
+            commentService.getComments().forEach(comment -> {
+                System.out.format("\u001B[33m"+"%-15s", comment.getLogin());
+                System.out.println("\u001B[31m"+"comment: \u001B[33m"+comment.getComment()+"\u001B[0m");
+            });
+        } catch (GameStudioException e) {
+            GameStudioExceptionHandler.printError("Error while getting comments");
+        }
+    }
+
+    private void showAverageRating() {
+        System.out.print("\n\u001B[33m"+"Average game rating:"+"\u001B[0m ");
+        try {
+            System.out.println("\u001B[32m"+ratingService.getAverageRating()+"\u001B[0m");
+        } catch (GameStudioException e) {
+            GameStudioExceptionHandler.printError("Error while getting average rating");
+        }
     }
 
     private void rateBlockPuzzle() {
@@ -127,7 +155,12 @@ public class ConsoleUI {
         }
         int rating = Integer.parseInt(input);
 
-        ratingService.setRating(new Rating(user.getLogin(), rating, new Date()));
+        try {
+            ratingService.setRating(new Rating(user.getLogin(), rating, new Date()));
+        } catch (GameStudioException e) {
+            GameStudioExceptionHandler.printError("Error while trying to rate game, please try again");
+            userRatingBlockPuzzle();
+        }
     }
 
     private void userCommentBlockPuzzle() {
@@ -138,8 +171,13 @@ public class ConsoleUI {
             System.out.println("          \u001B[31m" + "Comments are too long! Please keep them within 300 characters:" + "\u001B[0m");
         }
         String comment = input.trim();
-        if (!comment.isEmpty())
-            commentService.addComment(new Comment(user.getLogin(), comment, new Date()));
+        try {
+            if (!comment.isEmpty())
+                commentService.addComment(new Comment(user.getLogin(), comment, new Date()));
+        } catch (GameStudioException e) {
+            GameStudioExceptionHandler.printError("Error while trying to add comment, please try again");
+            userCommentBlockPuzzle();
+        }
     }
 
     private void addShapesToMap() {

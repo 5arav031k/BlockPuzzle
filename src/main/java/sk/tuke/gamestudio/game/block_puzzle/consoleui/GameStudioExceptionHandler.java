@@ -1,7 +1,7 @@
 package sk.tuke.gamestudio.game.block_puzzle.consoleui;
 
-import sk.tuke.gamestudio.service.GameStudioException;
 import sk.tuke.gamestudio.service.ExceptionConstants;
+import sk.tuke.gamestudio.service.GameStudioException;
 
 class GameStudioExceptionHandler {
 
@@ -9,8 +9,9 @@ class GameStudioExceptionHandler {
         switch (e.getMessage()) {
             case ExceptionConstants.BAD_LOGIN_OR_PASSWORD,
                  ExceptionConstants.LOGIN_ALREADY_TAKEN,
-                 ExceptionConstants.BAD_INPUT
-                    -> printError(e.getMessage());
+                 ExceptionConstants.BAD_INPUT -> printError(e.getMessage());
+
+            default -> printError("Unexpected error: " + e.getMessage());
         }
     }
 

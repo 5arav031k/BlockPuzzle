@@ -13,7 +13,7 @@ public class UserServiceJDBC implements UserService {
 
     @Override
     public User addUser(String login, String password) {
-        String ADD_USER = "INSERT INTO users VALUES (DEFAULT, ?, ?)";
+        String ADD_USER = "INSERT INTO users (login, password) VALUES (?, ?)";
         String encryptedPassword = passwordEncoder.encode(password);
         try {
             var statement = connection.prepareStatement(ADD_USER);

@@ -35,7 +35,7 @@ public class ScoreServiceJDBC implements ScoreService {
     public Score addScore(User user) {
         if (user == null) return null;
 
-        String ADD_SCORE = "INSERT INTO score VALUES (?, DEFAULT, ?)";
+        String ADD_SCORE = "INSERT INTO score (login, levels_completed, completed_at) VALUES (?, DEFAULT, ?)";
         try {
             var statement = connection.prepareStatement(ADD_SCORE);
             Date date = new Date();

@@ -25,6 +25,7 @@ public class LevelMenuConsoleUI {
 
     private final Field field;
     private final Scanner console;
+    public static final int maxLevel = 6;
 
     public LevelMenuConsoleUI(Field field) {
         this.field = field;
@@ -114,14 +115,15 @@ public class LevelMenuConsoleUI {
             return;
         }
 
-        if (command.matches("([1-" + (score.getLevelsCompleted() + 1) + "])")) {
+        int maxLevel = Math.min(score.getLevelsCompleted() + 1, LevelMenuConsoleUI.maxLevel);
+        if (command.matches("([1-" + maxLevel + "])")) {
             LevelService levelService = new LevelServiceJDBC();
             try {
                 level = levelService.getLevel(selectedLevel, field);
             } catch (GameStudioException e) {
                 GameStudioExceptionHandler.handleException(e);
             }
-            isLevelSelected = level == null;
+            isLevelSelected = level != null;
         } else {
             if (selectedLevel > score.getLevelsCompleted() + 1 && selectedLevel <= 6)
                 System.out.println("          \u001B[31m" + "You should complete level " + (score.getLevelsCompleted() + 1) + " first!" + "\u001B[0m");

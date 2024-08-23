@@ -4,16 +4,16 @@ import lombok.Getter;
 
 @Getter
 public class Field {
-    private final FieldTile[][] map;
     private final int mapWidth = 50;
     private final int mapHeight = 11;
+    private final FieldTile[][] map = new FieldTile[mapWidth][mapHeight];
     private final int fieldWidth;
     private final int fieldHeight;
+    private FieldState fieldState = FieldState.PLAYING;
 
     public Field(int fieldWidth, int fieldHeight) {
         this.fieldWidth = fieldWidth;
         this.fieldHeight = fieldHeight;
-        map = new FieldTile[mapWidth][mapHeight];
         initialize();
     }
 
@@ -71,6 +71,7 @@ public class Field {
                     return false;
             }
         }
+        fieldState = FieldState.SOLVED;
         return true;
     }
 }

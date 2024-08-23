@@ -53,7 +53,7 @@ public class RatingServiceJDBC implements RatingService {
     }
 
     @Override
-    public void reset(User user) {
+    public void deleteRating(User user) {
         String RESET = "DELETE FROM rating WHERE login = ?";
         try {
             var statement = connection.prepareStatement(RESET);
